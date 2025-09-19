@@ -41,6 +41,24 @@
 <i>Rolenya disini</i><br>
 <a href="https://github.com/zaaammmmm">@zaaammmmm</a>
 </td>
+<td align="center" width="20%">
+<img src="https://github.com/arhmath.png" width="100px"/><br>
+<b>Arham Athillah</b><br>
+<i>Rolenya disini</i><br>
+<a href="https://github.com/arhmath">@zaaammmmm</a>
+</td>
+<td align="center" width="20%">
+<img src="https://github.com/nayy207.png" width="100px"/><br>
+<b>Shofy Naila Az-zahra</b><br>
+<i>Rolenya disini</i><br>
+<a href="https://github.com/nayy207">@zaaammmmm</a>
+</td>
+<td align="center" width="20%">
+<img src="https://github.com/musthofaaslam.png" width="100px"/><br>
+<b>Ahmad Mustafa Aslam</b><br>
+<i>Rolenya disini</i><br>
+<a href="https://github.com/musthofaaslam">@zaaammmmm</a>
+</td>
 </tr>
 </table>
 
