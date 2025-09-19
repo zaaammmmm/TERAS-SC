@@ -38,9 +38,7 @@
 <td align="center" width="20%">
 <img src="https://github.com/zaaammmmm.png" width="100px"/><br>
 <b>Ahmad Zamroni Trikarta</b><br>
-<i>Project Manager</i><br>
-<i>Backend Developer</i><br>
-<i>Database Architect</i><br>
+<i>Rolenya disini</i><br>
 <a href="https://github.com/zaaammmmm">@zaaammmmm</a>
 </td>
 </tr>
