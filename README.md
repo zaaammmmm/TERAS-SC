@@ -49,6 +49,7 @@
 <img src="https://github.com/zaaammmmm.png" width="100px"/><br>
 <b>Ahmad Zamroni Trikarta</b><br>
 <i>Project Manager</i><br>
+<i>Backend Developer</i><br>
 <a href="https://github.com/zaaammmmm">@zaaammmmm</a>
 </td>
 <td align="center" width="20%">
