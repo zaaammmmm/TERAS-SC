@@ -17,6 +17,8 @@
 
 **TERAS SC** adalah platform berbasis web yang dirancang khusus untuk melakukan pengajuan peminjaman ruangan Student Center sekaligus memperkenalkan Student Center di **Kampus Putih UIN Sunan Kalijaga Yogyakarta**. 
 
+---
+
 ## 🚀 Fitur Aplikasi
 ### Berikut adalah modul-modul utama yang tersedia dalam sistem ini:
 | Fitur | Deskripsi |
@@ -26,6 +28,8 @@
 | **Dashboard** | Halaman utama yang menampilkan ikhtisar data dan fitur, termasuk filter, sortir data, serta tampilan data ruangan dan peminjaman. |
 | **Form Peminjaman** | Formulir untuk mengajukan permohonan peminjaman ruangan |
 | **Riwayat Peminjaman** | Halaman yang menampilkan riwayat peminjaman yang telah dilakukan pengguna |
+
+---
 
 ## 🛠️ Teknologi
 
@@ -40,6 +44,8 @@
 | **Runtime** | Node.js | 18+ | JavaScript ecosystem, Performance |
 
 </div>
+
+---
 
 ## 👥 Tim Pengembang
 
@@ -73,6 +79,8 @@
 </td>
 </tr>
 </table>
+
+---
 
 ### 📋 Pembagian Tugas
 
