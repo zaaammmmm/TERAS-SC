@@ -20,7 +20,6 @@
 ---
 
 ## 🚀 Fitur Aplikasi
-### Berikut adalah modul-modul utama yang tersedia dalam sistem ini:
 | Fitur | Deskripsi |
 |------|----------------|
 | **Landing Page** | Halaman utama yang menampilkan informasi umum tentang sistem |
