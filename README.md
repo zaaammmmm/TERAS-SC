@@ -25,6 +25,7 @@
 | **Landing Page** | Halaman utama yang menampilkan informasi umum tentang sistem |
 | **Login** | Modul autentikasi untuk pengguna, admin, dan super admin. |
 | **Dashboard** | Halaman utama yang menampilkan ikhtisar data dan fitur, termasuk filter, sortir data, serta tampilan data ruangan dan peminjaman. |
+| **Detail Ruangan** | Halaman yang menampilkan informasi ruangan terpinjam |
 | **Form Peminjaman** | Formulir untuk mengajukan permohonan peminjaman ruangan |
 | **Riwayat Peminjaman** | Halaman yang menampilkan riwayat peminjaman yang telah dilakukan pengguna |
 
