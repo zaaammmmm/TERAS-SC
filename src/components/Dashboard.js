@@ -8,10 +8,7 @@ const Dashboard = () => {
 
       <div className="dashboard-content">
         <h1>Dashboard Penggunaan Ruangan</h1>
-
-        <div className="chart-container">
         </div>
-      </div>
     </div>
   );
 };
