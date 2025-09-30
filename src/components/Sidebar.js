@@ -13,7 +13,7 @@ const Sidebar = () => {
                 {/* Link Dashboard */}
                 <Link 
                     to="/dashboard" 
-                    className={location.pathname === '/dashboard' ? 'active cta-link' : 'cta-link'}
+                    className={location.pathname === '/dashboard' ? 'active' : ''}
                 >
                     Dashboard
                 </Link>
@@ -26,14 +26,18 @@ const Sidebar = () => {
                 {/* Link ke Form Peminjaman */}
                 <Link 
                     to="/pinjam" 
-                    className={location.pathname === '/pinjam' ? 'active cta-link' : 'cta-link'}
-                >
+                    className={location.pathname === '/pinjam' ? 'active' : ''}>
                     Ajukan Reservasi Baru
                 </Link>
 
                 {/* Link ke Riwayat Peminjaman */}
                 <Link to="/riwayat" className={location.pathname === '/riwayat' ? 'active' : ''}>
                     Riwayat Peminjaman
+                </Link>
+
+                {/* Link kembali ke Landing Page */}
+                <Link to="/" className={location.pathname === '/' ? '' : 'logout'}>
+                    Logout
                 </Link>
             </nav>
         </div>

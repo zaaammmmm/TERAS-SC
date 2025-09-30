@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './FormPeminjaman.css';
-import Header from './Header';
 
 // Sumber Data Ruangan yang harus SAMA dengan DaftarRuangan.js (A sampai F dan EAST)
 const roomList = [
@@ -115,7 +114,6 @@ const FormPeminjaman = () => {
 
   return (
     <div className="peminjaman-page-container">
-      <Header isLandingPage={false} /> 
 
       <div className="peminjaman-content-wrapper">
         <h1 className="peminjaman-title">Ajukan Peminjaman Ruangan</h1>

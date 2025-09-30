@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from './Header';
 import './Login.css';
 
 const Login = () => {
@@ -28,7 +27,6 @@ const Login = () => {
 
   return (
     <div className="login-page-container">
-      <Header isLandingPage={false} /> {/* Header selalu solid di halaman login */}
       
       {/* Kotak Utama Login */}
       <div className="login-card">

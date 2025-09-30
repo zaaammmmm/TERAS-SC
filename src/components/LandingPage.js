@@ -1,21 +1,20 @@
 // src/components/LandingPage.js (Kode UTUH)
 
-import React from 'react';
-import Header from './Header';
-import { Link } from 'react-router-dom'; 
-import './LandingPage.css';
-import HeroBgImage from '../assets/background.png';
+import { Link } from 'react-router-dom';
 import AboutImage from '../assets/About.jpg';
+import HeroBgImage from '../assets/background.png';
+import Header from './Header';
+import './LandingPage.css';
 
 // --- IMPOR Ikon Baru (Pastikan File ada di src/assets) ---
-import IconSearch from '../assets/icon-search.png'; 
-import IconSelect from '../assets/icon-select.png'; 
-import IconForm from '../assets/icon-form.png';   
-import IconConfirm from '../assets/icon-confirm.png'; 
+import IconConfirm from '../assets/icon-confirm.png';
+import IconForm from '../assets/icon-form.png';
+import IconSearch from '../assets/icon-search.png';
+import IconSelect from '../assets/icon-select.png';
 // -----------------------------
 
 // === Ikon Sosial Media (pakai react-icons) ===
-import { FaInstagram, FaWhatsapp, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 const LandingPage = () => {
   return (
@@ -36,7 +35,7 @@ const LandingPage = () => {
               Find the perfect for your study group, club meeting, or event. Our easy-to-use reservation
               system ensures you get the space you need, when you need it.
             </p>
-            <Link to="/ruangan" className="hero-cta-link">
+            <Link to="/dashboard" className="hero-cta-link">
                <button className="hero-cta">Mulai Reservasi</button>
             </Link>
           </div>

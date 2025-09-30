@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DaftarRuangan.css';
-import RoomUsageChart from './RoomUsageChart'; // <--- IMPORT KOMPONEN BARU
 
 // Sumber tunggal (Source of Truth) untuk data ruangan (A sampai F dan EAST)
 const ruanganData = [
@@ -74,10 +73,6 @@ const DaftarRuangan = () => {
   return (
     <div className="content-wrapper">
         
-        {/* ================================================= */}
-        {/* PENEMPATAN CHART DASHBOARD BARU DI ATAS LIST      */}
-        {/* ================================================= */}
-        <RoomUsageChart data={ruanganData} /> 
         
         <h2 className="content-title" style={{ marginTop: '30px', borderBottom: '1px solid #eee', paddingBottom: '15px' }}>
             Cek Ketersediaan Ruangan Hari Ini

@@ -20,7 +20,7 @@ const Dashboard = () => {
         {/* ================================================= */}
         {/* PENEMPATAN CHART DASHBOARD BARU DI ATAS LIST      */}
         {/* ================================================= */}
-        <RoomUsageChart data={ruanganData} /> 
+        <RoomUsageChart data={ruanganData} />
     </div>
   );
 };

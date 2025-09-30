@@ -50,6 +50,11 @@
     font-weight: 600;
 }
 
+.logout a{
+    margin-top: auto; /* Push ke bawah */
+    color: #dc3545;
+}
+
 /* Styling Khusus untuk Link CTA/Reservasi Baru */
 .sidebar-nav a.cta-link {
     background-color: #f7f9fa;
