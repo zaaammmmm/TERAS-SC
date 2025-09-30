@@ -17,7 +17,7 @@ const Login = () => {
     console.log('Login attempt:', email, password);
     
     // Simulasikan login berhasil
-    if (email === 'admin@uin-suka.ac.id' && password === '12345') {
+    if (email === 'user@student.uin-suka.ac.id' && password === '12345') {
         alert('Login Berhasil!');
         navigate('/dashboard'); 
     } else {

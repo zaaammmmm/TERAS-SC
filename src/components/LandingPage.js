@@ -4,7 +4,8 @@ import React from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom'; 
 import './LandingPage.css';
-import HeroBgImage from '../assets/background.png'; 
+import HeroBgImage from '../assets/background.png';
+import AboutImage from '../assets/About.jpg';
 
 // --- IMPOR Ikon Baru (Pastikan File ada di src/assets) ---
 import IconSearch from '../assets/icon-search.png'; 
@@ -12,6 +13,9 @@ import IconSelect from '../assets/icon-select.png';
 import IconForm from '../assets/icon-form.png';   
 import IconConfirm from '../assets/icon-confirm.png'; 
 // -----------------------------
+
+// === Ikon Sosial Media (pakai react-icons) ===
+import { FaInstagram, FaWhatsapp, FaLinkedin } from "react-icons/fa";
 
 const LandingPage = () => {
   return (
@@ -49,7 +53,13 @@ const LandingPage = () => {
             akurat, jadwal terpadu. Solusi digital efisien.
           </p>
         </div>
-        <div className="about-image-placeholder"></div>
+        <div className="about-image-placeholder">
+          <img 
+            src={AboutImage} 
+            alt="UIN Sunan Kalijaga" 
+            className="about-image-content"
+          />
+        </div>
       </section>
 
       {/* Scroll 3: TUTORIAL/RESERVASI SECTION (ID: TUTORIAL) */}
@@ -91,6 +101,29 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* FOOTER SECTION (Tambahkan id="footer") */}
+      <footer className="footer-section" id="footer">
+        <div className="footer-content">
+          <div className="contact-info">
+            <h4>Contact Person</h4>
+            <p>Email: terassc@gmail.com</p>
+            <p>Telp/WA: +62 812 3456 7890</p>
+          </div>
+          <div className="social-icons">
+            <a href="https://www.instagram.com/terassc" target="_blank" rel="noopener noreferrer">
+              <FaInstagram />
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+              <FaWhatsapp />
+            </a>
+            <a href="https://www.linkedin.com/company/terassc" target="_blank" rel="noopener noreferrer">
+              <FaLinkedin />
+            </a>
+          </div>
+        </div>
+        <p className="footer-bottom">© 2025 Teras SC. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 };

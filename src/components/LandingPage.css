@@ -1,4 +1,4 @@
-/* src/components/LandingPage.css (Kode UTUH) */
+/* src/components/LandingPage.css (Kode UTUH Final) */
 
 .landing-page-container {
     /* Hanya penampung */
@@ -11,8 +11,8 @@
 .hero-section {
     position: relative;
     height: 100vh; /* UTAMA: Satu layar penuh */
-    margin-top: 0; /* Menggeser ke atas untuk menutupi ruang yang dibuat oleh Header fixed (65px) */
-    padding-top: 0; /* Kompensasi untuk Header agar konten tidak tertutup */
+    margin-top: 0; 
+    padding-top: 0; 
 
     display: flex;
     align-items: center;
@@ -101,25 +101,32 @@
     color: #555;
 }
 
+/* CONTAINER GAMBAR ABOUT */
 .about-image-placeholder {
-    width: 300px;
-    height: 300px;
-    background-color: #dbe4f0; 
-    border-radius: 10px;
+    width: 400px; /* Diubah dari 300px untuk tampilan yang lebih baik */
+    height: 300px; /* Diubah dari 300px untuk tampilan yang lebih baik */
+    background-color: transparent; /* Hilangkan background placeholder */
+    border-radius: 12px; /* Disesuaikan dengan desain */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Penting untuk menjaga sudut gambar */
+    flex-shrink: 0;
 }
 
-/* * =====================================
- * RESERVASI SECTION (ID: TUTORIAL/CARA) 
- * =====================================
- */
-/* src/components/LandingPage.css (Bagian RESERVASI SECTION) */
+/* STYLING KHUSUS GAMBAR ABOUT */
+.about-image-content {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memastikan gambar mengisi area tanpa terdistorsi */
+    border-radius: 12px;
+}
+
 
 /* * =====================================
  * RESERVASI SECTION (ID: TUTORIAL/CARA) 
  * =====================================
+ * Catatan: Duplikasi kode di bawah telah dihapus dan digabung
  */
- .reservasi-section {
+.reservasi-section {
     background-color: #3D5B81; 
     height: 100vh; 
     color: white;
@@ -173,7 +180,6 @@
 
 /* Styling Icon dan Teks di dalam Kartu */
 .step-icon {
-    /* Lingkaran Besar Ikon (Container untuk Gambar) */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -186,9 +192,9 @@
 
 /* KODE BARU: Styling untuk Gambar Ikon di dalam Lingkaran */
 .icon-image {
-    width: 50px; /* Ukuran yang pas di dalam lingkaran 80px */
+    width: 50px; 
     height: 50px;
-    object-fit: contain; /* Memastikan gambar tetap proporsional */
+    object-fit: contain; 
 }
 
 
@@ -202,3 +208,52 @@
     font-size: 0.95rem;
     color: #666;
 }
+
+/* FOOTER SECTION */
+.footer-section {
+    background-color: #2b3a55;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .contact-info h4 {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    color: #f0f0f0;
+  }
+  
+  .contact-info p {
+    margin: 2px 0;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 20px;
+    font-size: 1.8rem;
+  }
+  
+  .social-icons a {
+    color: white;
+    transition: color 0.3s;
+  }
+  
+  .social-icons a:hover {
+    color: #3D5B81; /* sesuai primary color */
+  }
+  
+  .footer-bottom {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  

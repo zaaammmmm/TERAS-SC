@@ -13,9 +13,7 @@ const Header = ({ isLandingPage }) => {
   // LOGIKA SCROLL TRANSITION
   // ======================================
   useEffect(() => {
-    // Fungsi untuk mendeteksi posisi scroll
     const handleScroll = () => {
-      // Aktifkan kelas solid jika posisi scroll lebih dari 50px (untuk transisi)
       if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
@@ -23,30 +21,24 @@ const Header = ({ isLandingPage }) => {
       }
     };
 
-    // Logika pengaktifan listener
     if (isLandingPage) {
-      // Set awal ke transparan jika di Landing Page
       setIsScrolled(window.scrollY > 50); 
       window.addEventListener('scroll', handleScroll);
     } else {
-      // Jika tidak di Landing Page (Login, Ruangan, dll.), header selalu solid
       setIsScrolled(true);
     }
 
-    // Cleanup function: Hapus listener saat komponen di-unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [isLandingPage]);
-  // ======================================
 
-  // Tentukan komponen dan destinasi (Logika smooth scroll tetap sama)
+  // Tentukan komponen dan destinasi
   const NavLinkComponent = isLandingPage ? 'a' : Link;
   const BerandaTo = isLandingPage ? '#beranda' : '/';
-  // Jika tidak di LandingPage, semua navigasi internal mengarah ke root '/'
   const AboutTo = isLandingPage ? '#about' : '/'; 
   const TutorialTo = isLandingPage ? '#tutorial' : '/'; 
-  const TentangKamiTo = isLandingPage ? '#tutorial' : '/'; 
+  const TentangKamiTo = isLandingPage ? '#footer' : '/';  // 👈 diarahkan ke footer
 
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
@@ -59,7 +51,17 @@ const Header = ({ isLandingPage }) => {
     }
   };
 
-  // Kelas CSS dinamis: tambahkan 'header-solid' jika sudah di-scroll atau bukan di Landing Page
+  // ✅ Tambahan: fungsi scroll ke footer
+  const scrollToFooter = (e) => {
+    if (isLandingPage) {
+      e.preventDefault();
+      const footerEl = document.getElementById('footer');
+      if (footerEl) {
+        footerEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   const headerClasses = `header-bar ${isScrolled ? 'header-solid' : 'header-transparent'}`;
 
   return (
@@ -74,7 +76,14 @@ const Header = ({ isLandingPage }) => {
         <NavLinkComponent {...getLinkProps(BerandaTo)} className={isLoginPage ? 'nav-disabled' : ''}>Beranda</NavLinkComponent>
         <NavLinkComponent {...getLinkProps(AboutTo)} className={isLoginPage ? 'nav-disabled' : ''}>About</NavLinkComponent>
         <NavLinkComponent {...getLinkProps(TutorialTo)} className={isLoginPage ? 'nav-disabled' : ''}>Tutorial</NavLinkComponent>
-        <NavLinkComponent {...getLinkProps(TentangKamiTo)} className={isLoginPage ? 'nav-disabled' : ''}>Tentang Kami</NavLinkComponent>
+        {/* 👇 Tambah onClick khusus untuk Tentang Kami */}
+        <NavLinkComponent 
+          {...getLinkProps(TentangKamiTo)} 
+          onClick={scrollToFooter}
+          className={isLoginPage ? 'nav-disabled' : ''}
+        >
+          Tentang Kami
+        </NavLinkComponent>
       </nav>
       
       {/* Tombol Login */}
