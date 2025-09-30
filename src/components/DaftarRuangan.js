@@ -1,9 +1,9 @@
 // src/components/DaftarRuangan.js (Kode UTUH dan Direvisi dengan Chart)
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import RoomUsageChart from './RoomUsageChart'; // <--- IMPORT KOMPONEN BARU
 import './DaftarRuangan.css';
+import RoomUsageChart from './RoomUsageChart'; // <--- IMPORT KOMPONEN BARU
 
 // Sumber tunggal (Source of Truth) untuk data ruangan (A sampai F dan EAST)
 const ruanganData = [
@@ -18,8 +18,38 @@ const ruanganData = [
 ];
 
 const DaftarRuangan = () => {
+  const [ruangan, setRuangan] = useState([]);
   const navigate = useNavigate();
   
+  useEffect(() => {
+    // Check room availability based on peminjaman data
+    const peminjaman = JSON.parse(localStorage.getItem('peminjaman') || '[]');
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Example room list - you can modify this
+    const daftarRuangan = [
+      { id: 1, nama: 'Ruang A', kapasitas: 20 },
+      { id: 2, nama: 'Ruang B', kapasitas: 30 },
+      { id: 3, nama: 'Ruang C', kapasitas: 40 }
+    ];
+
+    // Check availability
+    const ruanganWithStatus = daftarRuangan.map(ruang => {
+      const isBooked = peminjaman.some(p => 
+        p.ruangan === ruang.nama && 
+        p.tanggal === today &&
+        p.status === 'Approved'
+      );
+
+      return {
+        ...ruang,
+        status: isBooked ? 'Booked' : 'Available'
+      };
+    });
+
+    setRuangan(ruanganWithStatus);
+  }, []);
+
   // Fungsi untuk menangani klik pada slot waktu
   const handleTimeSlotClick = (roomName, startTime) => {
     navigate('/pinjam', { 

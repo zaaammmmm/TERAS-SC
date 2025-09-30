@@ -1,8 +1,8 @@
 // src/components/Login.js (Kode UTUH)
 
-import React, { useState } from 'react';
-import Header from './Header';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 import './Login.css';
 
 const Login = () => {
@@ -19,7 +19,7 @@ const Login = () => {
     // Simulasikan login berhasil
     if (email === 'admin@uin-suka.ac.id' && password === '12345') {
         alert('Login Berhasil!');
-        navigate('/ruangan'); 
+        navigate('/dashboard'); 
     } else {
         alert('Email atau Password salah.');
     }

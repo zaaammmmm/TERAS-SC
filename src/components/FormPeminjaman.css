@@ -3,7 +3,7 @@
 .peminjaman-page-container {
     min-height: 100vh;
     /* PENTING: Tambahkan padding yang cukup untuk Header solid */
-    padding-top: 100px; 
+    padding-top: 10px; 
     
     display: flex;
     justify-content: center; /* Memusatkan konten di tengah */
@@ -13,7 +13,7 @@
 
 .peminjaman-content-wrapper {
     width: 90%; 
-    max-width: 800px; 
+    max-width: 1100px; 
     padding: 30px;
     margin-bottom: 50px;
     

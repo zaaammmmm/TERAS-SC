@@ -1,9 +1,9 @@
 // src/components/FormPeminjaman.js (Kode UTUH dan Direvisi)
 
-import React, { useState } from 'react';
-import Header from './Header';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './FormPeminjaman.css';
+import Header from './Header';
 
 // Sumber Data Ruangan yang harus SAMA dengan DaftarRuangan.js (A sampai F dan EAST)
 const roomList = [
@@ -16,6 +16,15 @@ const roomList = [
     { value: 'Co-Working Space EAST', label: 'Co-Working Space EAST (Max 20)' }, // DIPERTAHANKAN
 ];
 
+const timeSlots = [
+  { value: '07:00-09:00', label: '07:00 - 09:00' },
+  { value: '09:00-11:00', label: '09:00 - 11:00' },
+  { value: '11:00-13:00', label: '11:00 - 13:00' },
+  { value: '13:00-15:00', label: '13:00 - 15:00' },
+  { value: '15:00-17:00', label: '15:00 - 17:00' },
+  { value: '17:00-19:00', label: '17:00 - 19:00' },
+  { value: '19:00-21:00', label: '19:00 - 21:00' },
+];
 
 const FormPeminjaman = () => {
   const navigate = useNavigate();
@@ -23,12 +32,12 @@ const FormPeminjaman = () => {
   const prefilledData = location.state || {}; 
 
   const [formData, setFormData] = useState({
-    room: prefilledData.room || '', 
+    room: prefilledData.room || '',
     date: prefilledData.date || new Date().toISOString().split('T')[0],
-    startTime: prefilledData.startTime || '', 
-    endTime: '',
+    timeSlot: '', // Replace startTime and endTime with single timeSlot
     purpose: '',
     capacity: 1,
+    peminjam: prefilledData.peminjam || '',
   });
 
   const [error, setError] = useState('');
@@ -47,37 +56,7 @@ const FormPeminjaman = () => {
   // ======================================
   const validateForm = () => {
     setError('');
-    const { startTime, endTime } = formData;
-    
-    if (startTime && endTime) {
-        
-        const endHour = parseInt(endTime.split(':')[0]);
-        
-        // 1. Batas Akhir Peminjaman (Maksimal jam 21:00)
-        if (endHour > 21 || (endHour === 21 && endTime.split(':')[1] !== '00')) {
-            setError('Peminjaman maksimal hanya sampai Pukul 21:00.');
-            return false;
-        }
-
-        // 2. Batas Durasi (Maksimal 2 jam)
-        const start = new Date(`2000/01/01 ${startTime}`);
-        const end = new Date(`2000/01/01 ${endTime}`);
-        const durationMs = end - start;
-        const maxDurationMs = 2 * 60 * 60 * 1000; // 2 jam dalam milidetik
-
-        if (durationMs > maxDurationMs) {
-            setError('Durasi peminjaman tidak boleh lebih dari 2 jam.');
-            return false;
-        }
-        
-        // 3. Waktu selesai harus setelah waktu mulai
-        if (durationMs <= 0) {
-            setError('Waktu selesai harus setelah waktu mulai.');
-            return false;
-        }
-    }
-    
-    return true;
+    return true; // Since we're using predefined slots, no need for time validation
   };
 
   // Handler saat formulir disubmit
@@ -88,9 +67,47 @@ const FormPeminjaman = () => {
         return;
     }
     
-    console.log("Data Peminjaman Dikirim:", formData);
-    alert(`Permohonan peminjaman untuk ${formData.room} berhasil diajukan!`);
+    // Split timeSlot into startTime and endTime for storage
+    const [startTime, endTime] = formData.timeSlot.split('-');
     
+    // Get existing peminjaman from localStorage
+    const existingPeminjaman = JSON.parse(localStorage.getItem('peminjaman') || '[]');
+    
+    // Create new peminjaman data structure that matches RiwayatPeminjaman display
+    const newPeminjaman = {
+      id: Date.now(),
+      ruangan: formData.room,
+      tanggal: formData.date,
+      waktuMulai: startTime,
+      waktuSelesai: endTime,
+      keperluan: formData.purpose,
+      jumlahPeserta: formData.capacity,
+      peminjam: formData.peminjam,
+      status: 'Menunggu',
+      tanggalPengajuan: new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+    
+    // Save to localStorage
+    localStorage.setItem('peminjaman', JSON.stringify([...existingPeminjaman, newPeminjaman]));
+    
+    // Reset form
+    setFormData({
+      room: '',
+      date: '',
+      timeSlot: '',
+      purpose: '',
+      capacity: 1,
+      peminjam: ''
+    });
+
+    // Show success message and navigate to riwayat
+    alert(`Peminjaman ruangan ${newPeminjaman.ruangan} berhasil diajukan!\nSilakan cek status peminjaman di halaman Riwayat Peminjaman.`);
     navigate('/riwayat');
   };
   // ======================================
@@ -163,32 +180,24 @@ const FormPeminjaman = () => {
                 required
               />
             </div>
-          </div>
-          
-          <div className="form-group-row">
-             <div className="form-group">
-              <label htmlFor="startTime">Waktu Mulai</label>
-              <input
-                type="time"
-                id="startTime"
-                name="startTime"
-                value={formData.startTime}
-                onChange={handleChange}
+            
+            <div className="form-group">
+              <label htmlFor="timeSlot">Waktu Peminjaman</label>
+              <select 
+                id="timeSlot" 
+                name="timeSlot" 
+                value={formData.timeSlot} 
+                onChange={handleChange} 
                 className="input-field"
                 required
-              />
-            </div>
-             <div className="form-group">
-              <label htmlFor="endTime">Waktu Selesai</label>
-              <input
-                type="time"
-                id="endTime"
-                name="endTime"
-                value={formData.endTime}
-                onChange={handleChange}
-                className="input-field"
-                required
-              />
+              >
+                <option value="">-- Pilih Waktu --</option>
+                {timeSlots.map((slot) => (
+                  <option key={slot.value} value={slot.value}>
+                    {slot.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -205,6 +214,21 @@ const FormPeminjaman = () => {
               placeholder="Jelaskan tujuan peminjaman"
               required
             ></textarea>
+          </div>
+
+          {/* BAGIAN 4: DATA PEMINJAM (NAMA PEMINJAM) */}
+          <div className="form-group full-width">
+            <label htmlFor="peminjam">Nama Pemohon</label>
+            <input
+              type="text"
+              id="peminjam"
+              name="peminjam"
+              value={formData.peminjam}
+              onChange={handleChange}
+              className="input-field"
+              placeholder="Masukkan nama Anda"
+              required
+            />
           </div>
           
           {/* Tombol Submit */}

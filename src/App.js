@@ -1,17 +1,17 @@
 // src/App.js (Kode UTUH)
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 // Import Layout dan Halaman Utama
-import DashboardLayout from './components/DashboardLayout'; 
-import LandingPage from './components/LandingPage'; 
-import Login from './components/Login'; 
+import DashboardLayout from './components/DashboardLayout';
+import LandingPage from './components/LandingPage';
+import Login from './components/Login';
 
 // Import Halaman Aplikasi (Dashboard)
-import DaftarRuangan from './components/DaftarRuangan'; 
-import FormPeminjaman from './components/FormPeminjaman'; 
-import RiwayatPeminjaman from './components/RiwayatPeminjaman'; 
+import DaftarRuangan from './components/DaftarRuangan';
+import Dashboard from './components/Dashboard';
+import FormPeminjaman from './components/FormPeminjaman';
+import RiwayatPeminjaman from './components/RiwayatPeminjaman';
 
 function App() {
   return (
@@ -26,6 +26,9 @@ function App() {
         {/* ======================================================== */}
         {/* RUTE APLIKASI (MENGGUNAKAN DashboardLayout + Sidebar)    */}
         {/* ======================================================== */}
+        
+        {/* Halaman Dashboard Utama */}
+        <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
         
         {/* Halaman Daftar Ruangan (Rooms) */}
         <Route path="/ruangan" element={<DashboardLayout><DaftarRuangan /></DashboardLayout>} />

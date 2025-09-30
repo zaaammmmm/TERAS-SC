@@ -1,6 +1,5 @@
 // src/components/Sidebar.js
 
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
@@ -11,7 +10,15 @@ const Sidebar = () => {
         <div className="sidebar-container">
             <h4 className="sidebar-title">MENU RESERVASI</h4>
             <nav className="sidebar-nav">
-                
+                {/* Link Dashboard */}
+                <Link 
+                    to="/dashboard" 
+                    className={location.pathname === '/dashboard' ? 'active cta-link' : 'cta-link'}
+                >
+                    Dashboard
+                </Link>
+
+                {/* Link ke Daftar Ruangan */}
                 <Link to="/ruangan" className={location.pathname === '/ruangan' ? 'active' : ''}>
                     Rooms (Cek Ketersediaan)
                 </Link>

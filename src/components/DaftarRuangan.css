@@ -36,7 +36,7 @@
 
 /* Konten Wrapper Utama (Dibuat seperti Form Peminjaman) */
 .content-wrapper {
-    max-width: 950px; 
+    max-width: 1100px; 
     width: 90%; 
     margin: 0 auto 50px; /* Tambahkan margin bawah */
     padding: 30px; /* Tambahkan padding agar kotak tidak terlalu mepet */
