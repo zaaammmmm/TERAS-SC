@@ -1,0 +1,122 @@
+/* src/components/FormPeminjaman.css (Kode UTUH dan Diperbaiki) */
+
+.peminjaman-page-container {
+    min-height: 100vh;
+    /* PENTING: Tambahkan padding yang cukup untuk Header solid */
+    padding-top: 100px; 
+    
+    display: flex;
+    justify-content: center; /* Memusatkan konten di tengah */
+    
+    background-color: #F0F8FF;
+}
+
+.peminjaman-content-wrapper {
+    width: 90%; 
+    max-width: 800px; 
+    padding: 30px;
+    margin-bottom: 50px;
+    
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.peminjaman-title {
+    color: #3D5B81; 
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.peminjaman-subtitle {
+    color: #777;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+/* Gaya untuk pesan Error */
+.form-error-message {
+    background-color: #ffeaea;
+    color: #cc0000;
+    padding: 15px;
+    border: 1px solid #cc0000;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* --- FORM LAYOUT --- */
+.peminjaman-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.form-group {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #3D5B81;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
+
+.input-field {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.2s;
+}
+
+.input-field:focus {
+    border-color: #3D5B81;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(61, 91, 129, 0.2); 
+}
+
+.textarea-field {
+    resize: vertical;
+}
+
+/* --- TOMBOL SUBMIT --- */
+.submit-btn {
+    background-color: #3D5B81;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #2e4764;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .peminjaman-content-wrapper {
+        padding: 20px;
+    }
+    .form-group-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

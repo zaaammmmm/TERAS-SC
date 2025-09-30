@@ -1,0 +1,70 @@
+/* src/components/Sidebar.css */
+
+.sidebar-container {
+    width: 250px; 
+    min-width: 250px;
+    height: calc(100vh - 80px); /* 100vh dikurangi tinggi Header */
+    position: sticky;
+    top: 80px; /* Di bawah Header */
+    padding: 30px 20px;
+    background-color: white;
+    border-right: 1px solid #eee;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
+}
+
+.sidebar-title {
+    font-size: 0.9rem;
+    color: #999;
+    letter-spacing: 1px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav a:hover {
+    background-color: #f0f8ff; 
+    color: #3D5B81;
+}
+
+.sidebar-nav a.active {
+    background-color: #3D5B81;
+    color: white;
+    font-weight: 600;
+}
+
+/* Styling Khusus untuk Link CTA/Reservasi Baru */
+.sidebar-nav a.cta-link {
+    background-color: #f7f9fa;
+    border: 1px solid #e0e5ea;
+    color: #3D5B81;
+    font-weight: 600;
+    margin-top: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+.sidebar-nav a.cta-link:hover {
+    background-color: #e6eef6;
+    border-color: #c9d7e7;
+}
+
+.sidebar-nav a.active.cta-link {
+     background-color: #2e4764;
+}

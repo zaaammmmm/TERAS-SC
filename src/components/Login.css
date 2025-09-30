@@ -1,0 +1,79 @@
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh; 
+    box-sizing: border-box;
+    padding-top: 80px; /* Jarak dari header */
+}
+
+.login-card {
+  background-color: white;
+  padding: 50px 60px;
+  border-radius: 15px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px; 
+  text-align: center;
+}
+
+.title {
+  color: #3f72af; 
+  margin-bottom: 5px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field {
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+}
+
+.remember-me-label {
+  display: flex;
+  align-items: center;
+  color: #555;
+}
+
+.login-submit-btn {
+  background-color: #3f72af;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.login-submit-btn:hover {
+  background-color: #2b578c;
+}
+
+/* Lanjutkan styling untuk elemen lain seperti checkbox, forgot password, dll. */
