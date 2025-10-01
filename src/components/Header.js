@@ -46,7 +46,7 @@ const Header = ({ isLandingPage }) => {
   // Jika tidak di LandingPage, semua navigasi internal mengarah ke root '/'
   const AboutTo = isLandingPage ? '#about' : '/'; 
   const TutorialTo = isLandingPage ? '#tutorial' : '/'; 
-  const TentangKamiTo = isLandingPage ? '#tutorial' : '/'; 
+  const TentangKamiTo = isLandingPage ? '#footer' : '/'; 
 
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
