@@ -3,8 +3,8 @@
 import { Link } from 'react-router-dom';
 import AboutImage from '../assets/About.jpg';
 import HeroBgImage from '../assets/background.png';
-import Header from './Header';
-import './LandingPage.css';
+import './Home.css';
+import Header from './utils/Header/Header';
 
 // --- IMPOR Ikon Baru (Pastikan File ada di src/assets) ---
 import IconConfirm from '../assets/icon-confirm.png';
@@ -16,7 +16,7 @@ import IconSelect from '../assets/icon-select.png';
 // === Ikon Sosial Media (pakai react-icons) ===
 import { FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
-const LandingPage = () => {
+const Home = () => {
   return (
     <div className="landing-page-container">
       {/* Panggil Header dengan prop isLandingPage=true */}
@@ -35,7 +35,7 @@ const LandingPage = () => {
               Find the perfect for your study group, club meeting, or event. Our easy-to-use reservation
               system ensures you get the space you need, when you need it.
             </p>
-            <Link to="/dashboard" className="hero-cta-link">
+            <Link to="/dashboardAdmin" className="hero-cta-link">
                <button className="hero-cta">Mulai Reservasi</button>
             </Link>
           </div>
@@ -127,4 +127,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Home;

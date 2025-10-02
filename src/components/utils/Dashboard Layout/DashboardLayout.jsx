@@ -1,8 +1,8 @@
 // src/components/DashboardLayout.js
 
+import HeaderMain from '../Header/HeaderMain';
+import Sidebar from '../sidebar/Sidebar';
 import './DashboardLayout.css';
-import HeaderMain from './HeaderMain';
-import Sidebar from './Sidebar';
 
 const DashboardLayout = ({ children }) => {
     return (

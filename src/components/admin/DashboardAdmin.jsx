@@ -1,5 +1,5 @@
-import './Dashboard.css';
-import RoomUsageChart from './RoomUsageChart';
+import RoomUsageChart from '../utils/chart/RoomUsageChart';
+import './DashboardAdmin.css';
 
 // Sumber tunggal (Source of Truth) untuk data ruangan (A sampai F dan EAST)
 const ruanganData = [
@@ -13,16 +13,13 @@ const ruanganData = [
   { id: 7, name: 'Co-Working Space EAST', usage: 40, location: 'Gedung SC Lantai 3', times: ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00'] }, // Ini akan menjadi bar terpanjang
 ];
 
-const Dashboard = () => {
+const DashboardAdmin = () => {
   return (
+    <h1>Admin Dashboard</h1>,
     <div className="dashboard-container">
-                
-        {/* ================================================= */}
-        {/* PENEMPATAN CHART DASHBOARD BARU DI ATAS LIST      */}
-        {/* ================================================= */}
         <RoomUsageChart data={ruanganData} />
     </div>
   );
 };
 
-export default Dashboard;
+export default DashboardAdmin;

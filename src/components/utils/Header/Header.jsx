@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from 'react'; // Import Hooks
 import { Link, useLocation } from 'react-router-dom';
-import LogoImage from '../assets/logo.png';
+import LogoImage from '../../../assets/logo.png';
+
 import './Header.css';
 
 const Header = ({ isLandingPage }) => {
   // STATE untuk mengontrol kelas CSS (true = header berwarna solid)
   const [isScrolled, setIsScrolled] = useState(false); 
   
-  // ======================================
-  // LOGIKA SCROLL TRANSITION
-  // ======================================
   useEffect(() => {
     // Fungsi untuk mendeteksi posisi scroll
     const handleScroll = () => {

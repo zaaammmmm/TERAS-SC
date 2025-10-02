@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom';
-import LogoImage from '../assets/logo.png'; // Pastikan path ini benar
-import './Header.css'; // Gunakan CSS yang sama untuk styling dasar
-
-// Import ikon profile (Asumsi Anda memiliki ikon di assets, jika tidak, gunakan span atau font awesome)
-// Jika Anda tidak memiliki ikon, ini adalah contoh penampung:
-// import ProfileIcon from '../assets/profile-icon.png'; 
+import LogoImage from '../../../assets/logo.png'; // Pastikan path ini benar
+import './HeaderMain.css'; // Gunakan CSS yang sama untuk styling dasar
 
 const HeaderMain = () => {
   return (

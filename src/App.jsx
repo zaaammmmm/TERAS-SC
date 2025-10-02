@@ -3,15 +3,22 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 // Import Layout dan Halaman Utama
-import DashboardLayout from './components/DashboardLayout';
-import LandingPage from './components/LandingPage';
-import Login from './components/Login';
+import LandingPage from './components/Home';
+import Login from './components/auth/Login';
+import DashboardLayout from './components/utils/Dashboard Layout/DashboardLayout';
+import DashboardLayoutAdmin from './components/utils/Dashboard Layout/DashboardLayoutAdmin';
 
 // Import Halaman Aplikasi (Dashboard)
-import DaftarRuangan from './components/DaftarRuangan';
-import Dashboard from './components/Dashboard';
-import FormPeminjaman from './components/FormPeminjaman';
-import RiwayatPeminjaman from './components/RiwayatPeminjaman';
+import DaftarRuanganAdmin from './components/admin/DaftarRuanganAdmin';
+import DashboardAdmin from './components/admin/DashboardAdmin';
+import DetailRuanganAdmin from './components/admin/DetailRuanganAdmin';
+import RiwayatPeminjamanAdmin from './components/admin/RiwayatPeminjamanAdmin';
+import DaftarRuangan from './components/user/DaftarRuangan';
+import Dashboard from './components/user/Dashboard';
+import DetailRuangan from './components/user/DetailRuangan';
+import FormPeminjaman from './components/user/FormPeminjaman';
+import RiwayatPeminjaman from './components/user/RiwayatPeminjaman';
+
 
 function App() {
   return (
@@ -27,6 +34,7 @@ function App() {
         {/* RUTE APLIKASI (MENGGUNAKAN DashboardLayout + Sidebar)    */}
         {/* ======================================================== */}
         
+        {/* Halaman Routing User */}
         {/* Halaman Dashboard Utama */}
         <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
         
@@ -38,6 +46,25 @@ function App() {
         
         {/* Halaman Riwayat Peminjaman (History) */}
         <Route path="/riwayat" element={<DashboardLayout><RiwayatPeminjaman /></DashboardLayout>} /> 
+
+        {/* Halaman Detail Ruangan (Room Details) */}
+        <Route path="/detailRuangan" element={<DetailRuangan />} />
+
+        {/* ======================================================== */}
+        {/* Halaman Routing Admin */}
+        {/* Halaman Dashboard Utama Admin */}
+        <Route path="/dashboardAdmin" element={<DashboardLayoutAdmin><DashboardAdmin /></DashboardLayoutAdmin>} />
+
+        {/* Halaman Ruangan Admin */}
+        <Route path="/ruanganAdmin" element={<DashboardLayoutAdmin><DaftarRuanganAdmin /></DashboardLayoutAdmin>} />
+
+        {/* Halaman Riwayat Admin */}
+        <Route path="/riwayatAdmin" element={<DashboardLayoutAdmin><RiwayatPeminjamanAdmin /></DashboardLayoutAdmin>} />
+
+        {/* Halaman Detail Ruangan Admin */}
+        <Route path="/detailRuanganAdmin" element={<DetailRuanganAdmin />} />
+
+        {/* ======================================================== */}
         
         {/* Rute Eksternal/Lainnya */}
         <Route path="/forgot-password" element={<div>Halaman Lupa Password</div>} />
@@ -46,6 +73,7 @@ function App() {
         <Route path="/tentangkami" element={<div>Halaman Tentang Kami Eksternal</div>} />
         <Route path="/reservations" element={<div>Halaman Reservations (redirect ke Riwayat)</div>} />
         <Route path="/help" element={<div>Halaman Bantuan</div>} />
+
       </Routes>
     </Router>
   );

@@ -1,4 +1,4 @@
-// src/components/DaftarRuangan.js (Kode UTUH dan Direvisi dengan Chart)
+// src/components/Ruangan.js (Kode UTUH dan Direvisi dengan Chart)
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ const DaftarRuangan = () => {
   
   // Fungsi untuk menangani klik pada tombol Pinjam (jika tanpa memilih jam spesifik)
   const handlePinjamClick = (roomName) => {
-    navigate('/pinjam', { 
+    navigate('/detailRuangan', { 
       state: { 
         room: roomName,
         date: new Date().toISOString().split('T')[0] 
@@ -90,7 +90,7 @@ const DaftarRuangan = () => {
                         onClick={() => handlePinjamClick(ruangan.name)}
                         className="pinjam-button"
                     >
-                        Pinjam
+                        Lihat Selengkapnya
                     </button>
                 </div>
                 <p className="ruangan-location">{ruangan.location}</p>

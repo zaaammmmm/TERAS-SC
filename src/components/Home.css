@@ -1,13 +1,6 @@
 /* src/components/LandingPage.css (Kode UTUH Final) */
 
-.landing-page-container {
-    /* Hanya penampung */
-}
 
-/* * =============================
- * HERO SECTION (ID: BERANDA) 
- * =============================
- */
 .hero-section {
     position: relative;
     height: 100vh; /* UTAMA: Satu layar penuh */
