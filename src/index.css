@@ -1,22 +1,50 @@
-/* src/index.css */
-
+/* file: src/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* --- DIRECTIVES TAILWIND --- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================================
+   CUSTOM COMPONENTS (Mengganti CSS Sidebar & Status Badge)
+   ======================================================== */
+
+@layer components {
+    /* Sidebar Navigation Links */
+    .sidebar-link {
+        /* Default state */
+        @apply flex items-center px-2 py-3 text-gray-700 font-medium text-base rounded-md transition-all duration-200;
+    }
+    .sidebar-link:hover {
+        @apply bg-blue-50 text-[#3D5B81]; /* Menggunakan warna primary */
+    }
+    .sidebar-link.active {
+        @apply bg-[#3D5B81] text-white font-semibold;
+    }
+    .sidebar-link.logout {
+        @apply mt-4 text-red-600; /* Margin-top + warna merah */
+    }
+
+    /* Status Badges for RiwayatPeminjaman */
+    .status-badge {
+        @apply px-2 py-1 rounded-md text-xs font-semibold uppercase;
+    }
+    .status-diterima {
+        @apply bg-green-100 text-green-800;
+    }
+    .status-ditolak {
+        @apply bg-red-100 text-red-800;
+    }
+    .status-menunggu {
+        @apply bg-yellow-100 text-yellow-800;
+    }
+}
 
 /* GLOBAL STYLES */
 body {
-  margin: 0;
   font-family: 'Poppins', sans-serif; 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Background: #F0F8FF (Alice Blue) */
-  background-color: #F0F8FF; 
 }
-
-#root {
-  width: 100%;
-}
-
-/* Memastikan smooth scroll untuk single-page view */
 html {
   scroll-behavior: smooth;
 }

@@ -1,74 +1,87 @@
-// src/components/Login.js (Kode UTUH)
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
+const API_BASE_URL = '';
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // --- Logika Otentikasi (Contoh Sederhana) ---
-    console.log('Login attempt:', email, password);
-    
-    // Simulasikan login berhasil
-    if (email === 'user@student.uin-suka.ac.id' && password === '12345') {
-        alert('Login Berhasil!');
-        navigate('/dashboard'); 
-    } else {
-        alert('Email atau Password salah.');
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        login(data, data.token);
+        const redirectPath = data.role === 'admin' ? '/admin/dashboard' : '/dashboard';
+        navigate(redirectPath, { replace: true });
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    // ---------------------------------------------
   };
 
   return (
-    <div className="login-page-container">
-      
-      {/* Kotak Utama Login */}
-      <div className="login-card">
-        <h1 className="title">TERAS SC</h1>
-        <p className="subtitle">Student Center Reservation System</p>
+    <div className="flex justify-center items-center w-full min-h-screen pt-5 bg-[#F0F8FF]">
+      <div className="bg-white p-12 rounded-xl shadow-2xl shadow-black/15 w-full max-w-md text-center">
+        <h1 className="text-[#3f72af] mb-1 text-3xl font-bold">TERAS SC</h1>
+        <p className="text-gray-600 mt-0 mb-6 text-sm">Student Center Reservation System</p>
 
-        <form className="login-form" onSubmit={handleSubmit}>
-          {/* Input Email */}
-          <input 
-            type="email" 
-            placeholder="Youremail@student.uin-suka.ac.id" 
-            className="input-field"
+        <form className="flex flex-col" onSubmit={handleSubmit}>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+
+          <input
+            type="email"
+            placeholder="Email"
+            className="p-3 mb-4 border border-gray-300 rounded-lg text-base focus:border-[#3f72af] focus:ring-1 focus:ring-[#3f72af] focus:outline-none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-          {/* Input Password */}
-          <input 
-            type="password" 
-            placeholder="Password" 
-            className="input-field"
+          <input
+            type="password"
+            placeholder="Password"
+            className="p-3 mb-4 border border-gray-300 rounded-lg text-base focus:border-[#3f72af] focus:ring-1 focus:ring-[#3f72af] focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
 
-          {/* Opsi Remember Me & Forgot Password */}
-          <div className="options-row">
-            <label className="remember-me-label">
-              <input type="checkbox" className="checkbox-input" />
-              Remember me
-            </label>
-            {/* Perbaikan href untuk menghilangkan peringatan jsx-a11y/anchor-is-valid */}
-            <a href="/forgot-password" className="forgot-password">Forgot Password ?</a>
-          </div>
-
-          {/* Tombol Login */}
-          <button type="submit" className="login-submit-btn">
-            Login
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-[#3f72af] text-white p-3 rounded-lg cursor-pointer text-base font-semibold transition-colors duration-300 hover:bg-[#2b578c] disabled:opacity-50"
+          >
+            {loading ? 'Loading...' : 'Login'}
           </button>
         </form>
+
+        <div className="mt-6 text-sm text-gray-600">
+          <p>Test Accounts:</p>
+          <p>Admin: admin@teras-sc.id / admin123</p>
+          <p>User: user@student.uin-suka.ac.id / 12345</p>
+        </div>
       </div>
     </div>
   );
