@@ -52,7 +52,7 @@ const Login = () => {
           
           <input 
             type="email" 
-            placeholder="Email (Admin: admin@teras-sc.id | User: user@...)" 
+            placeholder="Email" 
             className="p-3 mb-4 border border-gray-300 rounded-lg text-base focus:border-[#3f72af] focus:ring-1 focus:ring-[#3f72af] focus:outline-none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -61,7 +61,7 @@ const Login = () => {
 
           <input 
             type="password" 
-            placeholder="Password (Admin: admin123 | User: 12345)" 
+            placeholder="Password" 
             className="p-3 mb-4 border border-gray-300 rounded-lg text-base focus:border-[#3f72af] focus:ring-1 focus:ring-[#3f72af] focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

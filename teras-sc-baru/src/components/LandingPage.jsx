@@ -100,32 +100,32 @@ const LandingPage = () => {
               {/* .icon-image -> w-12 h-12 object-contain */}
               <img src={IconSearch} alt="Cek Ketersediaan" className="w-12 h-12 object-contain"/> 
             </span>
-            <h4 className="text-xl font-semibold mb-2">Cek Ketersediaan</h4>
-            <p className="text-base text-gray-600">Klik tombol "Cek Ketersediaan & Pesan" untuk melihat jadwal</p>
+            <h4 className="text-xl font-semibold mb-2 text-center">Cek Ketersediaan</h4>
+            <p className="text-base text-gray-600 text-center">Klik tombol "Cek Ketersediaan & Pesan" untuk melihat jadwal</p>
           </div>
           
           <div className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2 max-lg:mb-6">
             <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#3D5B81] mx-auto mb-5">
               <img src={IconSelect} alt="Pilih Ruangan & waktu" className="w-12 h-12 object-contain"/> 
             </span>
-            <h4 className="text-xl font-semibold mb-2">Pilih Ruangan & waktu</h4>
-            <p className="text-base text-gray-600">Pilih ruangan, tanggal, dan waktu yang Anda inginkan.</p>
+            <h4 className="text-xl font-semibold mb-2 text-center">Pilih Ruangan & waktu</h4>
+            <p className="text-base text-gray-600 text-center">Pilih ruangan, tanggal, dan waktu yang Anda inginkan.</p>
           </div>
           
           <div className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2 max-lg:mb-6">
             <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#3D5B81] mx-auto mb-5">
               <img src={IconForm} alt="Isi Detail & Kirim" className="w-12 h-12 object-contain"/> 
             </span>
-            <h4 className="text-xl font-semibold mb-2">Isi Detail & Kirim</h4>
-            <p className="text-base text-gray-600">Lengkapi formulir peminjaman dengan detail kegiatan Anda.</p>
+            <h4 className="text-xl font-semibold mb-2 text-center">Isi Detail & Kirim</h4>
+            <p className="text-base text-gray-600 text-center">Lengkapi formulir peminjaman dengan detail kegiatan Anda.</p>
           </div>
           
           <div className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2">
             <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#3D5B81] mx-auto mb-5">
               <img src={IconConfirm} alt="Tunggu Konfirmasi" className="w-12 h-12 object-contain"/> 
             </span>
-            <h4 className="text-xl font-semibold mb-2">Tunggu Konfirmasi</h4>
-            <p className="text-base text-gray-600">Anda akan menerima konfirmasi saat pesanan Anda disetujui</p>
+            <h4 className="text-xl font-semibold mb-2 text-center">Tunggu Konfirmasi</h4>
+            <p className="text-base text-gray-600 text-center">Anda akan menerima konfirmasi saat pesanan Anda disetujui</p>
           </div>
         </div>
       </section>
@@ -139,14 +139,14 @@ const LandingPage = () => {
         <div className="flex flex-col items-center gap-4">
           <div className="contact-info">
             <h4 className="mb-2 text-lg font-bold text-gray-100">Contact Person</h4>
-            <p className="m-0 text-base opacity-90">Email: terassc@gmail.com</p>
-            <p className="m-0 text-base opacity-90">Telp/WA: +62 812 3456 7890</p>
+            <p className="m-0 text-base opacity-90">Email: 23106050065@gmail.com</p>
+            <p className="m-0 text-base opacity-90">Telp/WA: +62 851 5649 5184</p>
           </div>
           <div className="flex gap-4 text-2xl">
             <a href="https://www.instagram.com/terassc" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#3D5B81]">
               <FaInstagram />
             </a>
-            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#3D5B81]">
+            <a href="https://wa.me/6285156495184" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#3D5B81]">
               <FaWhatsapp />
             </a>
             <a href="https://www.linkedin.com/company/terassc" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#3D5B81]">
