@@ -13,21 +13,7 @@ const Sidebar = () => {
     const handleLogout = async (e) => {
         e.preventDefault();
 
-        try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                await fetch('http://localhost:5000/api/auth/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-
+        // Clear local storage
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         sessionStorage.removeItem('isAuthenticated');

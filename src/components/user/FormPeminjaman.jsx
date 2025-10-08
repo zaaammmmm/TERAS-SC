@@ -105,17 +105,13 @@ const FormPeminjaman = () => {
   };
 
   return (
+   
     // .peminjaman-page-container -> flex justify-center pt-2.5 bg-gray-100
-    <div className="p-6 bg-white rounded-xl shadow-lg shadow-black/5 w-full overflow-x-auto ">
-        
-        {/* .peminjaman-title */}
-        <h1 className="text-[#3D5B81] text-3xl font-bold mb-1">Ajukan Peminjaman Ruangan</h1>
-        
-        {/* .peminjaman-subtitle */}
-        <p className="text-gray-600 mb-8 border-b border-gray-200 pb-4 text-base pt-2">
-          Silakan isi detail kegiatan dan ruangan yang Anda butuhkan. (Maksimal 2 jam, batas akhir 21:00)
-        </p>
-        
+    <div className="w-full space-y-6">
+      <div className={`p-6 rounded-xl bg-white border border-blue-200 shadow-md`}>
+        <h1 className="text-3xl font-bold text-[#3D5B81]">Ajukan Peminjaman Ruangan</h1>
+        <p className="text-gray-600 mt-1 mb-6">Silakan isi detail kegiatan dan ruangan yang Anda butuhkan. (Maksimal 2 jam, batas akhir 21:00) </p>
+ 
         {/* .form-error-message */}
         {error && <div className="bg-red-100 text-red-800 p-4 border border-red-800 rounded-md mb-5 font-medium">{error}</div>}
 
@@ -240,6 +236,7 @@ const FormPeminjaman = () => {
           </button>
         </form>
       </div>
+    </div>
   );
 };
 

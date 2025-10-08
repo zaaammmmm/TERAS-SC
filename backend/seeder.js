@@ -9,78 +9,70 @@ mongoose.connect(process.env.MONGODB_URI);
 
 const importData = async () => {
   try {
-    // Create admin user
-    const admin = new User({
-      name: 'Admin',
-      email: 'admin@teras-sc.id',
-      password: 'admin123',
-      role: 'admin'
-    });
-    await admin.save();
+    // Create admin user if not exists
+    let admin = await User.findOne({ email: 'admin@teras-sc.id' });
+    if (!admin) {
+      admin = new User({
+        name: 'Admin',
+        email: 'admin@teras-sc.id',
+        password: 'admin123',
+        role: 'admin'
+      });
+      await admin.save();
+    }
 
-    // Create user
-    const user = new User({
-      name: 'User',
-      email: 'user@student.uin-suka.ac.id',
-      password: '12345',
-      role: 'user'
-    });
-    await user.save();
+    // Create user if not exists
+    let user = await User.findOne({ email: 'user@student.uin-suka.ac.id' });
+    if (!user) {
+      user = new User({
+        name: 'User',
+        email: 'user@student.uin-suka.ac.id',
+        password: '12345',
+        role: 'user'
+      });
+      await user.save();
+    }
 
-    // Create rooms
-    const rooms = [
-      {
-        name: 'Co-Working Space A',
-        location: 'Gedung SC Lantai 3',
-        capacity: 15,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 15 orang'
-      },
-      {
-        name: 'Co-Working Space B',
-        location: 'Gedung SC Lantai 3',
-        capacity: 8,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 8 orang'
-      },
-      {
-        name: 'Co-Working Space C',
-        location: 'Gedung SC Lantai 3',
-        capacity: 10,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 10 orang'
-      },
-      {
-        name: 'Co-Working Space D',
-        location: 'Gedung SC Lantai 3',
-        capacity: 12,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 12 orang'
-      },
-      {
-        name: 'Co-Working Space E',
-        location: 'Gedung SC Lantai 3',
-        capacity: 6,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 6 orang'
-      },
-      {
-        name: 'Co-Working Space F',
-        location: 'Gedung SC Lantai 3',
-        capacity: 18,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 18 orang'
-      },
-      {
-        name: 'Co-Working Space EAST',
-        location: 'Gedung SC Lantai 3',
-        capacity: 20,
-        image: 'https://placehold.co/101x98',
-        description: 'Ruangan co-working untuk 20 orang'
+    // Create user2 if not exists
+    let user2 = await User.findOne({ email: 'user2@student.uin-suka.ac.id' });
+    if (!user2) {
+      user2 = new User({
+        name: 'User2',
+        email: 'user2@student.uin-suka.ac.id',
+        password: '12345',
+        role: 'user'
+      });
+      await user2.save();
+    }
+
+    // Create user3 if not exists
+    let user3 = await User.findOne({ email: 'user3@student.uin-suka.ac.id' });
+    if (!user3) {
+      user3 = new User({
+        name: 'User3',
+        email: 'user3@student.uin-suka.ac.id',
+        password: '12345',
+        role: 'user'
+      });
+      await user3.save();
+    }
+
+    // Create rooms if not exist
+    const roomNames = ['Co-Working Space A', 'Co-Working Space B', 'Co-Working Space C', 'Co-Working Space D', 'Co-Working Space E', 'Co-Working Space F', 'Co-Working Space EAST'];
+    for (const name of roomNames) {
+      const existingRoom = await Room.findOne({ name });
+      if (!existingRoom) {
+        const roomData = {
+          name,
+          location: 'Gedung SC Lantai 3',
+          capacity: name === 'Co-Working Space A' ? 15 : name === 'Co-Working Space B' ? 8 : name === 'Co-Working Space C' ? 10 : name === 'Co-Working Space D' ? 12 : name === 'Co-Working Space E' ? 6 : name === 'Co-Working Space F' ? 18 : 20,
+          image: 'https://placehold.co/101x98',
+          description: `Ruangan co-working untuk ${name === 'Co-Working Space A' ? 15 : name === 'Co-Working Space B' ? 8 : name === 'Co-Working Space C' ? 10 : name === 'Co-Working Space D' ? 12 : name === 'Co-Working Space E' ? 6 : name === 'Co-Working Space F' ? 18 : 20} orang`
+        };
+        const room = new Room(roomData);
+        await room.save();
       }
-    ];
-
-    await Room.insertMany(rooms);
+    }
 
     console.log('Data Imported!');
     process.exit();

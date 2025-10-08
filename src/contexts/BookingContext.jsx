@@ -23,7 +23,7 @@ export const useBookings = () => {
 };
 
 export const BookingProvider = ({ children }) => {
-    const { user } = useAuth(); 
+    const { user, token } = useAuth();
     
     const [bookings, setBookings] = useState([]); 
     const [isLoaded, setIsLoaded] = useState(false);
@@ -31,47 +31,47 @@ export const BookingProvider = ({ children }) => {
 
     const loadAllBookings = useCallback(async () => {
         try {
-            if (!user) {
-                setBookings([]); 
+            if (!user || !token) {
+                setBookings([]);
                 return;
             }
 
             let fetchedBookings;
-            
+
             if (user.role === 'admin') {
                 // Admin: Menggunakan endpoint penuh (untuk CRUD dan dashboard)
-                fetchedBookings = await apiGetAllBookings(); 
+                fetchedBookings = await apiGetAllBookings(token);
             } else {
                 // User Biasa: Menggunakan endpoint global yang baru
-                fetchedBookings = await apiGetGlobalBookings(); 
+                fetchedBookings = await apiGetGlobalBookings(token);
             }
-            
+
             setBookings(fetchedBookings);
         } catch (err) {
             console.error('Error getting all bookings:', err);
             setError(err.message);
         }
-    }, [user]);
+    }, [user, token]);
 
     // Muat semua booking saat user login atau rolnya berubah
     useEffect(() => {
-        setIsLoaded(false); 
+        setIsLoaded(false);
         setError(null);
 
-        if (user) {
+        if (user && token) {
             loadAllBookings();
         }
-        
-        const timer = setTimeout(() => setIsLoaded(true), 100); 
+
+        const timer = setTimeout(() => setIsLoaded(true), 100);
         return () => clearTimeout(timer);
-    }, [user, loadAllBookings]);
+    }, [user, token, loadAllBookings]);
 
 
     // Dipakai oleh FormPeminjaman.jsx
     const addBooking = async (bookingData) => {
         try {
-            const newBooking = await apiCreateBooking(bookingData);
-            loadAllBookings(); 
+            const newBooking = await apiCreateBooking(bookingData, token);
+            loadAllBookings();
             return newBooking;
         } catch (err) {
             console.error('Error adding booking:', err);
@@ -82,7 +82,7 @@ export const BookingProvider = ({ children }) => {
     // Dipakai oleh RiwayatPeminjaman.jsx dan Dashboard.jsx (TETAP ADA)
     const getUserBookings = async () => {
         try {
-            const userBookings = await apiGetUserBookings();
+            const userBookings = await apiGetUserBookings(token);
             return userBookings;
         } catch (err) {
             console.error('Error getting user bookings:', err);
@@ -93,8 +93,8 @@ export const BookingProvider = ({ children }) => {
     // Dipakai oleh Admin
     const updateBookingStatus = async (id, status) => {
         try {
-            const updatedBooking = await apiUpdateBookingStatus(id, status);
-            loadAllBookings(); 
+            const updatedBooking = await apiUpdateBookingStatus(id, status, token);
+            loadAllBookings();
             return updatedBooking;
         } catch (err) {
             console.error('Error updating booking status:', err);
@@ -105,7 +105,7 @@ export const BookingProvider = ({ children }) => {
     // Dipakai oleh Admin (untuk mendapatkan statistik)
     const getBookingStats = async () => {
         try {
-            const stats = await apiGetBookingStats();
+            const stats = await apiGetBookingStats(token);
             return stats;
         } catch (err) {
             console.error('Error getting booking stats:', err);

@@ -52,7 +52,7 @@ const DashboardAdmin = () => {
                     Dashboard Administrator
                 </h1>
                 <p className="text-gray-500 mt-1">
-                    Ikhtisar peminjaman ruangan Student Center.
+                    Dashboard peminjaman ruangan Student Center.
                 </p>
             </div>
 

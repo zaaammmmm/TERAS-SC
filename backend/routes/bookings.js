@@ -114,7 +114,7 @@ router.delete('/:id', protect, async (req, res) => {
       return;
     }
 
-    await booking.remove();
+    await Booking.findByIdAndDelete(req.params.id);
     res.json({ message: 'Booking removed' });
   } else {
     res.status(404).json({ message: 'Booking not found' });

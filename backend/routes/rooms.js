@@ -71,7 +71,7 @@ router.delete('/:id', protect, admin, async (req, res) => {
   const room = await Room.findById(req.params.id);
 
   if (room) {
-    await room.remove();
+    await Room.findByIdAndDelete(req.params.id);
     res.json({ message: 'Room removed' });
   } else {
     res.status(404).json({ message: 'Room not found' });

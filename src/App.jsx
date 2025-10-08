@@ -1,6 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 // Import Layout dan Component Utama
+import './components/admin/DetailRuanganAdmin.css';
+import DetailRuanganAdmin from './components/admin/DetailRuanganAdmin.jsx';
 import AdminRouteGuard from './components/guard/AdminRouteGuard';
 import UserRouteGuard from './components/guard/UserRouteGuard';
 import DashboardLayout from './components/utils/DashboardLayout';
@@ -61,6 +63,11 @@ function App() {
           <Route
               path="/admin/detail"
               element={<AdminRouteGuard><DashboardLayout><DetailRooms /></DashboardLayout></AdminRouteGuard>}
+          />
+
+          <Route
+              path="/detailRuanganAdmin"
+              element={<AdminRouteGuard><DashboardLayout><DetailRuanganAdmin /></DashboardLayout></AdminRouteGuard>}
           />
 
           <Route

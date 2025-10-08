@@ -2,8 +2,7 @@
 const API_BASE_URL = 'http://localhost:5000'; // Adjust if needed
 
 // Helper function to get auth headers
-const getAuthHeaders = () => {
-  const token = localStorage.getItem('token');
+const getAuthHeaders = (token) => {
   return {
     'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
@@ -11,32 +10,39 @@ const getAuthHeaders = () => {
 };
 
 // Create a new booking
-export const createBooking = async (bookingData) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/bookings`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(bookingData),
-    });
+export const createBooking = async (bookingData, token) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/bookings`, {
+      method: 'POST',
+      headers: getAuthHeaders(token),
+      body: JSON.stringify({
+        room: bookingData.room,
+        date: bookingData.date,
+        startTime: bookingData.startTime,
+        endTime: bookingData.endTime,
+        purpose: bookingData.purpose,
+        participants: bookingData.participants,
+      }),
+    });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to create booking');
-    }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to create booking');
+    }
 
-    return await response.json();
-  } catch (error) {
-    console.error('Error creating booking:', error);
-    throw error;
-  }
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating booking:', error);
+    throw error;
+  }
 };
 
 // Get user's bookings (TETAP ADA)
-export const getUserBookings = async () => {
+export const getUserBookings = async (token) => {
   try {
     const response = await fetch(`${API_BASE_URL}/bookings/mybookings`, {
       method: 'GET',
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(token),
     });
 
     if (!response.ok) {
@@ -52,51 +58,51 @@ export const getUserBookings = async () => {
 };
 
 // Get all bookings (Authenticated users - for general viewing)
-export const getGlobalBookings = async () => { // Perbaikan: Menambah 'export'
-    try {
-        const response = await fetch(`${API_BASE_URL}/bookings/global`, {
-            method: 'GET',
-            headers: getAuthHeaders(),
-        });
+export const getGlobalBookings = async (token) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/bookings/global`, {
+            method: 'GET',
+            headers: getAuthHeaders(token),
+        });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to fetch global bookings');
-        }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to fetch global bookings');
+        }
 
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching global bookings:', error);
-        throw error;
-    }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching global bookings:', error);
+        throw error;
+    }
 };
 
 // Get all bookings (admin only)
-export const getAllBookings = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/bookings`, {
-      method: 'GET',
-      headers: getAuthHeaders(),
-    });
+export const getAllBookings = async (token) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/bookings`, {
+      method: 'GET',
+      headers: getAuthHeaders(token),
+    });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to fetch all bookings');
-    }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to fetch all bookings');
+    }
 
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching all bookings:', error);
-    throw error;
-  }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching all bookings:', error);
+    throw error;
+  }
 };
 
 // Get booking stats (admin only)
-export const getBookingStats = async () => {
+export const getBookingStats = async (token) => {
   try {
     const response = await fetch(`${API_BASE_URL}/bookings/stats`, {
       method: 'GET',
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(token),
     });
 
     if (!response.ok) {
@@ -112,11 +118,11 @@ export const getBookingStats = async () => {
 };
 
 // Update booking status (admin only)
-export const updateBookingStatus = async (bookingId, status) => {
+export const updateBookingStatus = async (bookingId, status, token) => {
   try {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
       method: 'PUT',
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(token),
       body: JSON.stringify({ status }),
     });
 
@@ -133,11 +139,11 @@ export const updateBookingStatus = async (bookingId, status) => {
 };
 
 // Delete a booking
-export const deleteBooking = async (bookingId) => {
+export const deleteBooking = async (bookingId, token) => {
   try {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
       method: 'DELETE',
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(token),
     });
 
     if (!response.ok) {

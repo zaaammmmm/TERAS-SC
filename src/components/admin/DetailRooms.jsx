@@ -54,7 +54,7 @@ const DetailRooms = () => {
                 .filter(
                     (booking) =>
                         booking.room?.name === room.name &&
-                        booking.date === formattedDateForComparison
+                        booking.date.split('T')[0] === formattedDateForComparison
                 )
                 .sort((a, b) => a.startTime.localeCompare(b.startTime));
             

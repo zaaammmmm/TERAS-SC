@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const API_BASE_URL = '';
+const API_BASE_URL = 'http://localhost:5000';
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -25,17 +25,17 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        login(data, data.token);
-        const redirectPath = data.role === 'admin' ? '/admin/dashboard' : '/dashboard';
-        navigate(redirectPath, { replace: true });
-      } else {
-        setError(data.message || 'Login failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
       }
+
+      const data = await response.json();
+      login(data, data.token);
+      const redirectPath = data.role === 'admin' ? '/admin/dashboard' : '/dashboard';
+      navigate(redirectPath, { replace: true });
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError(err.message || 'Network error. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -81,6 +81,8 @@ const Login = () => {
           <p>Test Accounts:</p>
           <p>Admin: admin@teras-sc.id / admin123</p>
           <p>User: user@student.uin-suka.ac.id / 12345</p>
+          <p>User2: user2@student.uin-suka.ac.id / 12345</p>
+          <p>User3: user3@student.uin-suka.ac.id / 12345</p>
         </div>
       </div>
     </div>

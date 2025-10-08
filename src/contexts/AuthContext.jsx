@@ -3,10 +3,10 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const defaultUser = { name: 'User', email: 'user@student.uin-suka.ac.id', role: 'user' };
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : defaultUser;
+    const token = localStorage.getItem('token');
+    return storedUser && token ? JSON.parse(storedUser) : null;
   });
   const [token, setToken] = useState(() => localStorage.getItem('token') || null);
 

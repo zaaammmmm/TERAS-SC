@@ -50,7 +50,7 @@ const DetailRoomUser = () => {
                 (booking) =>
                     // Filter Logika: Ruangan dan Tanggal harus cocok. Tidak ada filter status.
                     booking.room?.name === room.name &&
-                    booking.date === formattedDateForComparison
+                    booking.date.split('T')[0] === formattedDateForComparison
             );
             
             filtered.sort((a, b) => a.startTime.localeCompare(b.startTime));
@@ -103,7 +103,7 @@ const DetailRoomUser = () => {
                     <h2 className="text-2xl font-bold text-blue-700 mb-2">
                         Jadwal Peminjaman untuk {displayDate}
                     </h2>
-                    <p className="text-sm text-gray-700">Melihat semua peminjaman (Menunggu, Disetujui, Ditolak) untuk ruangan ini.</p>
+                    <p className="text-sm text-gray-700">Melihat semua peminjaman (Disetujui, Ditolak) untuk ruangan ini.</p>
                 </div>
             </div>
 

@@ -18,11 +18,6 @@ const SidebarAdmin = () => {
                     Dashboard
                 </Link>
 
-                {/* Link ke Daftar Ruangan */}
-                <Link to="/ruanganAdmin" className={location.pathname === '/ruangan' ? 'active' : ''}>
-                    Rooms
-                </Link>
-
                 {/* Link ke Riwayat Peminjaman */}
                 <Link to="/riwayatAdmin" className={location.pathname === '/riwayatAdmin' ? 'active' : ''}>
                     Riwayat Peminjaman

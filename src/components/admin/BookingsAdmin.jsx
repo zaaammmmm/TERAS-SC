@@ -4,10 +4,25 @@ import { useBookings } from '../../contexts/BookingContext'; // PENTING
 
 const BookingsAdmin = () => {
   // Ambil bookings (state global), updateBookingStatus, dan isLoaded dari context
-  const { bookings: globalBookings, updateBookingStatus, isLoaded, error: contextError } = useBookings(); 
-  
-  const [loading, setLoading] = useState(true); 
+  const { bookings: globalBookings, updateBookingStatus, isLoaded, error: contextError } = useBookings();
+
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [roomFilter, setRoomFilter] = useState('All');
+  const [dateFilter, setDateFilter] = useState('');
+
+  const goToPreviousDay = () => {
+    const current = dateFilter ? new Date(dateFilter) : new Date();
+    current.setDate(current.getDate() - 1);
+    setDateFilter(current.toISOString().split('T')[0]);
+  };
+
+  const goToNextDay = () => {
+    const current = dateFilter ? new Date(dateFilter) : new Date();
+    current.setDate(current.getDate() + 1);
+    setDateFilter(current.toISOString().split('T')[0]);
+  };
 
   useEffect(() => {
     // Ketika globalBookings (dari Context) berubah, update status loading/error
@@ -22,6 +37,14 @@ const BookingsAdmin = () => {
 
   // Urutkan bookings global di sini untuk render
   const sortedBookings = [...globalBookings].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  // Filter bookings berdasarkan status, ruangan, dan tanggal
+  const filteredBookings = sortedBookings.filter(booking => {
+    const matchesStatus = statusFilter === 'All' || booking.status === statusFilter;
+    const matchesRoom = roomFilter === 'All' || booking.room.name === roomFilter;
+    const matchesDate = dateFilter === '' || new Date(booking.date).toDateString() === new Date(dateFilter).toDateString();
+    return matchesStatus && matchesRoom && matchesDate;
+  });
 
 
   const updateStatus = async (id, status) => {
@@ -67,25 +90,86 @@ const BookingsAdmin = () => {
 
   return (
     <div className="w-full space-y-6">
-      <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-        <h1 className="text-3xl font-bold text-[#3D5B81] mb-6">Kelola Peminjaman</h1>
 
-        {sortedBookings.length === 0 ? (
+      {/* ... (header) */}
+      <div className={`p-6 rounded-xl bg-white border border-blue-200 shadow-md`}>
+            <h1 className="text-3xl font-bold text-[#3D5B81]">Kelola Peminjaman</h1>
+            <p className="text-gray-600 mt-1">Kelola Peminjaman data booking user </p>
+      </div>
+
+      <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex gap-4 flex-wrap">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200"
+            >
+              <option value="All">Semua Status</option>
+              <option value="Menunggu">Menunggu</option>
+              <option value="Disetujui">Disetujui</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
+            <select
+              value={roomFilter}
+              onChange={(e) => setRoomFilter(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200"
+            >
+              <option value="All">Semua Ruangan</option>
+              <option value="Co-Working Space A">Co-Working Space A</option>
+              <option value="Co-Working Space B">Co-Working Space B</option>
+              <option value="Co-Working Space C">Co-Working Space C</option>
+              <option value="Co-Working Space D">Co-Working Space D</option>
+              <option value="Co-Working Space E">Co-Working Space E</option>
+              <option value="Co-Working Space F">Co-Working Space F</option>
+              <option value="Co-Working Space EAST">Co-Working Space EAST</option>
+            </select>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={goToPreviousDay}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                {'<'}
+              </button>
+              <input
+                type="date"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200"
+              />
+              <button
+                onClick={goToNextDay}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                {'>'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {filteredBookings.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            Belum ada peminjaman yang tercatat.
+            {sortedBookings.length === 0 ? 'Belum ada peminjaman yang tercatat.' : 'Tidak ada peminjaman yang sesuai dengan filter.'}
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse">
               <thead>
-                <tr className="bg-gray-50">
-                  {/* ... (headers) */}
+                <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
+                  <th className="p-3 text-left">Pengguna</th>
+                  <th className="p-3 text-left">Ruangan</th>
+                  <th className="p-3 text-left">Tanggal</th>
+                  <th className="p-3 text-left">Waktu</th>
+                  <th className="p-3 text-left">Tujuan</th>
+                  <th className="p-3 text-left">Peserta</th>
+                  <th className="p-3 text-center">Status</th>
+                  <th className="p-3 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                {sortedBookings.map((booking) => (
+                {filteredBookings.map((booking) => (
                   <tr key={booking._id} className="border-b hover:bg-gray-50">
-                    <td className="p-3">{booking.user.name} ({booking.user.email})</td>
+                    <td className="p-3">{booking.user.name}</td>
                     <td className="p-3 font-medium text-[#3D5B81]">{booking.room.name}</td>
                     <td className="p-3">{new Date(booking.date).toLocaleDateString('id-ID')}</td>
                     <td className="p-3">{`${booking.startTime} - ${booking.endTime}`}</td>
@@ -101,13 +185,13 @@ const BookingsAdmin = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => updateStatus(booking._id, 'Disetujui')}
-                            className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                            className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 focus:bg-green-600 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-300"
                           >
                             Setujui
                           </button>
                           <button
                             onClick={() => updateStatus(booking._id, 'Ditolak')}
-                            className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+                            className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600 focus:bg-red-600 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-300"
                           >
                             Tolak
                           </button>

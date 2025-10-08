@@ -142,7 +142,7 @@
 }
 
 .time-slot-tag {
-    background-color: #e6eef6; 
+    background-color: #e6eef6;
     border: 1px solid #c9d7e7;
     color: #3D5B81;
     padding: 6px 14px; /* Padding sedikit lebih besar */
@@ -153,9 +153,15 @@
     transition: background-color 0.2s;
 }
 
-.time-slot-tag:hover {
+.time-slot-tag.available:hover {
     background-color: #3D5B81;
     color: white;
+}
+
+.time-slot-tag.booked {
+    background-color: #64748b; /* slate-600 */
+    color: white;
+    cursor: not-allowed;
 }
 
 .riwayat-card {

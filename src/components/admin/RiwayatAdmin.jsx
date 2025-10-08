@@ -80,7 +80,13 @@ const RiwayatAdmin = () => {
                     
                     <thead>
                         <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
-                            {/* ... (headers) */}
+                            <th className="p-3 text-center">ID</th>
+                            <th className="p-3 text-left">Ruangan</th>
+                            <th className="p-3 text-left">Tanggal</th>
+                            <th className="p-3 text-left">Waktu</th>
+                            <th className="p-3 text-left">Peminjam</th>
+                            <th className="p-3 text-left">Keperluan</th>
+                            <th className="p-3 text-center">Status</th>
                         </tr>
                     </thead>
 

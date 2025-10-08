@@ -1,6 +1,6 @@
 // file: src/components/SidebarAdmin.jsx (KODE UTUH - KHUSUS ADMIN)
 
-import { FaClipboardList, FaHistory, FaLayerGroup, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
+import { FaClipboardList, FaHistory, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const SidebarAdmin = () => {
@@ -46,15 +46,6 @@ const SidebarAdmin = () => {
                 >
                     <FaUserShield className="w-5 h-5" />
                     Dashboard Admin
-                </Link>
-                
-                {/* 2. Rooms / Kelola Data Ruangan */}
-                <Link
-                    to="/admin/rooms"
-                    className={getLinkClass('/admin/rooms')}
-                >
-                    <FaLayerGroup className="w-5 h-5" />
-                    Rooms (Kelola Data)
                 </Link>
 
                 {/* 3. Kelola Peminjaman */}

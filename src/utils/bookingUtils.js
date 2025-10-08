@@ -8,6 +8,9 @@ import {
   updateBookingStatus as apiUpdateBookingStatus,
 } from '../api/bookings';
 
+// Helper to get token
+const getToken = () => localStorage.getItem('token');
+
 // Custom hook for managing bookings state
 export const useBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -37,7 +40,8 @@ export const useBookings = () => {
   // Add booking via API
   const addBooking = async (bookingData) => {
     try {
-      const newBooking = await apiCreateBooking(bookingData);
+      const token = getToken();
+      const newBooking = await apiCreateBooking(bookingData, token);
       // Optionally refresh bookings list
       return newBooking;
     } catch (error) {
@@ -49,7 +53,8 @@ export const useBookings = () => {
   // Update booking status via API
   const updateBookingStatus = async (id, status) => {
     try {
-      await apiUpdateBookingStatus(id, status);
+      const token = getToken();
+      await apiUpdateBookingStatus(id, status, token);
       // Refresh bookings if needed
     } catch (error) {
       console.error('Error updating booking status:', error);
@@ -60,7 +65,8 @@ export const useBookings = () => {
   // Get user bookings via API
   const getUserBookings = async () => {
     try {
-      const userBookings = await apiGetUserBookings();
+      const token = getToken();
+      const userBookings = await apiGetUserBookings(token);
       return userBookings;
     } catch (error) {
       console.error('Error getting user bookings:', error);
@@ -71,7 +77,8 @@ export const useBookings = () => {
   // Get all bookings via API (admin)
   const getAllBookings = async () => {
     try {
-      const allBookings = await apiGetAllBookings();
+      const token = getToken();
+      const allBookings = await apiGetAllBookings(token);
       setBookings(allBookings);
       return allBookings;
     } catch (error) {
@@ -83,7 +90,8 @@ export const useBookings = () => {
   // Get booking stats via API (admin)
   const getBookingStats = async () => {
     try {
-      const stats = await apiGetBookingStats();
+      const token = getToken();
+      const stats = await apiGetBookingStats(token);
       return stats;
     } catch (error) {
       console.error('Error getting booking stats:', error);
