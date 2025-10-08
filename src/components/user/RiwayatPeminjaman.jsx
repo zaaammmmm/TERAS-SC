@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useBookings } from '../../contexts/BookingContext';
 
@@ -8,6 +9,17 @@ const RiwayatPeminjaman = () => {
   const [riwayatPeminjaman, setRiwayatPeminjaman] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sortColumn, setSortColumn] = useState('date');
+  const [sortDirection, setSortDirection] = useState('desc');
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -25,7 +37,7 @@ const RiwayatPeminjaman = () => {
         setLoading(true);
         setError(null);
         const bookings = await getUserBookings();
-        setRiwayatPeminjaman(bookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        setRiwayatPeminjaman(bookings);
       } catch (error) {
         console.error('Error fetching user bookings:', error);
         setError('Gagal memuat riwayat peminjaman');
@@ -36,6 +48,43 @@ const RiwayatPeminjaman = () => {
 
     fetchUserBookings();
   }, [user, getUserBookings]);
+
+  useEffect(() => {
+    setRiwayatPeminjaman(prev => [...prev].sort((a, b) => {
+      let aValue, bValue;
+      switch (sortColumn) {
+        case 'room':
+          aValue = a.room.name.toLowerCase();
+          bValue = b.room.name.toLowerCase();
+          break;
+        case 'date':
+          aValue = new Date(a.date);
+          bValue = new Date(b.date);
+          break;
+        case 'time':
+          aValue = a.startTime;
+          bValue = b.startTime;
+          break;
+        case 'participants':
+          aValue = parseInt(a.participants) || 0;
+          bValue = parseInt(b.participants) || 0;
+          break;
+        case 'purpose':
+          aValue = a.purpose.toLowerCase();
+          bValue = b.purpose.toLowerCase();
+          break;
+        case 'status':
+          aValue = a.status;
+          bValue = b.status;
+          break;
+        default:
+          return 0;
+      }
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    }));
+  }, [sortColumn, sortDirection]);
 
   if (loading) {
     return (
@@ -71,11 +120,30 @@ const RiwayatPeminjaman = () => {
       <table className="min-w-full border-collapse m-0 bg-white text-gray-700">
         <thead>
           <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
-            <th className=" p-3 text-left border-b-2 border-gray-200">Ruangan</th>
-            <th className=" p-3 text-left border-b-2 border-gray-200">Tanggal</th>
-            <th className=" p-3 text-left border-b-2 border-gray-200">Waktu</th>
-            <th className=" p-3 text-left border-b-2 border-gray-200">Peminjam</th>
-            <th className=" p-3 text-left border-b-2 border-gray-200">Status</th>
+            <th className=" p-3 text-left border-b-2 border-gray-200 cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('room')}>
+              Ruangan
+              {sortColumn === 'room' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+            </th>
+            <th className=" p-3 text-left border-b-2 border-gray-200 cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('date')}>
+              Tanggal
+              {sortColumn === 'date' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+            </th>
+            <th className=" p-3 text-left border-b-2 border-gray-200 cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('time')}>
+              Waktu
+              {sortColumn === 'time' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+            </th>
+            <th className=" p-3 text-left border-b-2 border-gray-200 cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('participants')}>
+              Jumlah
+              {sortColumn === 'participants' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+            </th>
+            <th className=" p-3 text-left border-b-2 border-gray-200 cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('purpose')}>
+              Tujuan Kegiatan
+              {sortColumn === 'purpose' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+            </th>
+            <th className=" p-3 text-left border-b-2 border-gray-200 cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('status')}>
+              Status
+              {sortColumn === 'status' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -84,7 +152,8 @@ const RiwayatPeminjaman = () => {
               <td className="p-3 text-sm font-medium text-[#3D5B81]">{peminjaman.room.name}</td>
               <td className="p-3 text-sm">{new Date(peminjaman.date).toLocaleDateString('id-ID')}</td>
               <td className="p-3 text-sm">{`${peminjaman.startTime} - ${peminjaman.endTime}`}</td>
-              <td className="p-3 text-sm">{peminjaman.user.name}</td>
+              <td className="p-3 text-sm">{peminjaman.participants}</td>
+              <td className="p-3 text-sm">{peminjaman.purpose}</td>
               <td className="p-3 text-sm">
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusClass(peminjaman.status)}`}>
                   {peminjaman.status}

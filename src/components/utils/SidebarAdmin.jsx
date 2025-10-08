@@ -31,52 +31,65 @@ const SidebarAdmin = () => {
     };
 
     return (
-        <div className="w-[250px] min-w-[250px] h-[calc(100vh-80px)] sticky top-[80px] p-5 bg-white border-r border-gray-200 shadow-lg shadow-black/5 flex flex-col z-10">
-            
-            <h4 className="px-2 text-xs text-gray-500 tracking-wider font-medium mb-5 uppercase">
-              Menu Administrator
-            </h4>
-            
-            <nav className="flex flex-col gap-2 flex-grow">
-                
-                {/* 1. Dashboard Admin (Link utama Admin) */}
-                <Link 
-                    to="/admin/dashboard" 
-                    className={getLinkClass('/admin/dashboard')}
-                >
-                    <FaUserShield className="w-5 h-5" />
-                    Dashboard Admin
-                </Link>
+        <>
+            {/* Overlay for mobile */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+                    onClick={onClose}
+                ></div>
+            )}
 
-                {/* 3. Kelola Peminjaman */}
-                <Link
-                    to="/admin/bookings"
-                    className={getLinkClass('/admin/bookings')}
-                >
-                    <FaClipboardList className="w-5 h-5" />
-                    Kelola Peminjaman
-                </Link>
+            <div className={`w-[250px] min-w-[250px] h-[calc(100vh-80px)] sticky top-[80px] p-5 bg-white border-r border-gray-200 shadow-lg shadow-black/5 flex flex-col z-10 transition-transform duration-300 md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:z-10 fixed left-0 top-[80px] md:top-[80px]`}>
 
-                {/* 4. Riwayat Peminjaman (Admin View) */}
-                <Link
-                    to="/admin/riwayat"
-                    className={getLinkClass('/admin/riwayat')}
-                >
-                    <FaHistory className="w-5 h-5" />
-                    Riwayat Peminjaman
-                </Link>
+                <h4 className="px-2 text-xs text-gray-500 tracking-wider font-medium mb-5 uppercase">
+                  Menu Administrator
+                </h4>
 
-                {/* 4. Logout */}
-                <a 
-                    href="#" 
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 p-2 rounded-lg text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700 mt-auto"
-                >
-                    <FaSignOutAlt className="w-5 h-5" />
-                    Log out
-                </a>
-            </nav>
-        </div>
+                <nav className="flex flex-col gap-2 flex-grow">
+
+                    {/* 1. Dashboard Admin (Link utama Admin) */}
+                    <Link
+                        to="/admin/dashboard"
+                        className={getLinkClass('/admin/dashboard')}
+                        onClick={onClose}
+                    >
+                        <FaUserShield className="w-5 h-5" />
+                        Dashboard Admin
+                    </Link>
+
+                    {/* 3. Kelola Peminjaman */}
+                    <Link
+                        to="/admin/bookings"
+                        className={getLinkClass('/admin/bookings')}
+                        onClick={onClose}
+                    >
+                        <FaClipboardList className="w-5 h-5" />
+                        Kelola Peminjaman
+                    </Link>
+
+                    {/* 4. Riwayat Peminjaman (Admin View) */}
+                    <Link
+                        to="/admin/riwayat"
+                        className={getLinkClass('/admin/riwayat')}
+                        onClick={onClose}
+                    >
+                        <FaHistory className="w-5 h-5" />
+                        Riwayat Peminjaman
+                    </Link>
+
+                    {/* 4. Logout */}
+                    <a
+                        href="#"
+                        onClick={(e) => { handleLogout(e); onClose(); }}
+                        className="flex items-center gap-3 p-2 rounded-lg text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700 mt-auto"
+                    >
+                        <FaSignOutAlt className="w-5 h-5" />
+                        Log out
+                    </a>
+                </nav>
+            </div>
+        </>
     );
 };
 

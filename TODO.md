@@ -1,21 +1,27 @@
-# TODO: Implementasi Parameter Token di Booking API
+# TODO: Make All Pages Responsive for Mobile
 
-## Tujuan
-Memastikan token selalu disertakan dalam panggilan API untuk menghindari masalah refresh setelah login dan memungkinkan user submit peminjaman.
+## Layout Changes
+- [x] Update DashboardLayout.jsx: Add sidebar toggle state and pass to headers and sidebars
+- [x] Update HeaderMain.jsx: Add hamburger menu for mobile, responsive padding
+- [x] Update HeaderAdmin.jsx: Add hamburger menu for mobile, responsive padding
+- [x] Update Sidebar.jsx: Make responsive, accept isOpen prop, hide/show on mobile
+- [x] Update SidebarAdmin.jsx: Make responsive, accept isOpen prop, hide/show on mobile
 
-## Perubahan yang Dilakukan
-- [x] Modifikasi `getAuthHeaders()` di `src/api/bookings.js` untuk menerima token sebagai parameter.
-- [x] Update semua fungsi API di `src/api/bookings.js` untuk menerima dan menggunakan token.
-- [x] Update `src/contexts/BookingContext.jsx` untuk meneruskan token ke semua panggilan API.
-- [x] Update `src/utils/bookingUtils.js` untuk mendapatkan token dari localStorage dan meneruskannya ke API (untuk komponen yang menggunakan utility ini).
+## Page Components
+- [ ] LandingPage.jsx: Improve responsive text sizes and layouts
+- [ ] Login.jsx: Make responsive
+- [ ] DashboardAdmin.jsx: Ensure chart is responsive
+- [ ] BookingsAdmin.jsx: Make responsive
+- [ ] RiwayatAdmin.jsx: Make responsive
+- [ ] RoomsAdmin.jsx: Make responsive
+- [ ] DetailRooms.jsx: Make responsive
+- [ ] DetailRuanganAdmin.jsx: Make responsive
+- [ ] Dashboard.jsx: Make responsive
+- [ ] DaftarRuangan.jsx: Make responsive
+- [ ] DetailRoomUser.jsx: Make responsive
+- [ ] FormPeminjaman.jsx: Make responsive
+- [ ] RiwayatPeminjaman.jsx: Make responsive
+- [ ] Help.jsx: Make responsive
 
 ## Testing
-- [ ] Test login admin: Akses data admin tanpa perlu refresh.
-- [ ] Test submit peminjaman user: Pastikan berhasil tanpa error autentikasi.
-- [ ] Test fetch riwayat peminjaman: Pastikan data dimuat dengan benar.
-
-## Catatan
-Utility `bookingUtils.js` menggunakan localStorage untuk token agar kompatibel dengan komponen yang memanggilnya langsung. Context menggunakan token dari state untuk akses langsung setelah login.
-
-- [x] Update `DaftarRuangan.jsx` untuk menggunakan gambar dari assets (`public/assets/sc/`) berdasarkan nama ruangan.
-- [ ] Copy gambar dari `src/assets/sc/` ke `public/assets/sc/` agar dapat diakses sebagai `/assets/sc/...`.
+- [ ] Run dev server and test on mobile view using browser_action

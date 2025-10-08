@@ -32,15 +32,15 @@ const LandingPage = () => {
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
           <div className="max-w-4xl px-4">
             {/* h1 -> text-5xl font-extrabold mb-4 */}
-            <h1 className="text-5xl font-extrabold mb-4">Reserve Your Space at Teras SC</h1>
+            <h1 className="text-3xl sm:text-5xl font-extrabold mb-4">Reserve Your Space at Teras SC</h1>
             {/* p -> text-xl max-w-2xl mx-auto mb-8 */}
-            <p className="text-xl max-w-2xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl max-w-2xl mx-auto mb-8">
               Find the perfect for your study group, club meeting, or event. Our easy-to-use reservation
               system ensures you get the space you need, when you need it.
             </p>
             <Link to="/dashboard" className="no-underline">
                {/* .hero-cta -> bg-white text-[#3D5B81] px-10 py-4 rounded-lg text-xl font-bold hover:bg-gray-100 */}
-               <button className="bg-white text-[#3D5B81] px-10 py-4 rounded-lg text-xl font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-100 shadow-xl">
+               <button className="bg-white text-[#3D5B81] px-6 sm:px-10 py-4 rounded-lg text-lg sm:text-xl font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-100 shadow-xl">
                  Mulai Reservasi
                </button>
             </Link>
@@ -57,7 +57,7 @@ const LandingPage = () => {
         {/* .about-content -> flex-1 max-w-3xl */}
         <div className="flex-1 max-w-3xl max-lg:max-w-full max-lg:mb-8">
           {/* h2 -> text-[#3D5B81] text-3xl font-bold mb-4 */}
-          <h2 className="text-[#3D5B81] text-4xl font-bold mb-4 max-lg:text-3xl">Apa itu Teras SC ?</h2>
+          <h2 className="text-[#3D5B81] text-3xl sm:text-4xl font-bold mb-4">Apa itu Teras SC ?</h2>
           {/* p -> line-height-relaxed text-gray-700 */}
           <p className="leading-relaxed text-gray-700 text-lg">
             Teras Student Center (SC) adalah platform pemesanan ruangan serbaguna yang nyaman untuk
@@ -83,7 +83,7 @@ const LandingPage = () => {
         id="tutorial"
       >
         {/* h3 -> text-4xl font-bold mb-1 */}
-        <h3 className="text-4xl font-bold mb-1 text-white">Cara Reservasi</h3>
+        <h3 className="text-3xl sm:text-4xl font-bold mb-1 text-white">Cara Reservasi</h3>
         {/* .reservasi-subtitle -> italic opacity-90 mb-16 text-lg */}
         <p className="italic opacity-90 mb-16 text-lg">A simple, four-step process to secure your ideal space on campus</p>
         

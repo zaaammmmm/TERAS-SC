@@ -1,5 +1,6 @@
 // RiwayatAdmin.jsx
 import { useEffect, useState } from 'react';
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { useBookings } from '../../contexts/BookingContext';
 
 const RiwayatAdmin = () => {
@@ -9,25 +10,73 @@ const RiwayatAdmin = () => {
     const [approvedBookings, setApprovedBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [sortColumn, setSortColumn] = useState('date');
+    const [sortDirection, setSortDirection] = useState('desc');
+
+    const handleSort = (column) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    };
 
     useEffect(() => {
         // Hanya proses jika data dari context sudah dimuat
         if (isLoaded) {
             setLoading(false);
             setError(contextError);
-            
-            // Filter data dari state global
-            const approved = allBookings
-                .filter(booking => booking.status === 'Disetujui')
-                // Pastikan b.date bisa diinterpretasikan sebagai tanggal
-                .sort((a, b) => new Date(b.date) - new Date(a.date)); 
-            
+
+            // Filter data dari state global
+            const approved = allBookings.filter(booking => booking.status === 'Disetujui');
             setApprovedBookings(approved);
         } else {
             // Tampilkan loading jika context masih fetch data
             setLoading(true);
         }
-    }, [allBookings, isLoaded, contextError]); 
+    }, [allBookings, isLoaded, contextError]);
+
+    useEffect(() => {
+        setApprovedBookings(prev => [...prev].sort((a, b) => {
+            let aValue, bValue;
+            switch (sortColumn) {
+                case 'id':
+                    aValue = a._id.toLowerCase();
+                    bValue = b._id.toLowerCase();
+                    break;
+                case 'room':
+                    aValue = a.room.name.toLowerCase();
+                    bValue = b.room.name.toLowerCase();
+                    break;
+                case 'date':
+                    aValue = new Date(a.date);
+                    bValue = new Date(b.date);
+                    break;
+                case 'time':
+                    aValue = a.startTime;
+                    bValue = b.startTime;
+                    break;
+                case 'user':
+                    aValue = a.user.name.toLowerCase();
+                    bValue = b.user.name.toLowerCase();
+                    break;
+                case 'purpose':
+                    aValue = a.purpose.toLowerCase();
+                    bValue = b.purpose.toLowerCase();
+                    break;
+                case 'status':
+                    aValue = a.status;
+                    bValue = b.status;
+                    break;
+                default:
+                    return 0;
+            }
+            if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+            return 0;
+        }));
+    }, [sortColumn, sortDirection]);
 
     const getStatusClass = (status) => {
         // ... (kode status class)
@@ -80,13 +129,34 @@ const RiwayatAdmin = () => {
                     
                     <thead>
                         <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
-                            <th className="p-3 text-center">ID</th>
-                            <th className="p-3 text-left">Ruangan</th>
-                            <th className="p-3 text-left">Tanggal</th>
-                            <th className="p-3 text-left">Waktu</th>
-                            <th className="p-3 text-left">Peminjam</th>
-                            <th className="p-3 text-left">Keperluan</th>
-                            <th className="p-3 text-center">Status</th>
+                            <th className="p-3 text-center cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('id')}>
+                                ID
+                                {sortColumn === 'id' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
+                            <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('room')}>
+                                Ruangan
+                                {sortColumn === 'room' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
+                            <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('date')}>
+                                Tanggal
+                                {sortColumn === 'date' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
+                            <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('time')}>
+                                Waktu
+                                {sortColumn === 'time' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
+                            <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('user')}>
+                                Peminjam
+                                {sortColumn === 'user' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
+                            <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('purpose')}>
+                                Keperluan
+                                {sortColumn === 'purpose' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
+                            <th className="p-3 text-center cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('status')}>
+                                Status
+                                {sortColumn === 'status' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                            </th>
                         </tr>
                     </thead>
 

@@ -1,5 +1,6 @@
 // file: src/components/DashboardLayout.jsx
 
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import HeaderAdmin from './HeaderAdmin';
 import HeaderMain from './HeaderMain';
@@ -7,6 +8,8 @@ import Sidebar from './Sidebar'; // Sidebar User
 import SidebarAdmin from './SidebarAdmin'; // Sidebar Admin
 
 const DashboardLayout = ({ children }) => {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     const token = localStorage.getItem('token');
     const isAuthenticated = !!token;
@@ -24,14 +27,14 @@ const DashboardLayout = ({ children }) => {
     return (
         <div className="flex flex-col min-h-screen bg-indigo-50">
 
-            <ActiveHeader />
+            <ActiveHeader sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
             <div className="flex flex-grow pt-[80px]">
 
                 {/* KONDISIONAL SIDEBAR */}
-                <ActiveSidebar />
+                <ActiveSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-                <main className="flex-grow p-8">
+                <main className="flex-grow p-4 sm:p-8">
                     {children}
                 </main>
             </div>

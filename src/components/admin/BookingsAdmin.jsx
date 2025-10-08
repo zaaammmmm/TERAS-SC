@@ -1,16 +1,19 @@
 // BookingsAdmin.jsx
 import { useEffect, useState } from 'react';
-import { useBookings } from '../../contexts/BookingContext'; // PENTING
+import { FaSort, FaSortDown, FaSortUp, FaSync } from 'react-icons/fa';
+import { useBookings } from '../../contexts/BookingContext';
 
 const BookingsAdmin = () => {
   // Ambil bookings (state global), updateBookingStatus, dan isLoaded dari context
   const { bookings: globalBookings, updateBookingStatus, isLoaded, error: contextError } = useBookings();
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [roomFilter, setRoomFilter] = useState('All');
-  const [dateFilter, setDateFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [roomFilter, setRoomFilter] = useState('All');
+  const [dateFilter, setDateFilter] = useState('');
+  const [sortColumn, setSortColumn] = useState('date');
+  const [sortDirection, setSortDirection] = useState('desc');
 
   const goToPreviousDay = () => {
     const current = dateFilter ? new Date(dateFilter) : new Date();
@@ -18,11 +21,26 @@ const BookingsAdmin = () => {
     setDateFilter(current.toISOString().split('T')[0]);
   };
 
-  const goToNextDay = () => {
-    const current = dateFilter ? new Date(dateFilter) : new Date();
-    current.setDate(current.getDate() + 1);
-    setDateFilter(current.toISOString().split('T')[0]);
-  };
+  const goToNextDay = () => {
+    const current = dateFilter ? new Date(dateFilter) : new Date();
+    current.setDate(current.getDate() + 1);
+    setDateFilter(current.toISOString().split('T')[0]);
+  };
+
+  const refreshFilters = () => {
+    setStatusFilter('All');
+    setRoomFilter('All');
+    setDateFilter('');
+  };
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
 
   useEffect(() => {
     // Ketika globalBookings (dari Context) berubah, update status loading/error
@@ -38,13 +56,53 @@ const BookingsAdmin = () => {
   // Urutkan bookings global di sini untuk render
   const sortedBookings = [...globalBookings].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  // Filter bookings berdasarkan status, ruangan, dan tanggal
-  const filteredBookings = sortedBookings.filter(booking => {
-    const matchesStatus = statusFilter === 'All' || booking.status === statusFilter;
-    const matchesRoom = roomFilter === 'All' || booking.room.name === roomFilter;
-    const matchesDate = dateFilter === '' || new Date(booking.date).toDateString() === new Date(dateFilter).toDateString();
-    return matchesStatus && matchesRoom && matchesDate;
-  });
+  // Filter bookings berdasarkan status, ruangan, dan tanggal
+  let filteredBookings = sortedBookings.filter(booking => {
+    const matchesStatus = statusFilter === 'All' || booking.status === statusFilter;
+    const matchesRoom = roomFilter === 'All' || booking.room.name === roomFilter;
+    const matchesDate = dateFilter === '' || new Date(booking.date).toDateString() === new Date(dateFilter).toDateString();
+    return matchesStatus && matchesRoom && matchesDate;
+  });
+
+  // Sort filtered bookings
+  filteredBookings = filteredBookings.sort((a, b) => {
+    let aValue, bValue;
+    switch (sortColumn) {
+      case 'user':
+        aValue = a.user.name.toLowerCase();
+        bValue = b.user.name.toLowerCase();
+        break;
+      case 'room':
+        aValue = a.room.name.toLowerCase();
+        bValue = b.room.name.toLowerCase();
+        break;
+      case 'date':
+        aValue = new Date(a.date);
+        bValue = new Date(b.date);
+        break;
+      case 'time':
+        aValue = a.startTime;
+        bValue = b.startTime;
+        break;
+      case 'purpose':
+        aValue = a.purpose.toLowerCase();
+        bValue = b.purpose.toLowerCase();
+        break;
+      case 'participants':
+        aValue = parseInt(a.participants) || 0;
+        bValue = parseInt(b.participants) || 0;
+        break;
+      case 'status':
+        aValue = a.status;
+        bValue = b.status;
+        break;
+      default:
+        return 0;
+    }
+    if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+    if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
 
 
   const updateStatus = async (id, status) => {
@@ -124,26 +182,34 @@ const BookingsAdmin = () => {
               <option value="Co-Working Space F">Co-Working Space F</option>
               <option value="Co-Working Space EAST">Co-Working Space EAST</option>
             </select>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={goToPreviousDay}
-                className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
-              >
-                {'<'}
-              </button>
-              <input
-                type="date"
-                value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200"
-              />
-              <button
-                onClick={goToNextDay}
-                className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
-              >
-                {'>'}
-              </button>
-            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={goToPreviousDay}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                {'<'}
+              </button>
+              <input
+                type="date"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200"
+              />
+              <button
+                onClick={goToNextDay}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                {'>'}
+              </button>
+            </div>
+            <button
+              onClick={refreshFilters}
+              className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-blue-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+              title="Refresh Filters"
+            >
+              <FaSync className="w-4 h-4" />
+              Refresh
+            </button>
           </div>
         </div>
 
@@ -154,18 +220,39 @@ const BookingsAdmin = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
-                  <th className="p-3 text-left">Pengguna</th>
-                  <th className="p-3 text-left">Ruangan</th>
-                  <th className="p-3 text-left">Tanggal</th>
-                  <th className="p-3 text-left">Waktu</th>
-                  <th className="p-3 text-left">Tujuan</th>
-                  <th className="p-3 text-left">Peserta</th>
-                  <th className="p-3 text-center">Status</th>
-                  <th className="p-3 text-center">Aksi</th>
-                </tr>
-              </thead>
+              <thead>
+                <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
+                  <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('user')}>
+                    Pengguna
+                    {sortColumn === 'user' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('room')}>
+                    Ruangan
+                    {sortColumn === 'room' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('date')}>
+                    Tanggal
+                    {sortColumn === 'date' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('time')}>
+                    Waktu
+                    {sortColumn === 'time' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('purpose')}>
+                    Tujuan
+                    {sortColumn === 'purpose' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-left cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('participants')}>
+                    Peserta
+                    {sortColumn === 'participants' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-center cursor-pointer hover:bg-blue-200 transition-colors" onClick={() => handleSort('status')}>
+                    Status
+                    {sortColumn === 'status' ? (sortDirection === 'asc' ? <FaSortUp className="inline ml-1" /> : <FaSortDown className="inline ml-1" />) : <FaSort className="inline ml-1 opacity-50" />}
+                  </th>
+                  <th className="p-3 text-center">Aksi</th>
+                </tr>
+              </thead>
               <tbody>
                 {filteredBookings.map((booking) => (
                   <tr key={booking._id} className="border-b hover:bg-gray-50">

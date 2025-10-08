@@ -42,9 +42,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full min-h-screen pt-5 bg-[#F0F8FF]">
-      <div className="bg-white p-12 rounded-xl shadow-2xl shadow-black/15 w-full max-w-md text-center">
-        <h1 className="text-[#3f72af] mb-1 text-3xl font-bold">TERAS SC</h1>
+    <div className="flex justify-center items-center w-full min-h-screen pt-5 bg-[#F0F8FF] px-4">
+      <div className="bg-white p-6 sm:p-12 rounded-xl shadow-2xl shadow-black/15 w-full max-w-md text-center">
+        <h1 className="text-[#3f72af] mb-1 text-2xl sm:text-3xl font-bold">TERAS SC</h1>
         <p className="text-gray-600 mt-0 mb-6 text-sm">Student Center Reservation System</p>
 
         <form className="flex flex-col" onSubmit={handleSubmit}>

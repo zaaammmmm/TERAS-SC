@@ -97,59 +97,53 @@ const DashboardAdmin = () => {
                     <div className="text-xl font-bold text-[#3D5B81]">Statistik Penggunaan Ruangan Bulanan</div>
                     <div className="flex items-center text-sm text-gray-700 mt-2">
                         <span className={`w-2 h-2 bg-[#3D5B81] border border-white rounded-full mr-2`}></span>
-                        Penggunaan di Bulan September
+                        Penggunaan di Bulan Oktober
                     </div>
                 </div>
 
-                <div className="flex">
-                    <div className="flex flex-col text-right justify-between pt-1 pr-3 flex-shrink-0">
-                        {usageDataAdmin.map((item, index) => (
-                            <div key={index} className="h-10 flex items-center justify-end text-xs text-gray-700 font-medium">
-                                {item.name}
-                            </div>
-                        ))}
-                    </div>
-                    
-                    <div className="flex-grow">
-                        <div className="relative border-b border-gray-300">
-                            <div className="absolute inset-0 flex justify-between">
-                                {Y_LABELS.slice(1).map((_, index) => (
-                                    <div 
-                                        key={index} 
-                                        className="h-full border-r border-gray-200 last:border-r-0" 
-                                        style={{ width: `${100 / (Y_LABELS.length - 1)}%` }}
-                                    />
-                                ))}
-                            </div>
-
-                            <div className="relative z-10 space-y-1">
-                                {usageDataAdmin.map((item, index) => {
-                                    const widthPercent = (item.value / MAX_VALUE_CHART) * 100;
-                                    return (
-                                        <div key={index} className="h-10 flex items-center">
-                                            <div className="w-full h-4 bg-gray-200 rounded-sm overflow-hidden">
-                                                <div 
-                                                    // Bar Fill menggunakan warna Primary
-                                                    className={`h-full bg-[#3D5B81] transition-all duration-700`} 
-                                                    style={{ width: `${widthPercent}%` }}
-                                                ></div>
-                                            </div>
-                                            <span className="ml-3 text-xs font-semibold text-gray-700 min-w-[40px] text-right">
-                                                {item.value}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                        </div>
-                        
-                        <div className="flex justify-between mt-2 text-xs text-gray-500 font-medium pl-14 pr-1">
-                            {Y_LABELS.map((label, index) => (
-                                <div key={index} className="text-center w-4">
-                                    {label}
+                <div className="overflow-x-auto">
+                    <div className="flex min-w-[600px]">
+                        <div className="flex flex-col text-right pt-0 pr-3 flex-shrink-0 space-y-4 w-40">
+                            {usageDataAdmin.map((item, index) => (
+                                <div key={index} className="h-6 flex items-center justify-end text-sm text-gray-700 font-medium">
+                                    {item.name}
                                 </div>
                             ))}
+                        </div>
+
+                        <div className="flex-grow">
+                            <div className="relative border-b border-gray-300">
+                                <div className="absolute inset-0 flex justify-between">
+                                    {Y_LABELS.slice(1).map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className="h-full border-r border-gray-200 last:border-r-0"
+                                            style={{ width: `${100 / (Y_LABELS.length - 1)}%` }}
+                                        />
+                                    ))}
+                                </div>
+
+                                <div className="relative z-10 space-y-4">
+                                    {usageDataAdmin.map((item, index) => {
+                                        const widthPercent = (item.value / MAX_VALUE_CHART) * 100;
+                                        return (
+                                            <div key={index} className="h-6 flex items-center">
+                                                <div className="w-full h-6 bg-gray-200 rounded-sm overflow-hidden">
+                                                    <div
+                                                        // Bar Fill menggunakan warna Primary
+                                                        className={`h-full bg-[#3D5B81] transition-all duration-700`}
+                                                        style={{ width: `${widthPercent}%` }}
+                                                    ></div>
+                                                </div>
+                                                <span className="ml-3 text-base font-semibold text-gray-700 min-w-[50px] text-right">
+                                                    {item.value}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
