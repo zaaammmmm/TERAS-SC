@@ -4,17 +4,6 @@ import { getAllRooms } from '../../api/rooms';
 import { useBookings } from '../../contexts/BookingContext';
 import DateNavigator from '../utils/DateNavigator';
 
-// Mapping room names to public assets images (case insensitive)
-const roomImageMap = {
-  'co-working space a': '/assets/sc/co-space-a.jpg',
-  'co-working space b': '/assets/sc/co-space-b.jpg',
-  'co-working space c': '/assets/sc/co-space-c.jpg',
-  'co-working space d': '/assets/sc/co-space-d.jpg',
-  'co-working space e': '/assets/sc/co-space-e.jpg',
-  'co-working space east': '/assets/sc/co-space-east.jpg',
-  'co-working space f': '/assets/sc/co-space-f.jpg',
-};
-
 const AdminRoomCard = ({ room, selectedDate, bookings }) => {
   const navigate = useNavigate();
   const PRIMARY_COLOR = '#3D5B81';
@@ -77,7 +66,7 @@ const AdminRoomCard = ({ room, selectedDate, bookings }) => {
   return (
     <div className="bg-neutral-100 p-3 sm:p-4 rounded-xl flex items-center justify-between shadow-md transition-all duration-300 hover:shadow-lg max-md:flex-col max-md:items-start max-md:space-y-4">
       <div className="flex items-center space-x-6 w-full max-md:w-full max-md:flex-col max-md:items-start max-md:space-x-0">
-        <img className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0" src={roomImageMap} alt={room.name} />
+        <img className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0" src alt={room.name} />
         <div className="flex flex-col flex-grow">
           <div className="text-slate-600 text-xl sm:text-2xl font-bold mb-1">{room.name}</div>
           <div className="text-black text-sm sm:text-base font-normal mb-1">{room.location}</div>

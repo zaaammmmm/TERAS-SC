@@ -29,4 +29,3 @@ const admin = (req, res, next) => {
 };
 
 export { admin, protect };
-
