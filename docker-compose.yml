@@ -1,0 +1,32 @@
+# Docker for production memanfaatkan mongo dan nginx dari server
+services:
+  express_teras_sc:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: express_teras_sc
+    env_file:
+      - .env
+    ports:
+      - "8002:8000"
+    networks:
+      - nginx
+      - mongo
+
+  react_teras_sc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react_teras_sc
+    env_file:
+      - .env
+    ports:
+      - "8003:8000"
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    external: true
+  mongo:
+    external: true
