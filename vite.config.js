@@ -8,6 +8,12 @@ export default defineConfig({
     proxy: {
       '/auth': 'http://localhost:5000',
       '/api': 'http://localhost:5000'
-    }
+    },
+
+    host: true,
+    allowedHosts: ['terassc.teknohole.com'],
+    watch: {
+      usePolling: true,
+    },
   }
 })
