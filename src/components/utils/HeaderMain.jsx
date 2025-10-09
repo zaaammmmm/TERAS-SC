@@ -14,14 +14,8 @@ const HeaderMain = ({ sidebarOpen, onToggleSidebar }) => {
     // Header selalu solid
     <header className={`${baseClasses} bg-white shadow-lg shadow-black/10`}>
 
-      {/* Kiri: Hamburger + Logo */}
+      {/* Kiri: Logo */}
       <div className="flex items-center">
-        <button
-          onClick={onToggleSidebar}
-          className="mr-4 text-gray-700 hover:text-[#3D5B81] md:hidden"
-        >
-          <FaBars className="w-6 h-6" />
-        </button>
         <Link to="/" className={`text-xl font-bold flex items-center no-underline text-[${PRIMARY_COLOR}]`}>
           <img src={Logo} alt="Teras SC Logo" className="h-9 mr-2" />
           Teras SC
@@ -31,7 +25,7 @@ const HeaderMain = ({ sidebarOpen, onToggleSidebar }) => {
       {/* Tengah: Kosong */}
       <nav className="flex-grow"></nav>
 
-      {/* Kanan: Hanya Contact Person / Helpdesk */}
+      {/* Kanan: Contact Person / Helpdesk + Hamburger */}
       <div className="flex items-center space-x-6">
 
         {/* Tombol Contact Person / Helpdesk (MENGGANTIKAN PROFILE) */}
@@ -44,6 +38,13 @@ const HeaderMain = ({ sidebarOpen, onToggleSidebar }) => {
             <FaQuestionCircle className="w-6 h-6" />
             <span className="hidden sm:inline">Contact Person</span>
         </Link>
+
+        <button
+          onClick={onToggleSidebar}
+          className="text-gray-700 hover:text-[#3D5B81] md:hidden"
+        >
+          <FaBars className="w-6 h-6" />
+        </button>
 
         {/* Tautan Profile (Sebelumnya ada di sini) telah dihapus */}
 

@@ -75,13 +75,13 @@ const AdminRoomCard = ({ room, selectedDate, bookings }) => {
   const formattedDate = formatDate(selectedDate);
 
   return (
-    <div className="bg-neutral-100 p-4 rounded-xl flex items-center justify-between shadow-md transition-all duration-300 hover:shadow-lg max-md:flex-col max-md:items-start max-md:space-y-4">
+    <div className="bg-neutral-100 p-3 sm:p-4 rounded-xl flex items-center justify-between shadow-md transition-all duration-300 hover:shadow-lg max-md:flex-col max-md:items-start max-md:space-y-4">
       <div className="flex items-center space-x-6 w-full max-md:w-full max-md:flex-col max-md:items-start max-md:space-x-0">
-        <img className="w-24 h-24 rounded-lg object-cover flex-shrink-0" src={roomImageMap} alt={room.name} />
+        <img className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0" src={roomImageMap} alt={room.name} />
         <div className="flex flex-col flex-grow">
-          <div className="text-slate-600 text-2xl font-bold mb-1">{room.name}</div>
-          <div className="text-black text-base font-normal mb-1">{room.location}</div>
-          <div className="text-black text-base font-normal mb-3">Waktu Tersedia:</div>
+          <div className="text-slate-600 text-xl sm:text-2xl font-bold mb-1">{room.name}</div>
+          <div className="text-black text-sm sm:text-base font-normal mb-1">{room.location}</div>
+          <div className="text-black text-sm sm:text-base font-normal mb-3">Waktu Tersedia:</div>
           <div className="flex flex-wrap gap-2">
             {timeSlots.map((time, index) => {
               const booked = isBooked(room.name, formattedDate, time.value);
@@ -90,7 +90,7 @@ const AdminRoomCard = ({ room, selectedDate, bookings }) => {
                   key={index}
                   disabled={booked}
                   onClick={() => !booked && navigate('/pinjam', { state: { room: room.name, date: formattedDate, timeSlot: getTimeSlotValue(time.value) } })}
-                  className={`w-14 h-6 flex items-center justify-center rounded-md text-xs font-semibold ${getTimeSlotClass(
+                  className={`w-12 h-5 sm:w-14 sm:h-6 flex items-center justify-center rounded-md text-xs font-semibold ${getTimeSlotClass(
                     booked,
                   )}`}
                 >
@@ -104,7 +104,7 @@ const AdminRoomCard = ({ room, selectedDate, bookings }) => {
 
       <button
         onClick={() => navigate(`/detail`, { state: { room, selectedDate } })}
-        className={`w-32 h-10 bg-[${PRIMARY_COLOR}] rounded-lg text-white text-base font-bold transition-colors hover:bg-[#2e4764] flex items-center justify-center ml-4 flex-shrink-0 max-md:w-full max-md:mt-4`}
+        className={`w-24 h-8 sm:w-32 sm:h-10 bg-[${PRIMARY_COLOR}] rounded-lg text-white text-sm sm:text-base font-bold transition-colors hover:bg-[#2e4764] flex items-center justify-center ml-4 flex-shrink-0 max-md:w-full max-md:mt-4`}
       >
         Detail
       </button>
@@ -150,12 +150,12 @@ const DaftarRuangan = () => {
   console.log('Rooms:', rooms);
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 min-h-full">
       {/* Navigasi Tanggal */}
       <DateNavigator selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
       {/* Konten Utama (Daftar Ruangan) */}
-      <div className={`bg-white p-6 rounded-xl border border-gray-200 shadow-lg shadow-black/5 space-y-4 transition-opacity duration-300 ${animating ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-lg shadow-black/5 space-y-4 transition-opacity duration-300 ${animating ? 'opacity-0' : 'opacity-100'}`}>
         {roomsLoading ? (
           <div className="text-center py-8">Memuat daftar ruangan...</div>
         ) : roomsError ? (

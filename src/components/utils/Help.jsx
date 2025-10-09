@@ -1,8 +1,8 @@
 // file: src/components/Help.jsx
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Help = () => {
     const navigate = useNavigate();
@@ -54,8 +54,8 @@ const Help = () => {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto space-y-6">
-            
+        <div className="w-full max-w-4xl mx-auto space-y-6 px-4 sm:px-6">
+
             {/* --- Tombol Kembali --- */}
             <button
                 onClick={handleBackToDashboard}
@@ -65,13 +65,13 @@ const Help = () => {
             </button>
             {/* ---------------------- */}
 
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
                 Contact Person / Helpdesk
             </h1>
 
             {/* Kontainer Utama Form */}
-            <div className="bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
-                <h2 className={`text-2xl font-bold text-[#3D5B81] mb-6 border-b border-gray-200 pb-3`}>
+            <div className="bg-white p-4 sm:p-8 rounded-xl shadow-2xl border border-gray-200">
+                <h2 className={`text-xl sm:text-2xl font-bold text-[#3D5B81] mb-6 border-b border-gray-200 pb-3`}>
                     Formulir Pengaduan atau Pertanyaan
                 </h2>
                 

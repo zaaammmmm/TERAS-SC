@@ -1,27 +1,9 @@
-# TODO: Make All Pages Responsive for Mobile
+# TODO: Adjust Content Size on Admin and User Pages
 
-## Layout Changes
-- [x] Update DashboardLayout.jsx: Add sidebar toggle state and pass to headers and sidebars
-- [x] Update HeaderMain.jsx: Add hamburger menu for mobile, responsive padding
-- [x] Update HeaderAdmin.jsx: Add hamburger menu for mobile, responsive padding
-- [x] Update Sidebar.jsx: Make responsive, accept isOpen prop, hide/show on mobile
-- [x] Update SidebarAdmin.jsx: Make responsive, accept isOpen prop, hide/show on mobile
-
-## Page Components
-- [ ] LandingPage.jsx: Improve responsive text sizes and layouts
-- [ ] Login.jsx: Make responsive
-- [ ] DashboardAdmin.jsx: Ensure chart is responsive
-- [ ] BookingsAdmin.jsx: Make responsive
-- [ ] RiwayatAdmin.jsx: Make responsive
-- [ ] RoomsAdmin.jsx: Make responsive
-- [ ] DetailRooms.jsx: Make responsive
-- [ ] DetailRuanganAdmin.jsx: Make responsive
-- [ ] Dashboard.jsx: Make responsive
-- [ ] DaftarRuangan.jsx: Make responsive
-- [ ] DetailRoomUser.jsx: Make responsive
-- [ ] FormPeminjaman.jsx: Make responsive
-- [ ] RiwayatPeminjaman.jsx: Make responsive
-- [ ] Help.jsx: Make responsive
-
-## Testing
-- [ ] Run dev server and test on mobile view using browser_action
+## Tasks
+- [ ] Update DashboardLayout.jsx main content container to use full height and vertical scroll only
+- [ ] Update root div in admin page components (DashboardAdmin.jsx, BookingsAdmin.jsx, RiwayatAdmin.jsx, RoomsAdmin.jsx, DetailRooms.jsx, DetailRuanganAdmin.jsx) to use h-full
+- [ ] Update root div in user page components (Dashboard.jsx, DaftarRuangan.jsx, DetailRoomUser.jsx, FormPeminjaman.jsx, RiwayatPeminjaman.jsx) to use h-full
+- [ ] Fix horizontal overflow in chart components (DashboardAdmin.jsx and Dashboard.jsx) by making them responsive
+- [ ] Fix horizontal overflow in table components (BookingsAdmin.jsx and others) by making tables responsive
+- [ ] Test pages to ensure only vertical scrolling and content fits height

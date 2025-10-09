@@ -1,11 +1,11 @@
 // file: src/components/DateNavigator.jsx
-
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
 // Format tanggal menjadi "dd/mm/yyyy"
 const formatDate = (date) => {
-    // Menggunakan local date string untuk menghindari masalah zona waktu saat format
-    return date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '/');
+    return date
+        .toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })
+        .replace(/\//g, '/');
 };
 
 // Format hari menjadi "Kamis"
@@ -23,49 +23,76 @@ const DateNavigator = ({ selectedDate, setSelectedDate }) => {
     };
 
     return (
-        // Mengganti justify-between dengan w-full dan p-0, lalu padding di dalam.
-        <div className="w-full"> 
-            
-            {/* Membungkus Judul dan Kontrol dalam satu div untuk layout yang terpisah */}
-            <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-lg border border-gray-200">
-            
-                {/* Judul Kontrol Tanggal (Kiri) */}
-                <h1 className="text-2xl font-bold text-[#3D5B81] max-w-sm max-md:text-xl">
+        <div className="w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-white rounded-xl shadow-lg border border-gray-200 gap-4">
+                
+                {/* Judul */}
+                <h1 className="text-xl sm:text-2xl font-bold text-[#3D5B81] text-center sm:text-left">
                     Data Penggunaan Ruangan
                 </h1>
 
-                {/* Kontrol Navigasi Tanggal (Kanan - yang Anda ingin sentralkan) */}
-                <div className="flex items-center space-x-3">
+                {/* Navigasi tanggal */}
+                <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto">
                     
-                    {/* Tombol Kiri (Kembali) */}
-                    <button 
-                        onClick={() => handleDateChange(-1)}
-                        className={`p-3 rounded-xl bg-[#3D5B81] text-white transition-colors hover:bg-[#2e4764] shadow-md`}
-                    >
-                        <FaAngleLeft className="w-5 h-5" />
-                    </button>
-                    
-                    {/* Nama Hari */}
-                    <div className="text-xl font-semibold text-gray-800 w-24 text-center">
-                        {formatDay(selectedDate)}
+                    {/* === MOBILE MODE === */}
+                    <div className="relative flex items-center justify-center sm:hidden w-full">
+                        {/* Tombol kiri di atas kalender */}
+                        <button
+                            onClick={() => handleDateChange(-1)}
+                            className="absolute left-2 bg-[#3D5B81] text-white p-2 rounded-lg shadow-md hover:bg-[#2e4764] transition"
+                        >
+                            <FaAngleLeft className="w-4 h-4" />
+                        </button>
+
+                        {/* Input tanggal */}
+                        <input
+                            type="date"
+                            value={selectedDate.toISOString().split('T')[0]}
+                            onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                            className="border border-gray-300 rounded-lg p-2 pl-10 pr-10 text-sm font-medium text-gray-700 bg-white shadow-inner w-full text-center"
+                        />
+
+                        {/* Tombol kanan di atas kalender */}
+                        <button
+                            onClick={() => handleDateChange(1)}
+                            className="absolute right-2 bg-[#3D5B81] text-white p-2 rounded-lg shadow-md hover:bg-[#2e4764] transition"
+                        >
+                            <FaAngleRight className="w-4 h-4" />
+                        </button>
                     </div>
 
-                    {/* Input Tanggal */}
-                    <input
-                        type="date"
-                        value={selectedDate.toISOString().split('T')[0]}
-                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
-                        className={`border border-gray-300 rounded-lg p-3 text-lg font-medium text-gray-700 bg-white shadow-inner`}
-                        style={{ minWidth: '150px' }}
-                    />
-                    
-                    {/* Tombol Kanan (Maju) */}
-                    <button 
-                        onClick={() => handleDateChange(1)}
-                        className={`p-3 rounded-xl bg-[#3D5B81] text-white transition-colors hover:bg-[#2e4764] shadow-md`}
-                    >
-                        <FaAngleRight className="w-5 h-5" />
-                    </button>
+                    {/* === DESKTOP MODE === */}
+                    <div className="hidden sm:flex items-center gap-3 sm:gap-4">
+                        {/* Tombol Kiri */}
+                        <button
+                            onClick={() => handleDateChange(-1)}
+                            className="p-3 rounded-xl bg-[#3D5B81] text-white transition-colors hover:bg-[#2e4764] shadow-md"
+                        >
+                            <FaAngleLeft className="w-5 h-5" />
+                        </button>
+
+                        {/* Nama Hari */}
+                        <div className="text-xl font-semibold text-gray-800 text-center w-28 capitalize">
+                            {formatDay(selectedDate)}
+                        </div>
+
+                        {/* Input tanggal */}
+                        <input
+                            type="date"
+                            value={selectedDate.toISOString().split('T')[0]}
+                            onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                            className="border border-gray-300 rounded-lg p-3 text-lg font-medium text-gray-700 bg-white shadow-inner"
+                            style={{ minWidth: '150px' }}
+                        />
+
+                        {/* Tombol Kanan */}
+                        <button
+                            onClick={() => handleDateChange(1)}
+                            className="p-3 rounded-xl bg-[#3D5B81] text-white transition-colors hover:bg-[#2e4764] shadow-md"
+                        >
+                            <FaAngleRight className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -32,15 +32,15 @@ const LandingPage = () => {
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
           <div className="max-w-4xl px-4">
             {/* h1 -> text-5xl font-extrabold mb-4 */}
-            <h1 className="text-3xl sm:text-5xl font-extrabold mb-4">Reserve Your Space at Teras SC</h1>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">Reserve Your Space at Teras SC</h1>
             {/* p -> text-xl max-w-2xl mx-auto mb-8 */}
-            <p className="text-lg sm:text-xl max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8">
               Find the perfect for your study group, club meeting, or event. Our easy-to-use reservation
               system ensures you get the space you need, when you need it.
             </p>
             <Link to="/dashboard" className="no-underline">
                {/* .hero-cta -> bg-white text-[#3D5B81] px-10 py-4 rounded-lg text-xl font-bold hover:bg-gray-100 */}
-               <button className="bg-white text-[#3D5B81] px-6 sm:px-10 py-4 rounded-lg text-lg sm:text-xl font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-100 shadow-xl">
+               <button className="bg-white text-[#3D5B81] px-4 sm:px-6 md:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg md:text-xl font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-100 shadow-xl">
                  Mulai Reservasi
                </button>
             </Link>

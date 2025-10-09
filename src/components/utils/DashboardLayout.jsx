@@ -25,20 +25,20 @@ const DashboardLayout = ({ children }) => {
     const ActiveHeader = userRole === 'admin' ? HeaderAdmin : HeaderMain;
 
     return (
-        <div className="flex flex-col min-h-screen bg-indigo-50">
+    <div className="flex flex-col min-h-screen bg-indigo-50">
 
-            <ActiveHeader sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <ActiveHeader sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
-            <div className="flex flex-grow pt-[80px]">
+        <div className="flex flex-grow pt-[80px]">
 
-                {/* KONDISIONAL SIDEBAR */}
-                <ActiveSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            {/* KONDISIONAL SIDEBAR */}
+            <ActiveSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-                <main className="flex-grow p-4 sm:p-8">
-                    {children}
-                </main>
-            </div>
+            <main className={`flex-grow p-4 sm:p-8 overflow-y-auto overflow-x-hidden h-full transition-all duration-300 ${sidebarOpen ? 'blur-sm pointer-events-none md:pointer-events-auto md:blur-none' : ''} md:ml-0`}>
+                {children}
+            </main>
         </div>
+    </div>
     );
 };
 

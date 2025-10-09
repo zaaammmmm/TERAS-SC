@@ -127,29 +127,29 @@ const DetailRooms = () => {
 
 
     return (
-        <div className="w-full">
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-6">
+        <div className="w-full min-h-full">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 mb-6">
                 <div className="flex items-center mb-4">
                     <button
                         onClick={() => navigate('/admin/rooms')}
-                        className={`text-gray-600 hover:text-[${PRIMARY_COLOR}] transition-colors text-xl mr-4`}
+                        className={`text-gray-600 hover:text-[${PRIMARY_COLOR}] transition-colors text-lg sm:text-xl mr-4`}
                     >
                         <FaArrowLeft />
                     </button>
-                    <h1 className="text-3xl font-bold text-gray-800">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
                         Detail Peminjaman Ruangan
                     </h1>
                 </div>
 
                 <div className="p-4 rounded-lg bg-blue-100 border border-blue-200 shadow-md">
-                    <h2 className="text-2xl font-bold text-blue-700 mb-2">
+                    <h2 className="text-xl sm:text-2xl font-bold text-blue-700 mb-2">
                         Riwayat Booking {room.name}
                     </h2>
-                    <p className="text-sm text-gray-700">Tinjau semua pengajuan peminjaman untuk ruangan ini pada tanggal {displayDate}.</p>
+                    <p className="text-xs sm:text-sm text-gray-700">Tinjau semua pengajuan peminjaman untuk ruangan ini pada tanggal {displayDate}.</p>
                 </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-lg overflow-x-auto">
+            <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-lg w-full">
                 <table className="min-w-full border-collapse">
                     <thead>
                         <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
@@ -159,7 +159,7 @@ const DetailRooms = () => {
                             <th className="p-3 text-left border-b">Email</th>
                             <th className="p-3 text-left border-b">Keperluan</th>
                             <th className="p-3 text-center border-b">Status</th>
-                            <th className="p-3 text-center border-b min-w-[180px]">Aksi</th>
+                            <th className="p-2 sm:p-3 text-center border-b min-w-[150px] sm:min-w-[180px]">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -198,14 +198,14 @@ const DetailRooms = () => {
                                             <div className="flex justify-center space-x-2">
                                                 <button
                                                     onClick={() => handleAction(b._id, 'Disetujui')}
-                                                    className="flex items-center gap-1 text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg transition-colors hover:bg-green-700 font-bold shadow-sm"
+                                                    className="flex items-center gap-1 text-xs bg-green-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors hover:bg-green-700 font-bold shadow-sm"
                                                     title="Setujui Reservasi"
                                                 >
                                                     <FaCalendarCheck className="w-3 h-3" /> Setujui
                                                 </button>
                                                 <button
                                                     onClick={() => handleAction(b._id, 'Ditolak')}
-                                                    className="flex items-center gap-1 text-xs bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors hover:bg-red-700 font-bold shadow-sm"
+                                                    className="flex items-center gap-1 text-xs bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors hover:bg-red-700 font-bold shadow-sm"
                                                     title="Tolak Reservasi"
                                                 >
                                                     <FaCalendarTimes className="w-3 h-3" /> Tolak
