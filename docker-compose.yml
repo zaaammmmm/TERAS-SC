@@ -21,9 +21,10 @@ services:
     env_file:
       - .env
     ports:
-      - "8003:8000"
+      - "5173:5173"
     networks:
       - nginx
+    command: npm run dev
 
 networks:
   nginx:
