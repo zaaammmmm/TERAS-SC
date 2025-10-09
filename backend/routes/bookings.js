@@ -11,7 +11,7 @@ const router = express.Router();
 // @route   GET /api/bookings/mybookings
 // @access  Private
 router.get('/mybookings', protect, async (req, res) => {
-  const bookings = await Booking.find({ user: req.user._id }).populate('room', 'name location').populate('user', 'name email').sort({ createdAt: -1 });
+  const bookings = await Booking.find({ user: req.user._id }).populate('room', 'name location').populate('user', 'name email');
   res.json(bookings);
 });
 
@@ -56,7 +56,7 @@ router.get('/stats', protect, admin, async (req, res) => {
 // @route   GET /api/bookings
 // @access  Private/Admin
 router.get('/', protect, admin, async (req, res) => {
-  const bookings = await Booking.find({}).populate('user', 'name email').populate('room', 'name location').sort({ createdAt: -1 });
+  const bookings = await Booking.find({}).populate('user', 'name email').populate('room', 'name location');
   res.json(bookings);
 });
 
