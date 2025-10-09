@@ -1,19 +1,9 @@
-// src/components/FormPeminjaman.js (Kode UTUH dan Direvisi)
-
-import { useState } from 'react';
+import { CheckCircle, X, XCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './FormPeminjaman.css';
-
-// Sumber Data Ruangan yang harus SAMA dengan DaftarRuangan.js (A sampai F dan EAST)
-const roomList = [
-    { value: 'Co-Working Space A', label: 'Co-Working Space A (Max 15)' },
-    { value: 'Co-Working Space B', label: 'Co-Working Space B (Max 8)' },
-    { value: 'Co-Working Space C', label: 'Co-Working Space C (Max 10)' },
-    { value: 'Co-Working Space D', label: 'Co-Working Space D (Max 12)' },
-    { value: 'Co-Working Space E', label: 'Co-Working Space E (Max 6)' },
-    { value: 'Co-Working Space F', label: 'Co-Working Space F (Max 18)' }, // DITAMBAHKAN
-    { value: 'Co-Working Space EAST', label: 'Co-Working Space EAST (Max 20)' }, // DIPERTAHANKAN
-];
+import { getAllRooms } from '../../api/rooms';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useBookings } from '../../utils/bookingUtils';
 
 const timeSlots = [
   { value: '07:00-09:00', label: '07:00 - 09:00' },
@@ -25,168 +15,235 @@ const timeSlots = [
   { value: '19:00-21:00', label: '19:00 - 21:00' },
 ];
 
+// ✅ Komponen Notifikasi Melayang (center-top)
+const Notification = ({ message, type, onClose }) => {
+  if (!message) return null;
+
+  const bgColor =
+    type === 'success'
+      ? 'bg-green-600'
+      : type === 'error'
+      ? 'bg-red-600'
+      : 'bg-blue-600';
+
+  const Icon = type === 'success' ? CheckCircle : XCircle;
+
+  return (
+    <div
+      className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-[999] flex items-center gap-3 ${bgColor} text-white py-3 px-5 rounded-xl shadow-2xl animate-fadeInDown`}
+    >
+      <Icon className="w-5 h-5" />
+      <span className="font-medium text-sm sm:text-base">{message}</span>
+      <button onClick={onClose} className="ml-2 text-white hover:text-gray-100">
+        <X className="w-4 h-4" />
+      </button>
+
+      {/* Animasi fade-in */}
+      <style>{`
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translate(-50%, -20px);
+          }
+          to {
+            opacity: 1;
+            transform: translate(-50%, 0);
+          }
+        }
+        .animate-fadeInDown {
+          animation: fadeInDown 0.4s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const FormPeminjaman = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const prefilledData = location.state || {}; 
+  const { user } = useAuth();
+  const { addBooking } = useBookings();
+  const prefilledData = location.state || {};
+
+  const [rooms, setRooms] = useState([]);
+  const [roomsLoading, setRoomsLoading] = useState(true);
+  const [notification, setNotification] = useState({ message: '', type: '' });
 
   const [formData, setFormData] = useState({
     room: prefilledData.room || '',
     date: prefilledData.date || new Date().toISOString().split('T')[0],
-    timeSlot: '', // Replace startTime and endTime with single timeSlot
+    timeSlot: prefilledData.timeSlot || '',
     purpose: '',
     capacity: 1,
     peminjam: prefilledData.peminjam || '',
   });
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Handler untuk memperbarui state saat input berubah
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        setRoomsLoading(true);
+        const fetchedRooms = await getAllRooms();
+        setRooms(fetchedRooms);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+        setError('Gagal memuat data ruangan');
+      } finally {
+        setRoomsLoading(false);
+      }
+    };
+
+    fetchRooms();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
-  
-  // ======================================
-  // LOGIKA VALIDASI
-  // ======================================
+
   const validateForm = () => {
     setError('');
-    return true; // Since we're using predefined slots, no need for time validation
-  };
-
-  // Handler saat formulir disubmit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-        return;
+    if (!formData.room || !formData.date || !formData.timeSlot || !formData.purpose || !formData.peminjam) {
+      setError('Semua field harus diisi.');
+      return false;
     }
-    
-    // Split timeSlot into startTime and endTime for storage
-    const [startTime, endTime] = formData.timeSlot.split('-');
-    
-    // Get existing peminjaman from localStorage
-    const existingPeminjaman = JSON.parse(localStorage.getItem('peminjaman') || '[]');
-    
-    // Create new peminjaman data structure that matches RiwayatPeminjaman display
-    const newPeminjaman = {
-      id: Date.now(),
-      ruangan: formData.room,
-      tanggal: formData.date,
-      waktuMulai: startTime,
-      waktuSelesai: endTime,
-      keperluan: formData.purpose,
-      jumlahPeserta: formData.capacity,
-      peminjam: formData.peminjam,
-      status: 'Menunggu',
-      tanggalPengajuan: new Date().toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    };
-    
-    // Save to localStorage
-    localStorage.setItem('peminjaman', JSON.stringify([...existingPeminjaman, newPeminjaman]));
-    
-    // Reset form
-    setFormData({
-      room: '',
-      date: '',
-      timeSlot: '',
-      purpose: '',
-      capacity: 1,
-      peminjam: ''
-    });
-
-    // Show success message and navigate to riwayat
-    alert(`Peminjaman ruangan ${newPeminjaman.ruangan} berhasil diajukan!\nSilakan cek status peminjaman di halaman Riwayat Peminjaman.`);
-    navigate('/riwayat');
+    return true;
   };
-  // ======================================
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const [startTime, endTime] = formData.timeSlot.split('-');
+
+      const bookingData = {
+        room: formData.room,
+        date: formData.date,
+        startTime,
+        endTime,
+        purpose: formData.purpose,
+        participants: formData.capacity,
+      };
+
+      await addBooking(bookingData);
+
+      // Notifikasi sukses
+      setNotification({
+        message: 'Peminjaman ruangan berhasil diajukan!',
+        type: 'success',
+      });
+
+      setTimeout(() => {
+        navigate('/riwayat');
+      }, 1500);
+    } catch (error) {
+      setNotification({
+        message: 'Terjadi kesalahan saat mengajukan peminjaman: ' + error.message,
+        type: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="peminjaman-page-container">
-
-      <div className="peminjaman-content-wrapper">
-        <h1 className="peminjaman-title">Ajukan Peminjaman Ruangan</h1>
-        <p className="peminjaman-subtitle">
+    <div className="w-full space-y-6 min-h-full">
+      <div className="p-4 sm:p-6 rounded-xl bg-white border border-blue-200 shadow-md">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#3D5B81]">
+          Ajukan Peminjaman Ruangan
+        </h1>
+        <p className="text-gray-600 mt-1 mb-6 text-sm sm:text-base">
           Silakan isi detail kegiatan dan ruangan yang Anda butuhkan. (Maksimal 2 jam, batas akhir 21:00)
         </p>
-        
-        {error && <div className="form-error-message">{error}</div>}
 
-        <form className="peminjaman-form" onSubmit={handleSubmit}>
-          
-          {/* BAGIAN 1: RUANGAN DAN KAPASITAS */}
-          <div className="form-group-row">
-            <div className="form-group">
-              <label htmlFor="room">Pilih Ruangan</label>
-              <select 
-                id="room" 
-                name="room" 
-                value={formData.room} 
-                onChange={handleChange} 
-                className="input-field"
+        {/* Alert Form Error */}
+        {error && (
+          <div className="flex items-center gap-3 bg-red-100 border border-red-400 text-red-700 p-3 rounded-lg mb-5 text-sm font-medium animate-fadeInDown">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+          <div className="flex gap-5 w-full flex-col md:flex-row">
+            <div className="flex flex-col flex-1">
+              <label htmlFor="room" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+                Pilih Ruangan
+              </label>
+              <select
+                id="room"
+                name="room"
+                value={formData.room}
+                onChange={handleChange}
+                className="p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
+                disabled={roomsLoading}
               >
-                {/* Opsi default */}
-                <option value="">-- Pilih Ruangan --</option> 
-                
-                {/* Generasi opsi ruangan secara dinamis */}
-                {roomList.map((room) => (
-                    <option key={room.value} value={room.value}>
-                        {room.label}
-                    </option>
+                <option value="">
+                  {roomsLoading ? 'Memuat ruangan...' : '-- Pilih Ruangan --'}
+                </option>
+                {rooms.map((r) => (
+                  <option key={r._id} value={r.name}>
+                    {r.name}
+                  </option>
                 ))}
               </select>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="capacity">Jumlah Peserta</label>
+            <div className="flex flex-col flex-1">
+              <label htmlFor="capacity" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+                Jumlah Peserta
+              </label>
               <input
                 type="number"
                 id="capacity"
                 name="capacity"
                 value={formData.capacity}
                 onChange={handleChange}
-                className="input-field"
+                className="p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 min="1"
                 required
               />
             </div>
           </div>
 
-          {/* BAGIAN 2: TANGGAL DAN WAKTU */}
-          <div className="form-group-row">
-            <div className="form-group">
-              <label htmlFor="date">Tanggal Peminjaman</label>
+          <div className="flex gap-5 w-full flex-col md:flex-row">
+            <div className="flex flex-col flex-1">
+              <label htmlFor="date" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+                Tanggal Peminjaman
+              </label>
               <input
                 type="date"
                 id="date"
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-                className="input-field"
+                className="p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
               />
             </div>
-            
-            <div className="form-group">
-              <label htmlFor="timeSlot">Waktu Peminjaman</label>
-              <select 
-                id="timeSlot" 
-                name="timeSlot" 
-                value={formData.timeSlot} 
-                onChange={handleChange} 
-                className="input-field"
+
+            <div className="flex flex-col flex-1">
+              <label htmlFor="timeSlot" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+                Waktu Peminjaman
+              </label>
+              <select
+                id="timeSlot"
+                name="timeSlot"
+                value={formData.timeSlot}
+                onChange={handleChange}
+                className="p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
               >
                 <option value="">-- Pilih Waktu --</option>
@@ -199,42 +256,56 @@ const FormPeminjaman = () => {
             </div>
           </div>
 
-          {/* BAGIAN 3: TUJUAN */}
-          <div className="form-group full-width">
-            <label htmlFor="purpose">Tujuan Kegiatan</label>
+          <div className="flex flex-col w-full">
+            <label htmlFor="purpose" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+              Tujuan Kegiatan
+            </label>
             <textarea
               id="purpose"
               name="purpose"
               value={formData.purpose}
               onChange={handleChange}
-              className="input-field textarea-field"
+              className="p-3 border border-gray-300 rounded-lg text-sm sm:text-base resize-y focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               rows="4"
               placeholder="Jelaskan tujuan peminjaman"
               required
             ></textarea>
           </div>
 
-          {/* BAGIAN 4: DATA PEMINJAM (NAMA PEMINJAM) */}
-          <div className="form-group full-width">
-            <label htmlFor="peminjam">Nama Pemohon</label>
+          <div className="flex flex-col w-full">
+            <label htmlFor="peminjam" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+              Nama Pemohon
+            </label>
             <input
               type="text"
               id="peminjam"
               name="peminjam"
               value={formData.peminjam}
               onChange={handleChange}
-              className="input-field"
+              className="p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               placeholder="Masukkan nama Anda"
               required
             />
           </div>
-          
-          {/* Tombol Submit */}
-          <button type="submit" className="submit-btn">
-            Ajukan Peminjaman
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-[#3D5B81] text-white p-4 rounded-lg text-lg font-semibold mt-3 transition-colors duration-300 hover:bg-[#2e4764] shadow-md disabled:opacity-50"
+          >
+            {loading ? 'Mengajukan...' : 'Ajukan Peminjaman'}
           </button>
         </form>
       </div>
+
+      {/* ✅ Notifikasi Stylish */}
+      {notification.message && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification({ message: '', type: '' })}
+        />
+      )}
     </div>
   );
 };
