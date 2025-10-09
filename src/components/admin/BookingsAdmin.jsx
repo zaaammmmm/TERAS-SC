@@ -1,4 +1,5 @@
 // BookingsAdmin.jsx
+import { CheckCircle, X, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { FaSync } from 'react-icons/fa';
 import { useBookings } from '../../contexts/BookingContext';
@@ -6,12 +7,55 @@ import { useBookings } from '../../contexts/BookingContext';
 const BookingsAdmin = () => {
   const { bookings: globalBookings, updateBookingStatus, isLoaded, error: contextError } = useBookings();
 
+  // ✅ Komponen Notifikasi Melayang (center-top)
+  const Notification = ({ message, type, onClose }) => {
+    if (!message) return null;
+
+    const bgColor =
+      type === 'success'
+        ? 'bg-green-600'
+        : type === 'error'
+        ? 'bg-red-600'
+        : 'bg-blue-600';
+
+    const Icon = type === 'success' ? CheckCircle : XCircle;
+
+    return (
+      <div
+        className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-[999] flex items-center gap-3 ${bgColor} text-white py-3 px-5 rounded-xl shadow-2xl animate-fadeInDown`}
+      >
+        <Icon className="w-5 h-5" />
+        <span className="font-medium text-sm sm:text-base">{message}</span>
+        <button onClick={onClose} className="ml-2 text-white hover:text-gray-100">
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Animasi fade-in */}
+        <style>{`
+          @keyframes fadeInDown {
+            from {
+              opacity: 0;
+              transform: translate(-50%, -20px);
+            }
+            to {
+              opacity: 1;
+              transform: translate(-50%, 0);
+            }
+          }
+          .animate-fadeInDown {
+            animation: fadeInDown 0.4s ease-out;
+          }
+        `}</style>
+      </div>
+    );
+  };
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All');
   const [roomFilter, setRoomFilter] = useState('All');
   const [dateFilter, setDateFilter] = useState('');
-  const [sortColumn, setSortColumn] = useState('date');
+  const [sortColumn, setSortColumn] = useState('createdAt');
   const [sortDirection, setSortDirection] = useState('desc');
 
   const goToPreviousDay = () => {
@@ -98,6 +142,10 @@ const BookingsAdmin = () => {
         aValue = a.status;
         bValue = b.status;
         break;
+      case 'createdAt':
+        aValue = new Date(a.createdAt);
+        bValue = new Date(b.createdAt);
+        break;
       default:
         return 0;
     }
@@ -106,13 +154,21 @@ const BookingsAdmin = () => {
     return 0;
   });
 
+  const [notification, setNotification] = useState({ message: '', type: '' });
+
   const updateStatus = async (id, status) => {
     try {
       await updateBookingStatus(id, status);
-      alert(`Status berhasil diperbarui menjadi ${status}.`);
+      setNotification({
+        message: `Status berhasil diperbarui menjadi ${status}.`,
+        type: 'success',
+      });
     } catch (error) {
       console.error('Error updating booking status:', error);
-      alert('Gagal memperbarui status peminjaman');
+      setNotification({
+        message: 'Gagal memperbarui status peminjaman',
+        type: 'error',
+      });
     }
   };
 
@@ -306,6 +362,15 @@ const BookingsAdmin = () => {
           </div>
         )}
       </div>
+
+      {/* ✅ Notifikasi Stylish */}
+      {notification.message && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification({ message: '', type: '' })}
+        />
+      )}
     </div>
   );
 };

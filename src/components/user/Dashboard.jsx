@@ -69,10 +69,10 @@ const Dashboard = () => {
       {/* Header / Kartu Selamat Datang */}
       <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
         <h1 className="text-3xl sm:text-4xl font-bold text-[#3D5B81]">
-          Dashboard {user?.name || 'Pengguna'}
+          Welcome {user?.name || 'Pengguna'}
         </h1>
         <p className="text-gray-500 mt-1 text-sm sm:text-base">
-          Ikhtisar peminjaman ruangan Anda di Student Center.
+          Dashboard peminjaman ruangan Anda di Student Center.
         </p>
       </div>
 

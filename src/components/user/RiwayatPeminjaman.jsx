@@ -9,8 +9,13 @@ const RiwayatPeminjaman = () => {
   const [riwayatPeminjaman, setRiwayatPeminjaman] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortColumn, setSortColumn] = useState('date');
-  const [sortDirection, setSortDirection] = useState('desc');
+  
+  // --- PERUBAHAN DI SINI ---
+  // Set default sortColumn ke 'createdAt' (Tanggal Pengajuan)
+  const [sortColumn, setSortColumn] = useState('createdAt'); 
+  // Set default sortDirection ke 'desc' (Menurun/Terbaru dahulu)
+  const [sortDirection, setSortDirection] = useState('desc'); 
+  // -------------------------
 
   const handleSort = (column) => {
     if (sortColumn === column) {
@@ -37,7 +42,20 @@ const RiwayatPeminjaman = () => {
         setLoading(true);
         setError(null);
         const bookings = await getUserBookings();
-        setRiwayatPeminjaman(bookings);
+        
+        // --- PERUBAHAN DI SINI: Terapkan pengurutan awal pada data yang baru diambil ---
+        // Ini memastikan data yang pertama kali ditampilkan sudah dalam urutan 'createdAt' desc
+        const sortedBookings = [...bookings].sort((a, b) => {
+            const aValue = new Date(a.createdAt);
+            const bValue = new Date(b.createdAt);
+            if (aValue < bValue) return -1;
+            if (aValue > bValue) return 1;
+            return 0;
+        }).reverse(); // .reverse() untuk membuat urutan descending
+        
+        setRiwayatPeminjaman(sortedBookings);
+        // -------------------------------------------------------------------------------
+        
       } catch (error) {
         console.error('Error fetching user bookings:', error);
         setError('Gagal memuat riwayat peminjaman');
@@ -49,6 +67,7 @@ const RiwayatPeminjaman = () => {
     fetchUserBookings();
   }, [user, getUserBookings]);
 
+  // useEffect untuk pengurutan saat kolom/arah sort berubah (Sudah benar)
   useEffect(() => {
     setRiwayatPeminjaman(prev => [...prev].sort((a, b) => {
       let aValue, bValue;
@@ -59,6 +78,7 @@ const RiwayatPeminjaman = () => {
         case 'participants': aValue = parseInt(a.participants) || 0; bValue = parseInt(b.participants) || 0; break;
         case 'purpose': aValue = a.purpose.toLowerCase(); bValue = b.purpose.toLowerCase(); break;
         case 'status': aValue = a.status; bValue = b.status; break;
+        case 'createdAt': aValue = new Date(a.createdAt); bValue = new Date(b.createdAt); break;
         default: return 0;
       }
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
@@ -98,7 +118,7 @@ const RiwayatPeminjaman = () => {
 
       {/* Table Wrapper */}
       <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-        <table className="min-w-[650px] sm:min-w-full border-collapse text-gray-700 text-xs sm:text-sm">
+        <table className="min-w-[750px] sm:min-w-full border-collapse text-gray-700 text-xs sm:text-sm">
           <thead>
             <tr className="bg-blue-100 text-blue-700 font-semibold text-[11px] sm:text-sm uppercase">
               {[
@@ -136,7 +156,7 @@ const RiwayatPeminjaman = () => {
                 className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200"
               >
                 <td className="p-2 sm:p-3 text-[#3D5B81] font-medium">{p.room.name}</td>
-                <td className="p-2 sm:p-3">{new Date(p.date).toLocaleDateString('id-ID')}</td>
+                <td className="p-2 sm:p-3">{new Date(p.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
                 <td className="p-2 sm:p-3 whitespace-nowrap">{`${p.startTime} - ${p.endTime}`}</td>
                 <td className="p-2 sm:p-3 text-center">{p.participants}</td>
                 <td className="p-2 sm:p-3 truncate max-w-[150px]" title={p.purpose}>{p.purpose}</td>

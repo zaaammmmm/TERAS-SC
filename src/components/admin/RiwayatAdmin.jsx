@@ -8,7 +8,7 @@ const RiwayatAdmin = () => {
   const [approvedBookings, setApprovedBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortColumn, setSortColumn] = useState('date');
+  const [sortColumn, setSortColumn] = useState('createdAt');
   const [sortDirection, setSortDirection] = useState('desc');
 
   const handleSort = (column) => {
@@ -63,6 +63,10 @@ const RiwayatAdmin = () => {
           case 'status':
             aValue = a.status;
             bValue = b.status;
+            break;
+          case 'createdAt':
+            aValue = new Date(a.createdAt);
+            bValue = new Date(b.createdAt);
             break;
           default:
             return 0;
