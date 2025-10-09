@@ -5,10 +5,20 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   server: {
+    // proxy: {
+    //   '/auth': 'http://localhost:5000',
+    //   '/api': 'http://localhost:5000'
+    // },
     proxy: {
-      '/auth': 'http://localhost:5000',
-      '/api': 'http://localhost:5000'
+    '/auth': {
+      target: 'http://express_teras_sc:8000',
+      changeOrigin: true,
     },
+    '/api': {
+      target: 'http://express_teras_sc:8000',
+      changeOrigin: true,
+    }
+  },
 
     host: true,
     allowedHosts: ['terassc.teknohole.com'],
