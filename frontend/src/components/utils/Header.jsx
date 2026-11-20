@@ -36,8 +36,8 @@ const Header = ({ isLandingPage }) => {
   const getLinkProps = (targetTo) => (isLandingPage ? { href: targetTo } : { to: targetTo });
 
   const baseClasses = "w-full px-6 md:px-12 py-4 flex justify-between items-center fixed top-0 left-0 z-50 transition-all duration-300 ease-in-out";
-  const logoColor = isScrolled ? 'text-[#3D5B81]' : 'text-white';
-  const navLinkColor = isScrolled ? 'text-gray-700 hover:text-[#3D5B81]' : 'text-white hover:text-white/80';
+  const logoColor = isScrolled ? 'text-[#155E38]' : 'text-white';
+  const navLinkColor = isScrolled ? 'text-gray-700 hover:text-[#155E38]' : 'text-white hover:text-white/80';
   const headerStyle = isScrolled ? 'bg-white shadow-md' : 'bg-transparent';
   const headerClasses = `${baseClasses} ${headerStyle}`;
 
@@ -51,7 +51,7 @@ const Header = ({ isLandingPage }) => {
 
       {/* Tombol Hamburger (Mobile) */}
       <button
-        className="md:hidden text-2xl focus:outline-none text-[#3D5B81]"
+        className="md:hidden text-2xl focus:outline-none text-[#155E38]"
         onClick={() => setMenuOpen(!menuOpen)}
       >
         {menuOpen ? <FaTimes /> : <FaBars />}
@@ -68,7 +68,7 @@ const Header = ({ isLandingPage }) => {
       {/* Tombol Login (Desktop) */}
       <Link
         to="/login"
-        className="hidden md:inline-block bg-[#3D5B81] text-white px-5 py-2 rounded-md text-sm font-semibold transition-colors hover:bg-[#2e4764] no-underline"
+        className="hidden md:inline-block bg-[#155E38] text-white px-5 py-2 rounded-md text-sm font-semibold transition-colors hover:bg-[#0F4A2C] no-underline"
       >
         Login
       </Link>
@@ -77,14 +77,14 @@ const Header = ({ isLandingPage }) => {
       {menuOpen && (
         <div className="absolute top-[72px] left-0 w-full bg-white shadow-lg md:hidden rounded-b-lg transition-all">
           <nav className="flex flex-col space-y-4 py-5 px-6 text-center">
-            <NavLinkComponent {...getLinkProps(BerandaTo)} onClick={() => setMenuOpen(false)} className="text-[#3D5B81] font-semibold text-base">Beranda</NavLinkComponent>
-            <NavLinkComponent {...getLinkProps(AboutTo)} onClick={() => setMenuOpen(false)} className="text-[#3D5B81] font-semibold text-base">About</NavLinkComponent>
-            <NavLinkComponent {...getLinkProps(TutorialTo)} onClick={() => setMenuOpen(false)} className="text-[#3D5B81] font-semibold text-base">Tutorial</NavLinkComponent>
-            <NavLinkComponent {...getLinkProps(TentangKamiTo)} onClick={() => setMenuOpen(false)} className="text-[#3D5B81] font-semibold text-base">Tentang Kami</NavLinkComponent>
+            <NavLinkComponent {...getLinkProps(BerandaTo)} onClick={() => setMenuOpen(false)} className="text-[#155E38] font-semibold text-base">Beranda</NavLinkComponent>
+            <NavLinkComponent {...getLinkProps(AboutTo)} onClick={() => setMenuOpen(false)} className="text-[#155E38] font-semibold text-base">About</NavLinkComponent>
+            <NavLinkComponent {...getLinkProps(TutorialTo)} onClick={() => setMenuOpen(false)} className="text-[#155E38] font-semibold text-base">Tutorial</NavLinkComponent>
+            <NavLinkComponent {...getLinkProps(TentangKamiTo)} onClick={() => setMenuOpen(false)} className="text-[#155E38] font-semibold text-base">Tentang Kami</NavLinkComponent>
             <Link
               to="/login"
               onClick={() => setMenuOpen(false)}
-              className="bg-[#3D5B81] text-white py-2 rounded-md font-semibold text-base no-underline hover:bg-[#2e4764] transition-colors"
+              className="bg-[#155E38] text-white py-2 rounded-md font-semibold text-base no-underline hover:bg-[#0F4A2C] transition-colors"
             >
               Login
             </Link>

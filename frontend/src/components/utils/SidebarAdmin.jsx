@@ -9,8 +9,8 @@ const SidebarAdmin = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const [logoutMessage, setLogoutMessage] = useState('');
     
-    // Warna Primer Aplikasi: #3D5B81
-    const PRIMARY_COLOR = '#3D5B81';
+    // Warna Primer Aplikasi: #155E38
+    const PRIMARY_COLOR = '#155E38';
     
     const handleLogout = (e) => {
         e.preventDefault();
@@ -36,11 +36,11 @@ const SidebarAdmin = ({ isOpen, onClose }) => {
     const baseLinkClass = "flex items-center gap-3 p-2 rounded-xl text-gray-700 transition-colors duration-200 hover:bg-blue-100 hover:text-blue-700";
     
     // Kelas aktif (Menggunakan string literal untuk memastikan Tailwind JIT bekerja dengan baik)
-    const activeLinkClass = 'bg-[#3D5B81] text-white shadow-lg hover:bg-[#2e4764]'; 
+    const activeLinkClass = 'bg-[#155E38] text-white shadow-lg hover:bg-[#0F4A2C]'; 
 
     const getLinkClass = (path) => {
         // Karena Link/a tag tidak bisa menggunakan variabel di class yang dinamis (seperti bg-[${PRIMARY_COLOR}]), 
-        // kita menggunakan string literal untuk warna primary (#3D5B81) agar Tailwind JIT bekerja.
+        // kita menggunakan string literal untuk warna primary (#155E38) agar Tailwind JIT bekerja.
         return `${baseLinkClass} ${location.pathname === path ? activeLinkClass : ''}`;
     };
 

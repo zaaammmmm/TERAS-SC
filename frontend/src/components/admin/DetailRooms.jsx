@@ -16,7 +16,7 @@ const DetailRooms = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const PRIMARY_COLOR = '#3D5B81';
+    const PRIMARY_COLOR = '#155E38';
 
     const getFormattedDateString = useCallback((dateObj) => {
         if (!dateObj) return '';

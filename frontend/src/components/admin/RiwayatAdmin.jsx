@@ -90,7 +90,7 @@ const RiwayatAdmin = () => {
     return (
       <div className="w-full space-y-6 min-h-full">
         <div className="p-6 rounded-xl bg-white border border-blue-200 shadow-md">
-          <h1 className="text-3xl font-bold text-[#3D5B81]">Riwayat Peminjaman Disetujui</h1>
+          <h1 className="text-3xl font-bold text-[#155E38]">Riwayat Peminjaman Disetujui</h1>
           <div className="text-center py-8">Memuat data riwayat peminjaman...</div>
         </div>
       </div>
@@ -101,7 +101,7 @@ const RiwayatAdmin = () => {
     return (
       <div className="w-full space-y-6 min-h-full">
         <div className="p-6 rounded-xl bg-white border border-blue-200 shadow-md">
-          <h1 className="text-3xl font-bold text-[#3D5B81]">Riwayat Peminjaman Disetujui</h1>
+          <h1 className="text-3xl font-bold text-[#155E38]">Riwayat Peminjaman Disetujui</h1>
           <div className="text-center py-8 text-red-600">{error}</div>
         </div>
       </div>
@@ -111,7 +111,7 @@ const RiwayatAdmin = () => {
   return (
     <div className="w-full space-y-6 min-h-full">
       <div className="p-4 sm:p-6 rounded-xl bg-white border border-blue-200 shadow-md">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#3D5B81]">Riwayat Peminjaman Disetujui</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#155E38]">Riwayat Peminjaman Disetujui</h1>
         <p className="text-gray-600 mt-1 text-sm sm:text-base">
           Riwayat peminjaman ruangan yang telah disetujui oleh admin, diurutkan berdasarkan waktu terbaru.
         </p>

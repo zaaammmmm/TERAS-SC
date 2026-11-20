@@ -14,7 +14,7 @@ const formatDay = (date) => {
 };
 
 const DateNavigator = ({ selectedDate, setSelectedDate }) => {
-    const PRIMARY_COLOR = '#3D5B81';
+    const PRIMARY_COLOR = '#155E38';
 
     const handleDateChange = (days) => {
         const newDate = new Date(selectedDate);
@@ -27,7 +27,7 @@ const DateNavigator = ({ selectedDate, setSelectedDate }) => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-white rounded-xl shadow-lg border border-gray-200 gap-4">
                 
                 {/* Judul */}
-                <h1 className="text-xl sm:text-2xl font-bold text-[#3D5B81] text-center sm:text-left">
+                <h1 className="text-xl sm:text-2xl font-bold text-[#155E38] text-center sm:text-left">
                     Data Penggunaan Ruangan
                 </h1>
 
@@ -39,7 +39,7 @@ const DateNavigator = ({ selectedDate, setSelectedDate }) => {
                         {/* Tombol kiri di atas kalender */}
                         <button
                             onClick={() => handleDateChange(-1)}
-                            className="absolute left-2 bg-[#3D5B81] text-white p-2 rounded-lg shadow-md hover:bg-[#2e4764] transition"
+                            className="absolute left-2 bg-[#155E38] text-white p-2 rounded-lg shadow-md hover:bg-[#0F4A2C] transition"
                         >
                             <FaAngleLeft className="w-4 h-4" />
                         </button>
@@ -55,7 +55,7 @@ const DateNavigator = ({ selectedDate, setSelectedDate }) => {
                         {/* Tombol kanan di atas kalender */}
                         <button
                             onClick={() => handleDateChange(1)}
-                            className="absolute right-2 bg-[#3D5B81] text-white p-2 rounded-lg shadow-md hover:bg-[#2e4764] transition"
+                            className="absolute right-2 bg-[#155E38] text-white p-2 rounded-lg shadow-md hover:bg-[#0F4A2C] transition"
                         >
                             <FaAngleRight className="w-4 h-4" />
                         </button>
@@ -66,7 +66,7 @@ const DateNavigator = ({ selectedDate, setSelectedDate }) => {
                         {/* Tombol Kiri */}
                         <button
                             onClick={() => handleDateChange(-1)}
-                            className="p-3 rounded-xl bg-[#3D5B81] text-white transition-colors hover:bg-[#2e4764] shadow-md"
+                            className="p-3 rounded-xl bg-[#155E38] text-white transition-colors hover:bg-[#0F4A2C] shadow-md"
                         >
                             <FaAngleLeft className="w-5 h-5" />
                         </button>
@@ -88,7 +88,7 @@ const DateNavigator = ({ selectedDate, setSelectedDate }) => {
                         {/* Tombol Kanan */}
                         <button
                             onClick={() => handleDateChange(1)}
-                            className="p-3 rounded-xl bg-[#3D5B81] text-white transition-colors hover:bg-[#2e4764] shadow-md"
+                            className="p-3 rounded-xl bg-[#155E38] text-white transition-colors hover:bg-[#0F4A2C] shadow-md"
                         >
                             <FaAngleRight className="w-5 h-5" />
                         </button>

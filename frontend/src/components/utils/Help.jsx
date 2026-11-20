@@ -13,7 +13,7 @@ const Help = () => {
         jurusan: '',
         tujuan: ''
     });
-    const PRIMARY_COLOR = '#3D5B81';
+    const PRIMARY_COLOR = '#155E38';
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,7 +71,7 @@ const Help = () => {
 
             {/* Kontainer Utama Form */}
             <div className="bg-white p-4 sm:p-8 rounded-xl shadow-2xl border border-gray-200">
-                <h2 className={`text-xl sm:text-2xl font-bold text-[#3D5B81] mb-6 border-b border-gray-200 pb-3`}>
+                <h2 className={`text-xl sm:text-2xl font-bold text-[#155E38] mb-6 border-b border-gray-200 pb-3`}>
                     Formulir Pengaduan atau Pertanyaan
                 </h2>
                 
@@ -137,7 +137,7 @@ const Help = () => {
                     {/* Tombol Kirim */}
                     <button 
                         type="submit" 
-                        className={`bg-[${PRIMARY_COLOR}] text-white p-3 rounded-lg text-lg font-semibold transition-colors hover:bg-[#2e4764] shadow-md mt-3`}
+                        className={`bg-[${PRIMARY_COLOR}] text-white p-3 rounded-lg text-lg font-semibold transition-colors hover:bg-[#0F4A2C] shadow-md mt-3`}
                     >
                         Kirim Laporan
                     </button>

@@ -9,7 +9,7 @@ import DateNavigator from '../utils/DateNavigator';
 const AdminRoomCard = ({ room, selectedDate, bookings }) => {
   // ... (kode AdminRoomCard tidak berubah, karena sudah menggunakan bookings dari props)
   const navigate = useNavigate();
-  const PRIMARY_COLOR = '#3D5B81';
+  const PRIMARY_COLOR = '#155E38';
 
   // Define the time slots for display
   const timeSlots = [
@@ -80,7 +80,7 @@ const AdminRoomCard = ({ room, selectedDate, bookings }) => {
 
       <button
         onClick={() => navigate(`/admin/detail`, { state: { room, selectedDate } })}
-        className={`w-32 h-10 bg-[${PRIMARY_COLOR}] rounded-lg text-white text-sm sm:text-base font-bold transition-colors hover:bg-[#2e4764] flex items-center justify-center ml-4 flex-shrink-0 max-md:w-full max-md:mt-4`}
+        className={`w-32 h-10 bg-[${PRIMARY_COLOR}] rounded-lg text-white text-sm sm:text-base font-bold transition-colors hover:bg-[#0F4A2C] flex items-center justify-center ml-4 flex-shrink-0 max-md:w-full max-md:mt-4`}
       >
         Detail
       </button>
@@ -89,7 +89,7 @@ const AdminRoomCard = ({ room, selectedDate, bookings }) => {
 };
 
 const RoomsAdmin = () => {
-  const PRIMARY_COLOR = '#3D5B81';
+  const PRIMARY_COLOR = '#155E38';
   const [selectedDate, setSelectedDate] = useState(new Date());
   // Mengambil bookings (state global) dari context
   const { bookings } = useBookings();

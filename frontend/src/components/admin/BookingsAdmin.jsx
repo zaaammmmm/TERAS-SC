@@ -129,7 +129,7 @@ const BookingsAdmin = () => {
     return (
       <div className="w-full space-y-6 min-h-full">
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-          <h1 className="text-3xl font-bold text-[#3D5B81] mb-6">
+          <h1 className="text-3xl font-bold text-[#155E38] mb-6">
             Kelola Peminjaman
           </h1>
           <div className="text-center py-8">Memuat data peminjaman...</div>
@@ -142,7 +142,7 @@ const BookingsAdmin = () => {
     return (
       <div className="w-full space-y-6 min-h-full">
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-          <h1 className="text-3xl font-bold text-[#3D5B81] mb-6">
+          <h1 className="text-3xl font-bold text-[#155E38] mb-6">
             Kelola Peminjaman
           </h1>
           <div className="text-center py-8 text-red-600">{error}</div>
@@ -155,7 +155,7 @@ const BookingsAdmin = () => {
     <div className="w-full space-y-6 min-h-full">
       {/* Header */}
       <div className="p-4 sm:p-6 rounded-xl bg-white border border-blue-200 shadow-md">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#3D5B81]">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#155E38]">
           Kelola Peminjaman
         </h1>
         <p className="text-gray-600 mt-1 text-sm sm:text-base">
@@ -261,7 +261,7 @@ const BookingsAdmin = () => {
                 {filteredBookings.map((booking) => (
                   <tr key={booking._id} className="border-b hover:bg-gray-50">
                     <td className="p-3 whitespace-nowrap">{booking.user.name}</td>
-                    <td className="p-3 font-medium text-[#3D5B81] whitespace-nowrap">
+                    <td className="p-3 font-medium text-[#155E38] whitespace-nowrap">
                       {booking.room.name}
                     </td>
                     <td className="p-3 whitespace-nowrap">

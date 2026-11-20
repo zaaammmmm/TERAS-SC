@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useBookings } from '../../contexts/BookingContext';
 
 const Dashboard = () => {
-  const PRIMARY_COLOR = '#3D5B81';
+  const PRIMARY_COLOR = '#155E38';
   const MAX_VALUE_CHART = 50;
 
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
 
       {/* Header / Kartu Selamat Datang */}
       <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#3D5B81]">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#155E38]">
           Dashboard {user?.name || 'Pengguna'}
         </h1>
         <p className="text-gray-500 mt-1 text-sm sm:text-base">
@@ -80,12 +80,12 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
 
         {/* Card 1: Total Semua Reservasi (Warna Primer) */}
-        <div className={`bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-[#3D5B81] flex items-center justify-between`}>
+        <div className={`bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-[#155E38] flex items-center justify-between`}>
           <div>
             <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">Total Reservasi Anda</h3>
             <p className="text-2xl sm:text-3xl font-bold text-gray-800">{!isLoaded ? '...' : stats.total}</p>
           </div>
-          <FaCalendarAlt className="text-3xl sm:text-4xl text-[#3D5B81] opacity-30" />
+          <FaCalendarAlt className="text-3xl sm:text-4xl text-[#155E38] opacity-30" />
         </div>
 
         {/* Card 2: Menunggu Persetujuan (Warna Kuning) */}
@@ -112,11 +112,11 @@ const Dashboard = () => {
 
   {/* Header */}
   <div className="mb-4 sm:mb-6 border-b pb-3 sm:pb-4">
-    <div className="text-lg sm:text-xl font-bold text-[#3D5B81]">
+    <div className="text-lg sm:text-xl font-bold text-[#155E38]">
       Statistik Penggunaan Ruangan Bulanan
     </div>
     <div className="flex items-center text-xs sm:text-sm text-gray-700 mt-2">
-      <span className="w-2 h-2 bg-[#3D5B81] border border-white rounded-full mr-2"></span>
+      <span className="w-2 h-2 bg-[#155E38] border border-white rounded-full mr-2"></span>
       Penggunaan di Bulan Terakhir
     </div>
   </div>
@@ -149,7 +149,7 @@ const Dashboard = () => {
                   <div key={index} className="flex items-center">
                     <div className="w-full h-5 sm:h-6 bg-gray-200 rounded-sm overflow-hidden">
                       <div
-                        className="h-full bg-[#3D5B81] transition-all duration-700"
+                        className="h-full bg-[#155E38] transition-all duration-700"
                         style={{ width: `${widthPercent}%` }}
                       ></div>
                     </div>

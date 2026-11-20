@@ -5,7 +5,7 @@ import { BarChart3, CalendarCheck, Clock } from 'lucide-react';
 import { useBookings } from '../../contexts/BookingContext';
 
 const DashboardAdmin = () => {
-    const PRIMARY_COLOR = '#3D5B81';
+    const PRIMARY_COLOR = '#155E38';
     const MAX_VALUE_CHART = 1000;
 
     const { getBookingStats } = useBookings();
@@ -78,7 +78,7 @@ const DashboardAdmin = () => {
             
             {/* Header / Kartu Selamat Datang */}
             <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#3D5B81]">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#155E38]">
                     Dashboard Administrator
                 </h1>
                 <p className="text-gray-500 mt-1 text-sm sm:text-base">
@@ -90,12 +90,12 @@ const DashboardAdmin = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 
                 {/* Card 1: Total Semua Reservasi */}
-                <div className={`bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#3D5B81] flex items-center justify-between`}>
+                <div className={`bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#155E38] flex items-center justify-between`}>
                     <div>
                         <h3 className="text-gray-600 text-sm font-medium mb-1">Total Semua Reservasi</h3>
                         <p className="text-3xl font-bold text-gray-800">{!isLoaded ? '...' : stats.total}</p>
                     </div>
-                    <CalendarCheck className="w-10 h-10 text-[#3D5B81] opacity-30" />
+                    <CalendarCheck className="w-10 h-10 text-[#155E38] opacity-30" />
                 </div>
 
                 {/* Card 2: Menunggu Persetujuan */}
@@ -124,9 +124,9 @@ const DashboardAdmin = () => {
             <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
                 
                 <div className="mb-4 sm:mb-6 border-b pb-4">
-                    <div className="text-lg sm:text-xl font-bold text-[#3D5B81]">Statistik Penggunaan Ruangan Bulanan</div>
+                    <div className="text-lg sm:text-xl font-bold text-[#155E38]">Statistik Penggunaan Ruangan Bulanan</div>
                     <div className="flex items-center text-xs sm:text-sm text-gray-700 mt-2">
-                        <span className={`w-2 h-2 bg-[#3D5B81] border border-white rounded-full mr-2`}></span>
+                        <span className={`w-2 h-2 bg-[#155E38] border border-white rounded-full mr-2`}></span>
                         Penggunaan di Bulan Terakhir
                     </div>
                 </div>
@@ -160,7 +160,7 @@ const DashboardAdmin = () => {
                                                 <div key={index} className="h-6 flex items-center">
                                                     <div className="w-full h-6 bg-gray-200 rounded-sm overflow-hidden">
                                                         <div
-                                                            className={`h-full bg-[#3D5B81] transition-all duration-700`}
+                                                            className={`h-full bg-[#155E38] transition-all duration-700`}
                                                             style={{ width: `${widthPercent}%` }}
                                                         ></div>
                                                     </div>

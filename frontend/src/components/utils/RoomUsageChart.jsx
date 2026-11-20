@@ -11,7 +11,7 @@ const RoomUsageChart = ({ data }) => {
     <div className="bg-white p-8 rounded-xl shadow-lg shadow-black/5 mb-8 border border-gray-200">
       
       {/* .chart-title */}
-      <h3 className="text-[#3D5B81] text-2xl font-bold mb-1">
+      <h3 className="text-[#155E38] text-2xl font-bold mb-1">
         Statistik Penggunaan Ruangan (Bulan Ini)
       </h3>
       
@@ -39,14 +39,14 @@ const RoomUsageChart = ({ data }) => {
                 {/* .bar-wrapper -> flex-grow bg-blue-100 h-5 rounded-sm overflow-hidden */}
                 <div className="flex-grow bg-blue-100 h-5 rounded-sm overflow-hidden">
                   <div 
-                    // .bar-fill -> h-full bg-[#3D5B81] transition-width
-                    className="h-full bg-[#3D5B81] rounded-sm transition-all duration-700 ease-out" 
+                    // .bar-fill -> h-full bg-[#155E38] transition-width
+                    className="h-full bg-[#155E38] rounded-sm transition-all duration-700 ease-out" 
                     style={{ width: `${(item.usage / maxUsage) * 100}%` }}
                   ></div>
                 </div>
                 
                 {/* .usage-count-value */}
-                <span className="font-bold text-[#3D5B81] min-w-[30px] text-right text-sm">
+                <span className="font-bold text-[#155E38] min-w-[30px] text-right text-sm">
                   {item.usage}
                 </span> 
               </div>

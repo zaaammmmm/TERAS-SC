@@ -6,7 +6,7 @@ import { FaBars } from 'react-icons/fa';
 import Logo from '../../assets/logo.png'; // Pastikan path ini sesuai
 
 const HeaderAdmin = ({ sidebarOpen, onToggleSidebar }) => {
-  const PRIMARY_COLOR = '#3D5B81';
+  const PRIMARY_COLOR = '#155E38';
 
   const baseClasses = "w-full px-4 sm:px-12 py-4 flex justify-between items-center fixed top-0 left-0 z-10 transition-all duration-300 ease-in-out box-border";
 
@@ -29,7 +29,7 @@ const HeaderAdmin = ({ sidebarOpen, onToggleSidebar }) => {
       <div className="flex items-center space-x-6">
         <button
           onClick={onToggleSidebar}
-          className="text-gray-700 hover:text-[#3D5B81] md:hidden"
+          className="text-gray-700 hover:text-[#155E38] md:hidden"
         >
           <FaBars className="w-6 h-6" />
         </button>

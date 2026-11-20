@@ -160,7 +160,7 @@ const FormPeminjaman = () => {
   return (
     <div className="w-full space-y-6 min-h-full">
       <div className="p-4 sm:p-6 rounded-xl bg-white border border-blue-200 shadow-md">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#3D5B81]">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#155E38]">
           Ajukan Peminjaman Ruangan
         </h1>
         <p className="text-gray-600 mt-1 mb-6 text-sm sm:text-base">
@@ -178,7 +178,7 @@ const FormPeminjaman = () => {
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
           <div className="flex gap-5 w-full flex-col md:flex-row">
             <div className="flex flex-col flex-1">
-              <label htmlFor="room" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+              <label htmlFor="room" className="font-semibold text-[#155E38] mb-1 text-sm sm:text-base">
                 Pilih Ruangan
               </label>
               <select
@@ -202,7 +202,7 @@ const FormPeminjaman = () => {
             </div>
 
             <div className="flex flex-col flex-1">
-              <label htmlFor="capacity" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+              <label htmlFor="capacity" className="font-semibold text-[#155E38] mb-1 text-sm sm:text-base">
                 Jumlah Peserta
               </label>
               <input
@@ -220,7 +220,7 @@ const FormPeminjaman = () => {
 
           <div className="flex gap-5 w-full flex-col md:flex-row">
             <div className="flex flex-col flex-1">
-              <label htmlFor="date" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+              <label htmlFor="date" className="font-semibold text-[#155E38] mb-1 text-sm sm:text-base">
                 Tanggal Peminjaman
               </label>
               <input
@@ -235,7 +235,7 @@ const FormPeminjaman = () => {
             </div>
 
             <div className="flex flex-col flex-1">
-              <label htmlFor="timeSlot" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+              <label htmlFor="timeSlot" className="font-semibold text-[#155E38] mb-1 text-sm sm:text-base">
                 Waktu Peminjaman
               </label>
               <select
@@ -257,7 +257,7 @@ const FormPeminjaman = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label htmlFor="purpose" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+            <label htmlFor="purpose" className="font-semibold text-[#155E38] mb-1 text-sm sm:text-base">
               Tujuan Kegiatan
             </label>
             <textarea
@@ -273,7 +273,7 @@ const FormPeminjaman = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label htmlFor="peminjam" className="font-semibold text-[#3D5B81] mb-1 text-sm sm:text-base">
+            <label htmlFor="peminjam" className="font-semibold text-[#155E38] mb-1 text-sm sm:text-base">
               Nama Pemohon
             </label>
             <input
@@ -291,7 +291,7 @@ const FormPeminjaman = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-[#3D5B81] text-white p-4 rounded-lg text-lg font-semibold mt-3 transition-colors duration-300 hover:bg-[#2e4764] shadow-md disabled:opacity-50"
+            className="bg-[#155E38] text-white p-4 rounded-lg text-lg font-semibold mt-3 transition-colors duration-300 hover:bg-[#0F4A2C] shadow-md disabled:opacity-50"
           >
             {loading ? 'Mengajukan...' : 'Ajukan Peminjaman'}
           </button>

@@ -32,7 +32,7 @@ const SidebarUser = ({ isOpen, onClose }) => {
 
   const baseLinkClass =
     'flex items-center gap-3 p-2 rounded-xl text-gray-700 transition-colors duration-200 hover:bg-blue-100 hover:text-blue-700';
-  const activeLinkClass = 'bg-[#3D5B81] text-white shadow-lg hover:bg-[#2e4764]';
+  const activeLinkClass = 'bg-[#155E38] text-white shadow-lg hover:bg-[#0F4A2C]';
 
   const getLinkClass = (path) => {
     return `${baseLinkClass} ${location.pathname === path ? activeLinkClass : ''}`;

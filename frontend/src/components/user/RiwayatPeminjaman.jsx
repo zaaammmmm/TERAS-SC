@@ -70,7 +70,7 @@ const RiwayatPeminjaman = () => {
   if (loading) {
     return (
       <div className="p-6 bg-white rounded-xl shadow-lg w-full">
-        <h2 className="text-3xl font-bold text-[#3D5B81] mb-6">Riwayat Peminjaman</h2>
+        <h2 className="text-3xl font-bold text-[#155E38] mb-6">Riwayat Peminjaman</h2>
         <div className="text-center py-8">Memuat riwayat peminjaman...</div>
       </div>
     );
@@ -79,7 +79,7 @@ const RiwayatPeminjaman = () => {
   if (error) {
     return (
       <div className="p-6 bg-white rounded-xl shadow-lg w-full">
-        <h2 className="text-3xl font-bold text-[#3D5B81] mb-6">Riwayat Peminjaman</h2>
+        <h2 className="text-3xl font-bold text-[#155E38] mb-6">Riwayat Peminjaman</h2>
         <div className="text-center py-8 text-red-600">{error}</div>
       </div>
     );
@@ -90,7 +90,7 @@ const RiwayatPeminjaman = () => {
 
       {/* Header */}
       <div className="p-4 sm:p-6 rounded-xl bg-white border border-blue-200 shadow-md">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#3D5B81]">Riwayat Peminjaman</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#155E38]">Riwayat Peminjaman</h1>
         <p className="text-gray-600 mt-1 text-sm sm:text-base">
           Riwayat peminjaman terlampir berdasarkan data terbaru
         </p>
@@ -135,7 +135,7 @@ const RiwayatPeminjaman = () => {
                 key={p._id}
                 className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200"
               >
-                <td className="p-2 sm:p-3 text-[#3D5B81] font-medium">{p.room.name}</td>
+                <td className="p-2 sm:p-3 text-[#155E38] font-medium">{p.room.name}</td>
                 <td className="p-2 sm:p-3">{new Date(p.date).toLocaleDateString('id-ID')}</td>
                 <td className="p-2 sm:p-3 whitespace-nowrap">{`${p.startTime} - ${p.endTime}`}</td>
                 <td className="p-2 sm:p-3 text-center">{p.participants}</td>

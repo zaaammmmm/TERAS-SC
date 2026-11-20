@@ -1,50 +1,130 @@
-/* file: src/index.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* --- DIRECTIVES TAILWIND --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ========================================================
-   CUSTOM COMPONENTS (Mengganti CSS Sidebar & Status Badge)
-   ======================================================== */
+:root {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #14261B;
+  background: #F8FAFC;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --sc-primary: #155E38;
+  --sc-primary-dark: #0F4A2C;
+  --sc-primary-soft: #E4F1E8;
+  --sc-gold: #C59B27;
+  --sc-page: #F8FAFC;
+  --sc-ink: #14261B;
+  --sc-muted: #44574B;
+  --sc-border: #E3EAE5;
+  --sc-surface: #FFFFFF;
+  --sc-radius-sm: 6px;
+  --sc-radius-md: 10px;
+  --sc-radius-lg: 16px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; min-height: 100vh; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--sc-page); color: var(--sc-ink); font-size: 14px; }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+#root { min-height: 100vh; }
 
 @layer components {
-    /* Sidebar Navigation Links */
-    .sidebar-link {
-        /* Default state */
-        @apply flex items-center px-2 py-3 text-gray-700 font-medium text-base rounded-md transition-all duration-200;
-    }
-    .sidebar-link:hover {
-        @apply bg-blue-50 text-[#3D5B81]; /* Menggunakan warna primary */
-    }
-    .sidebar-link.active {
-        @apply bg-[#3D5B81] text-white font-semibold;
-    }
-    .sidebar-link.logout {
-        @apply mt-4 text-red-600; /* Margin-top + warna merah */
-    }
-
-    /* Status Badges for RiwayatPeminjaman */
-    .status-badge {
-        @apply px-2 py-1 rounded-md text-xs font-semibold uppercase;
-    }
-    .status-diterima {
-        @apply bg-green-100 text-green-800;
-    }
-    .status-ditolak {
-        @apply bg-red-100 text-red-800;
-    }
-    .status-menunggu {
-        @apply bg-yellow-100 text-yellow-800;
-    }
+  .sidebar-link { @apply flex items-center px-3 py-3 font-semibold text-sm rounded-lg transition-colors duration-200; color: var(--sc-muted); }
+  .sidebar-link:hover { background: var(--sc-primary-soft); color: var(--sc-primary); }
+  .sidebar-link.active { background: var(--sc-primary); color: white; }
+  .sidebar-link.logout { @apply mt-4 text-red-700; }
+  .status-badge { @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold; }
+  .status-diterima { background: #E7F4EB; color: #1B7A43; }
+  .status-ditolak { background: #FCE9E7; color: #B3261E; }
+  .status-menunggu { background: #FFF2E5; color: #A8540A; }
 }
 
-/* GLOBAL STYLES */
-body {
-  font-family: 'Poppins', sans-serif; 
+/* Global component language: quiet surfaces, thin borders, restrained elevation. */
+[class*="shadow-"] { --tw-shadow: 0 1px 3px 0 rgb(20 38 27 / .06), 0 1px 2px -1px rgb(20 38 27 / .05) !important; box-shadow: var(--tw-shadow) !important; }
+[class*="rounded-xl"] { border-radius: var(--sc-radius-lg) !important; }
+[class*="rounded-2xl"] { border-radius: var(--sc-radius-lg) !important; }
+[class*="rounded-lg"] { border-radius: var(--sc-radius-md) !important; }
+[class*="border-gray-200"], [class*="border-blue-200"] { border-color: var(--sc-border) !important; }
+[class*="bg-indigo-50"], [class*="bg-blue-50"] { background-color: var(--sc-page) !important; }
+[class*="bg-blue-100"], [class*="bg-indigo-100"] { background-color: var(--sc-primary-soft) !important; }
+[class*="text-blue-700"], [class*="text-indigo-700"], [class*="text-blue-600"] { color: var(--sc-primary) !important; }
+[class*="hover:bg-blue-100"]:hover, [class*="hover:bg-blue-200"]:hover { background-color: var(--sc-primary-soft) !important; }
+[class*="hover:text-blue-700"]:hover { color: var(--sc-primary) !important; }
+
+input, select, textarea { color: var(--sc-ink); }
+input:focus, select:focus, textarea:focus { outline: 2px solid #1C5DA8 !important; outline-offset: 1px; border-color: #1C5DA8 !important; }
+
+/* Public landing page */
+.landing-page-container { overflow: clip; background: var(--sc-page); }
+.landing-page-container > section:first-of-type { min-height: min(760px, 92vh); height: 760px; max-height: 92vh; background-position: center 42%; }
+.landing-page-container > section:first-of-type > div { background: linear-gradient(90deg, rgb(10 35 22 / .78), rgb(10 35 22 / .38)); text-align: left; justify-content: flex-start; padding: clamp(24px, 8vw, 112px); }
+.landing-page-container > section:first-of-type > div > div { max-width: 720px; }
+.landing-page-container > section:first-of-type h1 { max-width: 680px; font-size: clamp(2.5rem, 5.4vw, 4.5rem); line-height: 1.08; letter-spacing: -.055em; }
+.landing-page-container > section:first-of-type p { max-width: 570px; margin-left: 0; line-height: 1.8; color: rgb(255 255 255 / .86); }
+.landing-page-container > section:first-of-type button { background: var(--sc-primary); color: white; border-radius: 10px; box-shadow: none; font-size: 14px; padding: 14px 22px; }
+.landing-page-container > section:first-of-type button:hover { background: var(--sc-primary-dark); }
+.landing-page-container #about { min-height: 480px; height: auto; gap: clamp(32px, 7vw, 96px); padding: 96px max(7vw, 24px); }
+.landing-page-container #about h2 { color: var(--sc-primary); letter-spacing: -.04em; }
+.landing-page-container #about p { max-width: 600px; font-size: 16px; line-height: 1.9; color: var(--sc-muted); }
+.landing-page-container #about img { border-radius: 16px; }
+.landing-page-container #tutorial { height: auto; min-height: 580px; padding: 88px max(6vw, 24px); background: var(--sc-primary-dark); }
+.landing-page-container #tutorial > h3 { letter-spacing: -.04em; }
+.landing-page-container #tutorial > p { font-size: 14px; font-style: normal; color: rgb(255 255 255 / .72); margin-bottom: 44px; }
+.landing-page-container #tutorial > div > div { border: 1px solid rgb(255 255 255 / .5); border-radius: 12px; box-shadow: none; padding: 26px; }
+.landing-page-container #tutorial > div > div > span { width: 52px; height: 52px; border-radius: 12px; background: var(--sc-primary-soft); }
+.landing-page-container #tutorial > div > div > span img { width: 30px; height: 30px; }
+.landing-page-container #tutorial h4 { font-size: 16px; color: var(--sc-ink); }
+.landing-page-container #tutorial p { font-size: 13px; line-height: 1.7; }
+.landing-page-container footer { background: #0F4A2C; }
+
+/* Auth and app shell */
+body:has(.min-h-screen.bg-\[\#F8FAFC\]) { background: var(--sc-page); }
+header { border-bottom: 1px solid var(--sc-border); }
+header a { text-decoration: none; }
+main { min-width: 0; }
+main h1 { letter-spacing: -.035em; }
+main > div { min-width: 0; }
+main [class*="bg-white"][class*="border"] { box-shadow: 0 1px 2px rgb(20 38 27 / .035) !important; }
+main table thead tr { background: var(--sc-primary-soft) !important; color: var(--sc-primary) !important; }
+main table th { font-size: 12px; letter-spacing: .025em; }
+main table td { font-size: 13px; }
+
+@media (max-width: 768px) {
+  .landing-page-container > section:first-of-type { height: 680px; max-height: 90vh; min-height: 560px; }
+  .landing-page-container > section:first-of-type > div { padding: 28px 24px; }
+  .landing-page-container #about { padding: 64px 24px; }
+  .landing-page-container #about > div:last-child { width: 100%; max-width: 480px; height: 260px; }
+  .landing-page-container #tutorial { padding: 64px 24px; }
+  .landing-page-container #tutorial > div { gap: 14px; }
+  main { padding: 20px 16px !important; }
 }
-html {
-  scroll-behavior: smooth;
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* The guide sets 12px as the absolute lower bound for readable UI text. */
+[class*="text-[10px]"], [class*="text-[11px]"] { font-size: 12px !important; }
+
+/* Reusable status colors from the campus design guide. */
+[class*="bg-yellow-100"], [class*="bg-amber-100"] { background: #FFF2E5 !important; }
+[class*="text-yellow-700"], [class*="text-amber-700"] { color: #A8540A !important; }
+[class*="bg-green-100"] { background: #E7F4EB !important; }
+[class*="text-green-700"], [class*="text-green-800"] { color: #1B7A43 !important; }
+[class*="bg-red-100"] { background: #FCE9E7 !important; }
+[class*="text-red-700"], [class*="text-red-800"] { color: #B3261E !important; }
+[class*="bg-gray-100"] { background: #EEF2EF !important; }
+[class*="text-gray-500"], [class*="text-gray-600"] { color: var(--sc-muted) !important; }
+
+.app-shell { background: var(--sc-page); }
+.app-shell > div:last-child { align-items: stretch; }
+.app-shell header { min-height: 76px; padding-top: 14px; padding-bottom: 14px; box-shadow: 0 1px 3px rgb(20 38 27 / .05) !important; }
+.app-shell header img { height: 34px; width: auto; object-fit: contain; }
+.app-shell aside, .app-shell [class*="max-w-[280px]"] { border-color: var(--sc-border) !important; }
+.app-shell nav a { border-radius: 8px; font-size: 13px; }
+.app-shell nav a[class*="bg-[#155E38]"] { box-shadow: none !important; }

@@ -12,7 +12,7 @@ const DetailRoomUser = () => {
   const { room, selectedDate } = location.state || {};
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const PRIMARY_COLOR = '#3D5B81';
+  const PRIMARY_COLOR = '#155E38';
 
   const getFormattedDateString = useCallback((dateObj) => {
     if (!dateObj) return '';
@@ -89,7 +89,7 @@ const DetailRoomUser = () => {
         <div className="flex items-center mb-4">
           <button
             onClick={() => navigate('/ruangan')}
-            className="text-gray-600 hover:text-[#3D5B81] transition-colors text-lg sm:text-xl mr-3"
+            className="text-gray-600 hover:text-[#155E38] transition-colors text-lg sm:text-xl mr-3"
           >
             <FaArrowLeft />
           </button>
@@ -162,7 +162,7 @@ const DetailRoomUser = () => {
                 className="p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
               >
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-sm font-bold text-[#3D5B81]">
+                  <h3 className="text-sm font-bold text-[#155E38]">
                     {b.room?.name}
                   </h3>
                   <span
