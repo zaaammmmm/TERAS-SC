@@ -1,38 +1,32 @@
-// file: src/components/HeaderAdmin.jsx (KODE UTUH & REVISI)
+import { Link, useLocation } from 'react-router-dom';
+import { Bell, Menu } from 'lucide-react';
+import Logo from '../../assets/logo.png';
 
-import { Link } from 'react-router-dom';
-// Mengganti ikon FaHeadset dengan FaQuestionCircle (ikon bantuan)
-import { FaBars } from 'react-icons/fa';
-import Logo from '../../assets/logo.png'; // Pastikan path ini sesuai
+const PAGE_TITLES = {
+  '/admin/dashboard': 'Ringkasan',
+  '/admin/rooms': 'Manajemen ruangan',
+  '/admin/bookings': 'Kelola peminjaman',
+  '/admin/riwayat': 'Riwayat reservasi',
+  '/admin/detail': 'Detail jadwal ruangan',
+  '/detailRuanganAdmin': 'Detail ruangan',
+};
 
-const HeaderAdmin = ({ sidebarOpen, onToggleSidebar }) => {
-  const PRIMARY_COLOR = '#155E38';
-
-  const baseClasses = "w-full px-4 sm:px-12 py-4 flex justify-between items-center fixed top-0 left-0 z-10 transition-all duration-300 ease-in-out box-border";
+const HeaderAdmin = ({ onToggleSidebar }) => {
+  const location = useLocation();
+  const title = PAGE_TITLES[location.pathname] || 'Administrator';
 
   return (
-    // Header selalu solid
-    <header className={`${baseClasses} bg-white shadow-lg shadow-black/10`}>
-
-      {/* Kiri: Logo */}
-      <div className="flex items-center">
-        <Link to="/" className={`text-xl font-bold flex items-center no-underline text-[${PRIMARY_COLOR}]`}>
-          <img src={Logo} alt="Teras SC Logo" className="h-9 mr-2" />
-          Teras SC
-        </Link>
+    <header className="admin-topbar">
+      <div className="admin-topbar-left">
+        <button type="button" onClick={onToggleSidebar} className="admin-mobile-menu" aria-label="Buka navigasi"><Menu size={21} /></button>
+        <Link to="/admin/dashboard" className="admin-topbar-brand"><img src={Logo} alt="Teras SC" /><span>TERAS SC</span></Link>
+        <span className="admin-topbar-divider" />
+        <span className="admin-topbar-current">{title}</span>
       </div>
-
-      {/* Tengah: Kosong */}
-      <nav className="flex-grow"></nav>
-
-      {/* Kanan: Hamburger */}
-      <div className="flex items-center space-x-6">
-        <button
-          onClick={onToggleSidebar}
-          className="text-gray-700 hover:text-[#155E38] md:hidden"
-        >
-          <FaBars className="w-6 h-6" />
-        </button>
+      <div className="admin-topbar-right">
+        <span className="admin-topbar-role"><span /> Administrator</span>
+        <Link to="/admin/bookings" className="admin-topbar-notification" aria-label="Lihat pengajuan reservasi"><Bell size={17} /></Link>
+        <span className="admin-topbar-avatar">A</span>
       </div>
     </header>
   );

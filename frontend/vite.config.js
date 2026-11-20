@@ -8,6 +8,8 @@ export default defineConfig({
     proxy: {
       "/auth": "https://backend-terassc.vercel.app",
       "/api": "https://backend-terassc.vercel.app",
+      // "/auth": "https://teras-sc.vercel.app/",
+      // "/api": "https://teras-sc.vercel.app/",
     },
   },
 });

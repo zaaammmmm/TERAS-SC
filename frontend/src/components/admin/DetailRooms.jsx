@@ -1,251 +1,116 @@
-// DetailRooms.jsx (Admin)
 import { useCallback, useEffect, useState } from 'react';
-import { FaArrowLeft, FaCalendarCheck, FaCalendarTimes, FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
+import {
+  ArrowLeft, CalendarDays, Check, Clock3, Mail, MapPin,
+  Users, XCircle,
+} from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useBookings } from '../../contexts/BookingContext';
 
+const formatDate = (value) => new Date(value).toLocaleDateString('id-ID', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+});
+
 const DetailRooms = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { room, selectedDate } = location.state || {};
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { room, selectedDate } = location.state || {};
+  const { getAllBookings: fetchAllBookingsAPI, updateBookingStatus } = useBookings();
+  const [roomBookings, setRoomBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [updatingId, setUpdatingId] = useState('');
+  const [feedback, setFeedback] = useState('');
 
-    // Ambil fungsi API, BUKAN state global bookings.
-    const { getAllBookings: fetchAllBookingsAPI, updateBookingStatus } = useBookings(); 
-    
-    const [roomBookings, setRoomBookings] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const dateKey = selectedDate ? (() => {
+    const date = new Date(selectedDate);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  })() : '';
 
-    const PRIMARY_COLOR = '#155E38';
+  const fetchAndFilterBookings = useCallback(async () => {
+    if (!room || !dateKey) return;
+    try {
+      setLoading(true);
+      setError('');
+      const allBookings = await fetchAllBookingsAPI();
+      const filtered = allBookings.filter((booking) =>
+        booking.room?.name === room.name && String(booking.date || '').slice(0, 10) === dateKey
+      ).sort((a, b) => a.startTime.localeCompare(b.startTime));
+      setRoomBookings(filtered);
+    } catch (err) {
+      setError(err.message || 'Gagal memuat jadwal ruangan.');
+    } finally {
+      setLoading(false);
+    }
+  }, [room, dateKey, fetchAllBookingsAPI]);
 
-    const getFormattedDateString = useCallback((dateObj) => {
-        if (!dateObj) return '';
-        const d = new Date(dateObj);
-        const year = d.getFullYear();
-        const month = `${d.getMonth() + 1}`.padStart(2, '0');
-        const day = `${d.getDate()}`.padStart(2, '0');
-        return [year, month, day].join('-');
-    }, []);
+  useEffect(() => { fetchAndFilterBookings(); }, [fetchAndFilterBookings]);
 
-    const getDisplayDate = useCallback((dateStr) => {
-        if (!dateStr) return '';
-        return new Date(dateStr).toLocaleDateString('id-ID', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
-        });
-    }, []);
+  const handleAction = async (bookingId, status) => {
+    setUpdatingId(bookingId);
+    setError('');
+    setFeedback('');
+    try {
+      await updateBookingStatus(bookingId, status);
+      setFeedback(`Reservasi berhasil ${status.toLowerCase()}.`);
+      await fetchAndFilterBookings();
+    } catch (err) {
+      setError(err.message || 'Gagal memperbarui status reservasi.');
+    } finally {
+      setUpdatingId('');
+    }
+  };
 
-    const formattedDateForComparison = getFormattedDateString(selectedDate);
-    const displayDate = getDisplayDate(formattedDateForComparison);
+  if (!room || !selectedDate) {
+    return <div className="admin-page"><div className="admin-panel admin-detail-empty"><strong>Data ruangan tidak ditemukan</strong><p>Kembali ke daftar ruangan untuk memilih jadwal.</p><button className="admin-button admin-button-primary" onClick={() => navigate('/admin/rooms')}>Kembali ke ruangan</button></div></div>;
+  }
 
-    
-    const fetchAndFilterBookings = useCallback(async () => {
-        if (!room || !selectedDate) return;
-        
-        try {
-            setLoading(true);
-            setError(null);
-            
-            // Panggil API global secara langsung (Admin endpoint)
-            const allBookings = await fetchAllBookingsAPI(); 
-            
-            const filtered = allBookings
-                .filter(
-                    (booking) =>
-                        booking.room?.name === room.name &&
-                        booking.date.split('T')[0] === formattedDateForComparison
-                )
-                .sort((a, b) => a.startTime.localeCompare(b.startTime));
-            
-            setRoomBookings(filtered);
-        } catch (err) {
-            console.error('Error fetching global bookings (Admin):', err);
-            // Tampilkan error otorisasi dari server
-            setError('Gagal memuat data peminjaman. Pastikan Anda terotentikasi sebagai Admin.');
-        } finally {
-            setLoading(false);
-        }
-    }, [room, selectedDate, formattedDateForComparison, fetchAllBookingsAPI]);
+  const pendingCount = roomBookings.filter((booking) => booking.status === 'Menunggu').length;
+  const approvedCount = roomBookings.filter((booking) => booking.status === 'Disetujui').length;
 
-    useEffect(() => {
-        fetchAndFilterBookings();
-    }, [fetchAndFilterBookings]);
+  return (
+    <div className="admin-page">
+      <button type="button" className="admin-back-link" onClick={() => navigate('/admin/rooms')}><ArrowLeft size={16} /> Kembali ke manajemen ruangan</button>
+      <section className="admin-detail-hero">
+        <div className="admin-detail-cover">{room.image ? <img src={room.image} alt={room.name} /> : <div><span><MapPin size={32} /></span></div>}</div>
+        <div className="admin-detail-info">
+          <span className="admin-eyebrow">JADWAL RUANGAN</span>
+          <h1>{room.name}</h1>
+          <p><MapPin size={15} /> {room.location || 'Student Center'}</p>
+          <div className="admin-detail-date"><CalendarDays size={16} /> {formatDate(selectedDate)}</div>
+        </div>
+        <div className="admin-detail-stats">
+          <div><strong>{roomBookings.length}</strong><span>Total pengajuan</span></div>
+          <div><strong>{pendingCount}</strong><span>Menunggu</span></div>
+          <div><strong>{approvedCount}</strong><span>Disetujui</span></div>
+        </div>
+      </section>
 
+      {(feedback || error) && <div className={`admin-notice ${error ? 'is-error' : ''}`}>{error || feedback}</div>}
 
-    const handleAction = async (bookingId, newStatus) => {
-        try {
-            await updateBookingStatus(bookingId, newStatus);
-            alert(`Reservasi ID ${bookingId} telah diubah menjadi ${newStatus}.`);
-            
-            // Refresh data setelah aksi
-            fetchAndFilterBookings(); 
-        } catch (error) {
-            console.error('Error updating status:', error);
-            alert('Gagal memperbarui status. Silakan coba lagi.');
-        }
-    };
-
-    const getStatusClass = (status) => {
-        switch (status) {
-            case 'Disetujui': return 'bg-green-100 text-green-700';
-            case 'Ditolak': return 'bg-red-100 text-red-700';
-            case 'Menunggu': default: return 'bg-yellow-100 text-yellow-700';
-        }
-    };
-
-    if (!room || !selectedDate) {
-        return (
-             <div className="w-full">
-                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                    <p>
-                        Data tidak ditemukan. Kembali ke{' '}
-                        <button
-                            onClick={() => navigate('/admin/rooms')}
-                            className="text-blue-500 hover:underline"
-                        >
-                            Daftar Ruangan
-                        </button>
-                        .
-                    </p>
-                </div>
-            </div>
-        );
-    }
-    
-    if (loading) {
-         return (
-            <div className="w-full p-6 bg-white rounded-xl shadow-lg border border-gray-200">Memuat data peminjaman...</div>
-        );
-    }
-    
-    if (error) {
-         return (
-            <div className="w-full p-6 bg-white rounded-xl shadow-lg border border-gray-200 text-red-600 font-medium">{error}</div>
-        );
-    }
-
-
-    return (
-        <div className="w-full min-h-full">
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 mb-6">
-                <div className="flex items-center mb-4">
-                    <button
-                        onClick={() => navigate('/admin/rooms')}
-                        className={`text-gray-600 hover:text-[${PRIMARY_COLOR}] transition-colors text-lg sm:text-xl mr-4`}
-                    >
-                        <FaArrowLeft />
-                    </button>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                        Detail Peminjaman Ruangan
-                    </h1>
-                </div>
-
-                <div className="p-4 rounded-lg bg-blue-100 border border-blue-200 shadow-md">
-                    <h2 className="text-xl sm:text-2xl font-bold text-blue-700 mb-2">
-                        Riwayat Booking {room.name}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-gray-700">Tinjau semua pengajuan peminjaman untuk ruangan ini pada tanggal {displayDate}.</p>
-                </div>
-            </div>
-
-            <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-lg w-full">
-                <table className="min-w-full border-collapse">
-                    <thead>
-                        <tr className="bg-blue-100 text-blue-700 font-semibold text-sm uppercase">
-                            <th className="p-3 text-center border-b">ID</th>
-                            <th className="p-3 text-left border-b">Waktu</th>
-                            <th className="p-3 text-left border-b">Peminjam</th>
-                            <th className="p-3 text-left border-b">Email</th>
-                            <th className="p-3 text-left border-b">Keperluan</th>
-                            <th className="p-3 text-center border-b">Status</th>
-                            <th className="p-2 sm:p-3 text-center border-b min-w-[150px] sm:min-w-[180px]">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {roomBookings.length > 0 ? (
-                            roomBookings.map((b) => (
-                                <tr
-                                    key={b._id}
-                                    className="border-b hover:bg-gray-50 transition-colors"
-                                >
-                                    <td className="p-3 text-center text-sm font-medium text-gray-600">
-                                        {b._id.slice(-5)}
-                                    </td>
-                                    <td className="p-3 text-left text-sm">
-                                        {b.startTime} - {b.endTime}
-                                    </td>
-                                    <td className="p-3 text-left text-sm font-medium">
-                                        {b.user.name}
-                                    </td>
-                                    <td className="p-3 text-left text-sm">
-                                        {b.user.email}
-                                    </td>
-                                    <td className="p-3 text-left text-sm">
-                                        {b.purpose}
-                                    </td>
-                                    <td className="p-3 text-center">
-                                        <span
-                                            className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusClass(
-                                                b.status
-                                            )}`}
-                                        >
-                                            {b.status}
-                                        </span>
-                                    </td>
-                                    <td className="p-3 text-center min-w-[180px]">
-                                        {b.status === 'Menunggu' ? (
-                                            <div className="flex justify-center space-x-2">
-                                                <button
-                                                    onClick={() => handleAction(b._id, 'Disetujui')}
-                                                    className="flex items-center gap-1 text-xs bg-green-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors hover:bg-green-700 font-bold shadow-sm"
-                                                    title="Setujui Reservasi"
-                                                >
-                                                    <FaCalendarCheck className="w-3 h-3" /> Setujui
-                                                </button>
-                                                <button
-                                                    onClick={() => handleAction(b._id, 'Ditolak')}
-                                                    className="flex items-center gap-1 text-xs bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors hover:bg-red-700 font-bold shadow-sm"
-                                                    title="Tolak Reservasi"
-                                                >
-                                                    <FaCalendarTimes className="w-3 h-3" /> Tolak
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <div className="space-x-2">
-                                                <button
-                                                    title="Edit Detail"
-                                                    className="text-gray-600 hover:text-gray-900 transition-colors"
-                                                >
-                                                    <FaRegEdit className="inline-block w-4 h-4" />
-                                                </button>
-                                                <button
-                                                    title="Hapus Permanen"
-                                                    className="text-red-400 hover:text-red-600 transition-colors"
-                                                >
-                                                    <FaRegTrashAlt className="inline-block w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td
-                                    colSpan="7"
-                                    className="p-3 text-center text-gray-500"
-                                >
-                                    Tidak ada peminjaman untuk ruangan ini pada tanggal{' '}
-                                    {displayDate}.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
+      <section className="admin-panel">
+        <div className="admin-panel-heading admin-table-heading">
+          <div><span className="admin-eyebrow">DAFTAR PENGGUNAAN</span><h3>Pengajuan pada tanggal ini</h3></div>
+          <span className="admin-panel-chip"><Clock3 size={14} /> Urut berdasarkan waktu mulai</span>
+        </div>
+        {loading ? <div className="admin-table-state"><span className="admin-loader" /> Memuat jadwal…</div>
+          : roomBookings.length ? <div className="admin-booking-timeline">
+            {roomBookings.map((booking) => (
+              <article className="admin-timeline-item" key={booking._id}>
+                <div className="admin-timeline-time"><strong>{booking.startTime}</strong><span>{booking.endTime}</span></div>
+                <div className="admin-timeline-line"><i /></div>
+                <div className="admin-timeline-card">
+                  <div className="admin-timeline-main">
+                    <div className="admin-timeline-title"><div><strong>{booking.purpose || 'Peminjaman ruangan'}</strong><span>{booking.user?.name || 'Pengguna'} · ID #{String(booking._id).slice(-6)}</span></div><span className={`admin-status ${booking.status === 'Disetujui' ? 'approved' : booking.status === 'Ditolak' ? 'rejected' : 'pending'}`}><i />{booking.status}</span></div>
+                    <div className="admin-timeline-meta"><span><Mail size={13} /> {booking.user?.email || 'Email tidak tersedia'}</span><span><Users size={13} /> {booking.participants ?? '—'} peserta</span></div>
+                  </div>
+                  {booking.status === 'Menunggu' && <div className="admin-row-actions"><button type="button" className="admin-approve-button" disabled={updatingId === booking._id} onClick={() => handleAction(booking._id, 'Disetujui')}><Check size={14} /> Setujui</button><button type="button" className="admin-reject-button" disabled={updatingId === booking._id} onClick={() => handleAction(booking._id, 'Ditolak')}><XCircle size={14} /> Tolak</button></div>}
+                </div>
+              </article>
+            ))}
+          </div> : <div className="admin-table-state"><div className="admin-empty-icon"><CalendarDays size={22} /></div><strong>Belum ada pengajuan</strong><span>Tidak ada reservasi untuk ruangan ini pada tanggal yang dipilih.</span></div>}
+      </section>
+    </div>
+  );
 };
 
 export default DetailRooms;
