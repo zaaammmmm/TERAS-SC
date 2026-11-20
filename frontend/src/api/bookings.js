@@ -1,5 +1,5 @@
 // src/api/bookings.js
-const API_BASE_URL = "https://backend-terassc.vercel.app"; // Adjust if needed
+import { API_BASE_URL } from "../config/api.js";
 
 // Helper function to get auth headers
 const getAuthHeaders = (token) => {

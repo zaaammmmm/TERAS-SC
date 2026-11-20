@@ -2,8 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
-
-const API_BASE_URL = "https://backend-terassc.vercel.app";
+import { API_BASE_URL } from "../../config/api.js";
 
 const Login = () => {
   const navigate = useNavigate();

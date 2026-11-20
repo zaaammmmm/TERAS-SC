@@ -1,15 +1,23 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      "/auth": "https://backend-terassc.vercel.app",
-      "/api": "https://backend-terassc.vercel.app",
-      // "/auth": "https://teras-sc.vercel.app/",
-      // "/api": "https://teras-sc.vercel.app/",
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  const apiBaseUrl = env.VITE_API_BASE_URL;
+
+  if (!apiBaseUrl) {
+    throw new Error("VITE_API_BASE_URL wajib diatur di file .env");
+  }
+
+  return {
+    plugins: [react()],
+    server: {
+      proxy: {
+        "/auth": apiBaseUrl,
+        "/rooms": apiBaseUrl,
+        "/bookings": apiBaseUrl,
+        "/api": apiBaseUrl,
+      },
     },
-  },
+  };
 });
