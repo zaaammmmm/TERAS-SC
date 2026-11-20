@@ -1,14 +1,16 @@
-
-import { useEffect, useState } from 'react';
-import { FaCalendarAlt, FaCheckCircle, FaUserClock } from 'react-icons/fa';
+import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, CalendarDays, CheckCircle2, Clock3, Plus, Sparkles, XCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useBookings } from '../../contexts/BookingContext';
 
+const statusMeta = {
+  Menunggu: { label: 'Menunggu', className: 'status-menunggu', icon: Clock3 },
+  Disetujui: { label: 'Disetujui', className: 'status-diterima', icon: CheckCircle2 },
+  Ditolak: { label: 'Ditolak', className: 'status-ditolak', icon: XCircle },
+};
+
 const Dashboard = () => {
-  const PRIMARY_COLOR = '#155E38';
-  const MAX_VALUE_CHART = 50;
-
-
   const { user } = useAuth();
   const { getUserBookings } = useBookings();
   const [userBookings, setUserBookings] = useState([]);
@@ -16,162 +18,124 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let active = true;
     const fetchUserBookings = async () => {
       try {
         setIsLoaded(false);
         setError(null);
         const bookings = await getUserBookings();
-        setUserBookings(bookings);
-      } catch (error) {
-        console.error('Error fetching user bookings:', error);
-        setError('Gagal memuat data dashboard');
+        if (active) setUserBookings(bookings || []);
+      } catch (fetchError) {
+        console.error('Error fetching user bookings:', fetchError);
+        if (active) setError('Data reservasi belum dapat dimuat.');
       } finally {
-        setIsLoaded(true);
+        if (active) setIsLoaded(true);
       }
     };
-
-    if (user) {
-      fetchUserBookings();
-    }
+    if (user) fetchUserBookings();
+    return () => { active = false; };
   }, [user, getUserBookings]);
 
-  // Calculate user stats
   const stats = {
     total: userBookings.length,
-    pending: userBookings.filter(b => b.status === 'Menunggu').length,
-    approved: userBookings.filter(b => b.status === 'Disetujui').length,
-    rejected: userBookings.filter(b => b.status === 'Ditolak').length,
+    pending: userBookings.filter((booking) => booking.status === 'Menunggu').length,
+    approved: userBookings.filter((booking) => booking.status === 'Disetujui').length,
+    rejected: userBookings.filter((booking) => booking.status === 'Ditolak').length,
   };
 
-  // Calculate room usage for user
-  const roomStats = {};
-  userBookings.forEach(booking => {
-    const roomName = booking.room.name;
-    roomStats[roomName] = (roomStats[roomName] || 0) + 1;
-  });
+  const upcomingBookings = useMemo(() => [...userBookings]
+    .filter((booking) => booking.status !== 'Ditolak')
+    .sort((a, b) => `${a.date?.split('T')[0]}${a.startTime}`.localeCompare(`${b.date?.split('T')[0]}${b.startTime}`))
+    .slice(0, 4), [userBookings]);
 
-  const roomStatsArray = Object.entries(roomStats).map(([name, count]) => ({ name, count }));
-
-  // Prepare data for chart
-  const usageDataAdmin = [
-    { name: 'Co-Working A', value: roomStatsArray.find(r => r.name === 'Co-Working Space A')?.count || 0 },
-    { name: 'Co-Working B', value: roomStatsArray.find(r => r.name === 'Co-Working Space B')?.count || 0 },
-    { name: 'Co-Working C', value: roomStatsArray.find(r => r.name === 'Co-Working Space C')?.count || 0 },
-    { name: 'Co-Working D', value: roomStatsArray.find(r => r.name === 'Co-Working Space D')?.count || 0 },
-    { name: 'Co-Working E', value: roomStatsArray.find(r => r.name === 'Co-Working Space E')?.count || 0 },
-    { name: 'Co-Working F', value: roomStatsArray.find(r => r.name === 'Co-Working Space F')?.count || 0 },
-    { name: 'Co-Working EAST', value: roomStatsArray.find(r => r.name === 'Co-Working Space EAST')?.count || 0 },
-  ];
+  const firstName = user?.name?.trim()?.split(/\s+/)[0] || 'Mahasiswa';
 
   return (
-    <div className="w-full space-y-6 min-h-full">
-
-      {/* Header / Kartu Selamat Datang */}
-      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#155E38]">
-          Dashboard {user?.name || 'Pengguna'}
-        </h1>
-        <p className="text-gray-500 mt-1 text-sm sm:text-base">
-          Ikhtisar peminjaman ruangan Anda di Student Center.
-        </p>
-      </div>
-
-      {/* IKHISAR PEMINJAMAN RUANGAN (STATS CARD) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-
-        {/* Card 1: Total Semua Reservasi (Warna Primer) */}
-        <div className={`bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-[#155E38] flex items-center justify-between`}>
-          <div>
-            <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">Total Reservasi Anda</h3>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-800">{!isLoaded ? '...' : stats.total}</p>
-          </div>
-          <FaCalendarAlt className="text-3xl sm:text-4xl text-[#155E38] opacity-30" />
+    <div className="user-dashboard">
+      <section className="dashboard-welcome">
+        <div className="dashboard-welcome-content">
+          <span className="eyebrow"><Sparkles size={14} /> TERAS STUDENT CENTER</span>
+          <h1>Halo, {firstName}.</h1>
+          <p>Ruang yang tepat bisa membuat ide berkembang. Mau mulai kegiatan apa hari ini?</p>
+          <Link to="/ruangan" className="dashboard-primary-action"><Plus size={17} /> Cari & pesan ruangan</Link>
         </div>
-
-        {/* Card 2: Menunggu Persetujuan (Warna Kuning) */}
-        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-yellow-500 flex items-center justify-between">
-          <div>
-            <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">Menunggu Persetujuan</h3>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-800">{!isLoaded ? '...' : stats.pending}</p>
-          </div>
-          <FaUserClock className="text-3xl sm:text-4xl text-yellow-500 opacity-30" />
+        <div className="dashboard-welcome-art" aria-hidden="true">
+          <div className="dashboard-art-window"><span /><span /><span /><div className="dashboard-art-table" /><div className="dashboard-art-chair one" /><div className="dashboard-art-chair two" /></div>
+          <div className="dashboard-art-note"><CalendarDays size={17} /><span>Make room<br />for ideas.</span></div>
         </div>
+      </section>
 
-        {/* Card 3: Disetujui (Warna Hijau) */}
-        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 border-green-500 flex items-center justify-between">
-          <div>
-            <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">Reservasi Disetujui</h3>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-800">{!isLoaded ? '...' : stats.approved}</p>
-          </div>
-          <FaCheckCircle className="text-3xl sm:text-4xl text-green-500 opacity-30" />
+      {error && <div className="dashboard-error">{error}</div>}
+
+      <section className="dashboard-section">
+        <div className="dashboard-section-heading">
+          <div><span className="eyebrow">RINGKASAN</span><h2>Aktivitas reservasi</h2></div>
+          <Link to="/riwayat" className="dashboard-text-link">Lihat riwayat <ArrowRight size={15} /></Link>
         </div>
-      </div>
-
-{/* CHART STATISTIK PENGGUNAAN */}
-<div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
-
-  {/* Header */}
-  <div className="mb-4 sm:mb-6 border-b pb-3 sm:pb-4">
-    <div className="text-lg sm:text-xl font-bold text-[#155E38]">
-      Statistik Penggunaan Ruangan Bulanan
-    </div>
-    <div className="flex items-center text-xs sm:text-sm text-gray-700 mt-2">
-      <span className="w-2 h-2 bg-[#155E38] border border-white rounded-full mr-2"></span>
-      Penggunaan di Bulan Terakhir
-    </div>
-  </div>
-
-  {/* Chart Container */}
-  <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-    <div className="min-w-[400px] sm:min-w-full">
-      <div className="flex flex-row">
-
-        {/* Label Ruangan (Y-axis) */}
-        <div className="flex flex-col text-right pr-3 flex-shrink-0 space-y-2 sm:space-y-4 w-28 sm:w-32">
-          {usageDataAdmin.map((item, index) => (
-            <div
-              key={index}
-              className="h-6 flex items-center justify-end text-[10px] sm:text-sm text-gray-700 font-medium whitespace-nowrap"
-            >
-              {item.name}
-            </div>
-          ))}
+        <div className="dashboard-stat-grid">
+          <article className="dashboard-stat-card stat-total">
+            <span className="dashboard-stat-icon"><CalendarDays size={19} /></span>
+            <span className="dashboard-stat-label">Total reservasi</span>
+            <strong>{isLoaded ? stats.total : '—'}</strong>
+            <small>Seluruh pengajuan Anda</small>
+          </article>
+          <article className="dashboard-stat-card stat-pending">
+            <span className="dashboard-stat-icon"><Clock3 size={19} /></span>
+            <span className="dashboard-stat-label">Menunggu persetujuan</span>
+            <strong>{isLoaded ? stats.pending : '—'}</strong>
+            <small>Dalam proses peninjauan</small>
+          </article>
+          <article className="dashboard-stat-card stat-approved">
+            <span className="dashboard-stat-icon"><CheckCircle2 size={19} /></span>
+            <span className="dashboard-stat-label">Reservasi disetujui</span>
+            <strong>{isLoaded ? stats.approved : '—'}</strong>
+            <small>Siap digunakan sesuai jadwal</small>
+          </article>
         </div>
+      </section>
 
-        {/* Chart Bar */}
-        <div className="flex-grow">
-          <div className="relative border-b border-gray-300">
-            {/* Bar Data */}
-            <div className="relative z-10 space-y-3 sm:space-y-4">
-              {usageDataAdmin.map((item, index) => {
-                const widthPercent = MAX_VALUE_CHART > 0 ? (item.value / MAX_VALUE_CHART) * 100 : 0;
-                return (
-                  <div key={index} className="flex items-center">
-                    <div className="w-full h-5 sm:h-6 bg-gray-200 rounded-sm overflow-hidden">
-                      <div
-                        className="h-full bg-[#155E38] transition-all duration-700"
-                        style={{ width: `${widthPercent}%` }}
-                      ></div>
-                    </div>
-                    <span className="ml-2 sm:ml-3 text-xs sm:text-sm font-semibold text-gray-700 min-w-[35px] sm:min-w-[50px] text-right">
-                      {item.value}
-                    </span>
+      <section className="dashboard-section dashboard-bookings-section">
+        <div className="dashboard-section-heading">
+          <div><span className="eyebrow">JADWAL ANDA</span><h2>Reservasi terbaru</h2></div>
+          <Link to="/riwayat" className="dashboard-text-link">Semua reservasi <ArrowRight size={15} /></Link>
+        </div>
+        {!isLoaded ? (
+          <div className="dashboard-list-state">Memuat aktivitas reservasi...</div>
+        ) : upcomingBookings.length ? (
+          <div className="dashboard-booking-list">
+            {upcomingBookings.map((booking) => {
+              const status = statusMeta[booking.status] || statusMeta.Menunggu;
+              const StatusIcon = status.icon;
+              const bookingDate = booking.date ? new Date(`${booking.date.split('T')[0]}T00:00:00`) : null;
+              return (
+                <article className="dashboard-booking-row" key={booking._id}>
+                  <div className="dashboard-booking-date">
+                    <strong>{bookingDate ? bookingDate.getDate() : '—'}</strong>
+                    <span>{bookingDate ? bookingDate.toLocaleDateString('id-ID', { month: 'short' }) : '—'}</span>
                   </div>
-                );
-              })}
-            </div>
+                  <div className="dashboard-booking-info">
+                    <h3>{booking.room?.name || 'Ruangan'}</h3>
+                    <p>{booking.purpose || 'Kegiatan kampus'} · {booking.startTime}–{booking.endTime}</p>
+                  </div>
+                  <span className={`dashboard-booking-status ${status.className}`}><StatusIcon size={14} />{status.label}</span>
+                </article>
+              );
+            })}
           </div>
-
-          {/* Label X-axis */}
-          <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2 pl-1">
-
+        ) : (
+          <div className="dashboard-empty">
+            <div className="dashboard-empty-icon"><CalendarDays size={24} /></div>
+            <h3>Belum ada reservasi</h3>
+            <p>Temukan ruang yang sesuai dan ajukan peminjaman pertamamu.</p>
+            <Link to="/ruangan">Jelajahi ruangan <ArrowRight size={15} /></Link>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        )}
+      </section>
 
+      <section className="dashboard-help-strip">
+        <div><span className="eyebrow">BUTUH RUANG UNTUK BERKOLABORASI?</span><h2>Mulai dari ruang yang tepat.</h2><p>Cek jadwal, bandingkan pilihan, dan ajukan reservasi dalam beberapa langkah.</p></div>
+        <Link to="/ruangan">Lihat semua ruangan <ArrowRight size={16} /></Link>
+      </section>
     </div>
   );
 };
