@@ -60,27 +60,31 @@ input, select, textarea { color: var(--sc-ink); }
 input:focus, select:focus, textarea:focus { outline: 2px solid #1C5DA8 !important; outline-offset: 1px; border-color: #1C5DA8 !important; }
 
 /* Public landing page */
-.landing-page-container { overflow: clip; background: var(--sc-page); }
+.landing-page-container { --sc-primary: #B91C1C; --sc-primary-dark: #7F1D1D; --sc-primary-soft: #FEE2E2; overflow: clip; background: var(--sc-page); }
+.landing-page-container header [class*="text-[#155E38]"],
+.landing-page-container header [class*="hover:text-[#155E38]"]:hover { color: #B91C1C !important; }
+.landing-page-container header [class*="bg-[#155E38]"],
+.landing-page-container header [class*="hover:bg-[#0F4A2C]"]:hover { background-color: #B91C1C !important; }
 .landing-page-container > section:first-of-type { min-height: min(760px, 92vh); height: 760px; max-height: 92vh; background-position: center 42%; }
-.landing-page-container > section:first-of-type > div { background: linear-gradient(90deg, rgb(10 35 22 / .78), rgb(10 35 22 / .38)); text-align: left; justify-content: flex-start; padding: clamp(24px, 8vw, 112px); }
+.landing-page-container > section:first-of-type > div { background: linear-gradient(90deg, rgb(127 29 29 / .82), rgb(185 28 28 / .42)); text-align: left; justify-content: flex-start; padding: clamp(24px, 8vw, 112px); }
 .landing-page-container > section:first-of-type > div > div { max-width: 720px; }
 .landing-page-container > section:first-of-type h1 { max-width: 680px; font-size: clamp(2.5rem, 5.4vw, 4.5rem); line-height: 1.08; letter-spacing: -.055em; }
 .landing-page-container > section:first-of-type p { max-width: 570px; margin-left: 0; line-height: 1.8; color: rgb(255 255 255 / .86); }
 .landing-page-container > section:first-of-type button { background: var(--sc-primary); color: white; border-radius: 10px; box-shadow: none; font-size: 14px; padding: 14px 22px; }
-.landing-page-container > section:first-of-type button:hover { background: var(--sc-primary-dark); }
+.landing-page-container > section:first-of_type button:hover { background: var(--sc-primary-dark); }
 .landing-page-container #about { min-height: 480px; height: auto; gap: clamp(32px, 7vw, 96px); padding: 96px max(7vw, 24px); }
 .landing-page-container #about h2 { color: var(--sc-primary); letter-spacing: -.04em; }
 .landing-page-container #about p { max-width: 600px; font-size: 16px; line-height: 1.9; color: var(--sc-muted); }
 .landing-page-container #about img { border-radius: 16px; }
-.landing-page-container #tutorial { height: auto; min-height: 580px; padding: 88px max(6vw, 24px); background: var(--sc-primary-dark); }
+.landing-page-container #tutorial { height: auto; min-height: 580px; padding: 88px max(6vw, 24px); background: #7F1D1D; }
 .landing-page-container #tutorial > h3 { letter-spacing: -.04em; }
 .landing-page-container #tutorial > p { font-size: 14px; font-style: normal; color: rgb(255 255 255 / .72); margin-bottom: 44px; }
 .landing-page-container #tutorial > div > div { border: 1px solid rgb(255 255 255 / .5); border-radius: 12px; box-shadow: none; padding: 26px; }
-.landing-page-container #tutorial > div > div > span { width: 52px; height: 52px; border-radius: 12px; background: var(--sc-primary-soft); }
+.landing-page-container #tutorial > div > div > span { width: 52px; height: 52px; border-radius: 12px; background: #FEE2E2; }
 .landing-page-container #tutorial > div > div > span img { width: 30px; height: 30px; }
 .landing-page-container #tutorial h4 { font-size: 16px; color: var(--sc-ink); }
 .landing-page-container #tutorial p { font-size: 13px; line-height: 1.7; }
-.landing-page-container footer { background: #0F4A2C; }
+.landing-page-container footer { background: #991B1B; }
 
 /* Auth and app shell */
 body:has(.min-h-screen.bg-\[\#F8FAFC\]) { background: var(--sc-page); }
@@ -509,6 +513,13 @@ main table td { font-size: 13px; }
 .admin-room-date-copy { display: flex; flex: 1; flex-direction: column; gap: 4px; min-width: 0; }
 .admin-room-date-copy > span { color: #8a998e; font-size: 9px; font-weight: 800; letter-spacing: .1em; }
 .admin-room-date-copy strong { color: #294633; font-size: 13px; font-weight: 800; }
+
+
+
+
+
+
+
 .admin-room-date-copy small { color: #91a096; font-size: 10px; }
 .admin-date-navigator { display: flex; align-items: center; gap: 5px; }
 .admin-date-navigator > button:not(.admin-today-button) { display: grid; place-items: center; width: 31px; height: 32px; border: 1px solid #e1e9e2; border-radius: 7px; background: #fff; color: #5d7564; font-size: 20px; line-height: 1; }
@@ -667,162 +678,4 @@ main table td { font-size: 13px; }
   .admin-timeline-card { padding: 10px; }
   .admin-timeline-title { flex-direction: column; }
   .admin-timeline-meta { flex-direction: column; gap: 6px; }
-}
-
-
-/* Typography refinement V5: comfortable reading sizes across user and admin screens.
-   Keep the hierarchy intact while removing tiny metadata and dense table text. */
-:root {
-  --sc-font-display: clamp(2.75rem, 5vw, 3.25rem);
-  --sc-font-page-title: clamp(1.75rem, 3vw, 2rem);
-  --sc-font-section: clamp(1.375rem, 2.2vw, 1.5rem);
-  --sc-font-card-title: 1.125rem;
-  --sc-font-body: 0.875rem;
-  --sc-font-meta: 0.75rem;
-}
-
-body { font-size: var(--sc-font-body); }
-main table th { font-size: 12px; }
-main table td { font-size: 14px; }
-
-/* Public landing and booking */
-.landing-page-container #tutorial h4 { font-size: 18px; }
-.landing-page-container #tutorial p { font-size: 14px; }
-.landing-page-container > section:first-of-type h1 { font-size: clamp(2.75rem, 5.4vw, 3.25rem); }
-.booking-page-intro h1 { font-size: clamp(2.25rem, 4vw, 2.875rem); }
-.booking-results-heading h2,
-.dashboard-section-heading h2 { font-size: var(--sc-font-section); }
-.room-card-heading h2,
-.dashboard-help-strip h2 { font-size: var(--sc-font-card-title); }
-.dashboard-booking-info h3 { font-size: 14px; }
-
-/* Admin headings and key labels */
-.admin-page-heading h1 { font-size: clamp(1.75rem, 3vw, 2rem); }
-.admin-detail-info h1 { font-size: 26px; }
-.admin-panel-heading h2 { font-size: 18px; }
-.admin-welcome h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
-.admin-metric-card > strong { font-size: 28px; }
-
-/* Metadata, compact controls, status labels and dense tables: 12px minimum. */
-.eyebrow,
-.booking-intro-mark,
-.room-legend,
-.room-availability,
-.room-location,
-.room-capacity,
-.room-schedule-heading,
-.room-slot,
-.room-slot-hint,
-.room-detail-link,
-.dashboard-art-note,
-.dashboard-text-link,
-.dashboard-stat-label,
-.dashboard-stat-card small,
-.dashboard-booking-date span,
-.dashboard-booking-info p,
-.dashboard-booking-status,
-.dashboard-help-strip p,
-.dashboard-help-strip > a,
-.admin-sidebar-brand > div span,
-.admin-sidebar-section-label,
-.admin-sidebar-help strong,
-.admin-sidebar-help p,
-.admin-sidebar-footer,
-.admin-eyebrow,
-.admin-heading-date,
-.admin-button,
-.admin-button-count,
-.admin-welcome-aside > span,
-.admin-metric-top,
-.admin-metric-card > small,
-.admin-panel-chip,
-.admin-chart-value,
-.admin-chart-label,
-.admin-chart-footnote,
-.admin-pending-avatar,
-.admin-person-avatar,
-.admin-pending-copy strong,
-.admin-recent-item strong,
-.admin-pending-copy span,
-.admin-recent-item > div span,
-.admin-pending-copy small,
-.admin-status,
-.admin-count-pill,
-.admin-inline-count,
-.admin-panel-link,
-.admin-text-link,
-.admin-empty-compact strong,
-.admin-empty-compact span,
-.admin-room-bar-row > span,
-.admin-room-bar-row > strong,
-.admin-notice,
-.admin-muted,
-.admin-summary-label,
-.admin-summary-item small,
-.admin-refresh-button,
-.admin-search-box input,
-.admin-search-box kbd,
-.admin-select-wrap select,
-.admin-date-control input,
-.admin-clear-filter,
-.admin-data-table thead th,
-.admin-data-table tbody td,
-.admin-person-cell strong,
-.admin-person-cell span:not(.admin-person-avatar),
-.admin-room-name,
-.admin-table-subline,
-.admin-date-cell strong,
-.admin-date-cell span,
-.admin-history-time,
-.admin-purpose,
-.admin-participant-count,
-.admin-approve-button,
-.admin-reject-button,
-.admin-table-footer,
-.admin-table-state,
-.admin-table-state span:not(.admin-loader),
-.admin-table-state button,
-.admin-history-total span,
-.admin-room-date-copy > span,
-.admin-room-date-copy small,
-.admin-date-navigator input,
-.admin-today-button,
-.admin-filter-pills button,
-.admin-room-live-tag,
-.admin-room-card-title .admin-eyebrow,
-.admin-room-location,
-.admin-room-availability-summary span,
-.admin-room-slot-label,
-.admin-room-slot,
-.admin-room-detail-button,
-.admin-room-legend,
-.admin-room-legend small,
-.admin-back-link,
-.admin-detail-info p,
-.admin-detail-date,
-.admin-detail-stats span,
-.admin-timeline-time strong,
-.admin-timeline-time span,
-.admin-timeline-title strong,
-.admin-timeline-title > div span,
-.admin-timeline-meta span,
-.admin-detail-empty p {
-  font-size: 12px !important;
-}
-
-/* Inputs and action controls should remain easy to read and operate. */
-button,
-input,
-select,
-textarea {
-  font-size: max(14px, 1em);
-}
-
-@media (max-width: 640px) {
-  .landing-page-container > section:first-of-type h1 { font-size: clamp(2.25rem, 9vw, 2.75rem); }
-  .booking-page-intro h1,
-  .dashboard-welcome h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
-  .admin-page-heading h1 { font-size: 26px; }
-  .admin-welcome h1 { font-size: 30px; }
-  .admin-button { font-size: 12px; }
 }

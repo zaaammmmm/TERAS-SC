@@ -36,8 +36,12 @@ const Header = ({ isLandingPage }) => {
   const getLinkProps = (targetTo) => (isLandingPage ? { href: targetTo } : { to: targetTo });
 
   const baseClasses = "w-full px-6 md:px-12 py-4 flex justify-between items-center fixed top-0 left-0 z-50 transition-all duration-300 ease-in-out";
-  const logoColor = isScrolled ? 'text-[#155E38]' : 'text-white';
-  const navLinkColor = isScrolled ? 'text-gray-700 hover:text-[#155E38]' : 'text-white hover:text-white/80';
+  const logoColor = isScrolled
+    ? (isLandingPage ? 'text-[#B91C1C]' : 'text-[#155E38]')
+    : 'text-white';
+  const navLinkColor = isScrolled
+    ? (isLandingPage ? 'text-gray-700 hover:text-[#B91C1C]' : 'text-gray-700 hover:text-[#155E38]')
+    : 'text-white hover:text-white/80';
   const headerStyle = isScrolled ? 'bg-white shadow-md' : 'bg-transparent';
   const headerClasses = `${baseClasses} ${headerStyle}`;
 
