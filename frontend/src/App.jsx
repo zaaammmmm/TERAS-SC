@@ -30,7 +30,7 @@ function App() {
   return (
     <AuthProvider>
       <BookingProvider> 
-      <Router>
+      <Router basename="/terassc">
         <Routes>
           {/* ======================================================== */}
           {/* RUTE PUBLIK (Landing Page & Login)                       */}

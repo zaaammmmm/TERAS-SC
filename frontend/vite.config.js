@@ -11,10 +11,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    basePath: '/terassc',
-    images: {
-      unoptimized: true,
-    },
+    base: '/terassc',
     server: {
       proxy: {
         "/auth": apiBaseUrl,
