@@ -1,0 +1,27 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/terassc",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/terassc/assets/(.*)",
+      "destination": "/assets/$1"
+    },
+    {
+      "source": "/terassc/logo.png",
+      "destination": "/logo.png"
+    },
+    {
+      "source": "/terassc",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terassc/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
