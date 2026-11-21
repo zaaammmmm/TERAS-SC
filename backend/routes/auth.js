@@ -12,11 +12,9 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   console.log('Login route hit');
-  console.log('Request body:', req.body);
 
   try {
     const user = await User.findOne({ email });
-    console.log('User lookup result:', user);
 
     if (user) {
       const passwordMatches = await user.matchPassword(password);
@@ -29,7 +27,6 @@ router.post('/login', async (req, res) => {
         for (let i = 0; i < 5; i++) {
           apiToken = crypto.randomBytes(32).toString('hex');
           user.apiToken = apiToken;
-          console.log(`Token attempt ${i + 1}: ${apiToken.substring(0, 10)}...`);
           try {
             await user.save();
             console.log('Token saved');
