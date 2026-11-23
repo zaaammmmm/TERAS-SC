@@ -7,7 +7,7 @@ import { API_BASE_URL } from "../../config/api.js";
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identifier, password }),
       });
 
       if (!response.ok) {
@@ -56,11 +56,11 @@ const Login = () => {
 
           {/* Input Email */}
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="NIM atau Email"
             className="p-2 sm:p-3 mb-3 border border-gray-300 rounded-lg text-sm focus:border-[#155E38] focus:ring-1 focus:ring-[#155E38] focus:outline-none w-full"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
             required
           />
 

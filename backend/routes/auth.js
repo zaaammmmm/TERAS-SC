@@ -9,12 +9,24 @@ const router = express.Router();
 // @route   POST /api/auth/login
 // @access  Public
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const identifier = (req.body.identifier ?? req.body.email ?? '').trim().toLowerCase();
+  const password = req.body.password;
 
   console.log('Login route hit');
 
   try {
-    const user = await User.findOne({ email });
+    if (!identifier) {
+      return res.status(400).json({ message: 'NIM atau email harus diisi' });
+    }
+
+    const loginEmail = identifier.includes('@')
+      ? identifier
+      : `${identifier}@student.uin-suka.ac.id`;
+
+    const escapedEmail = loginEmail.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const user = await User.findOne({
+      email: { $regex: `^${escapedEmail}$`, $options: 'i' },
+    });
 
     if (user) {
       const passwordMatches = await user.matchPassword(password);
