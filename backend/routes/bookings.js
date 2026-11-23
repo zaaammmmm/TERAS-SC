@@ -19,11 +19,11 @@ router.get('/mybookings', protect, async (req, res) => {
 // @route   GET /api/bookings/global
 // @access  Private (Authenticated Users)
 router.get('/global', protect, async (req, res) => {
-    // Mengembalikan SEMUA booking agar user bisa melihat ketersediaan
-    const bookings = await Booking.find({})
-        .populate('user', 'name email')
-        .populate('room', 'name location');
-    res.json(bookings);
+    // Mengembalikan SEMUA booking agar user bisa melihat ketersediaan
+    const bookings = await Booking.find({})
+        .populate('user', 'name email')
+        .populate('room', 'name location');
+    res.json(bookings);
 });
 
 // @desc    Get booking stats (admin)
@@ -119,6 +119,35 @@ router.delete('/:id', protect, async (req, res) => {
   } else {
     res.status(404).json({ message: 'Booking not found' });
   }
+});
+
+// @desc    Get public room availability preview for a date
+// @route   GET /api/bookings/preview?date=YYYY-MM-DD
+// @access  Public
+router.get('/preview', async (req, res) => {
+  const dateValue = typeof req.query.date === 'string' ? req.query.date : '';
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+    return res.status(400).json({ message: 'Date must use YYYY-MM-DD format' });
+  }
+
+  const start = new Date(`${dateValue}T00:00:00.000Z`);
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 1);
+
+  if (Number.isNaN(start.getTime())) {
+    return res.status(400).json({ message: 'Invalid date' });
+  }
+
+  const bookings = await Booking.find({
+    date: { $gte: start, $lt: end },
+    status: 'Disetujui',
+  })
+    .select('room date startTime endTime status')
+    .populate('room', 'name location')
+    .sort({ startTime: 1 });
+
+  res.json(bookings);
 });
 
 export default router;

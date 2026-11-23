@@ -157,3 +157,30 @@ export const deleteBooking = async (bookingId, token) => {
     throw error;
   }
 };
+
+// Get public room availability preview (no authentication required)
+export const getTodayRoomPreview = async (date) => {
+  try {
+    const query = date ? `?date=${encodeURIComponent(date)}` : '';
+    const response = await fetch(`${API_BASE_URL}/bookings/preview${query}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      let errorData = {};
+      try {
+        errorData = await response.json();
+      } catch {
+        throw new Error(`Gagal memuat preview ruangan (${response.status})`);
+      }
+      throw new Error(errorData.message || "Failed to fetch room preview");
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error fetching room preview:", error);
+    throw error;
+  }
+};
