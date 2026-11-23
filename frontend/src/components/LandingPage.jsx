@@ -15,7 +15,7 @@ import IconSelect from '../assets/icon-select.png';
 import { FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 const LandingPage = () => {
-  // Warna Primer: #B91C1C
+  // Warna Primer: #155E38
 
   return (
     <div className="landing-page-container">
@@ -39,7 +39,7 @@ const LandingPage = () => {
             </p>
             <Link to="/dashboard" className="no-underline">
                {/* .hero-cta -> bg-white text-[#155E38] px-10 py-4 rounded-lg text-xl font-bold hover:bg-gray-100 */}
-               <button className="bg-white text-[#B91C1C] px-4 sm:px-6 md:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg md:text-xl font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-100 shadow-xl">
+               <button className="bg-white text-[#155E38] px-4 sm:px-6 md:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg md:text-xl font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-100 shadow-xl">
                  Mulai Reservasi
                </button>
             </Link>
@@ -56,7 +56,7 @@ const LandingPage = () => {
         {/* .about-content -> flex-1 max-w-3xl */}
         <div className="flex-1 max-w-3xl max-lg:max-w-full max-lg:mb-8">
           {/* h2 -> text-[#155E38] text-3xl font-bold mb-4 */}
-          <h2 className="text-[#B91C1C] text-3xl sm:text-4xl font-bold mb-4">Satu tempat untuk kebutuhan ruang kampus.</h2>
+          <h2 className="text-[#155E38] text-3xl sm:text-4xl font-bold mb-4">Satu tempat untuk kebutuhan ruang kampus.</h2>
           {/* p -> line-height-relaxed text-gray-700 */}
           <p className="leading-relaxed text-gray-700 text-lg">
             Teras Student Center membantu mahasiswa menemukan ruang, melihat ketersediaan jadwal, dan mengajukan peminjaman dengan alur yang lebih jelas. Semua kebutuhan reservasi ruang terhubung dalam satu layanan.
@@ -76,7 +76,7 @@ const LandingPage = () => {
       {/* Scroll 3: TUTORIAL/RESERVASI SECTION (ID: TUTORIAL) */}
       <section 
         // .reservasi-section -> bg-[#155E38] h-screen text-white p-20 flex-col justify-center items-center
-        className="bg-[#B91C1C] h-screen text-white p-20 flex flex-col justify-center items-center max-lg:h-auto max-lg:py-16 max-lg:px-8" 
+        className="bg-[#155E38] h-screen text-white p-20 flex flex-col justify-center items-center max-lg:h-auto max-lg:py-16 max-lg:px-8" 
         id="tutorial"
       >
         {/* h3 -> text-4xl font-bold mb-1 */}
@@ -92,7 +92,7 @@ const LandingPage = () => {
             className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2 max-lg:mb-6"
           >
             {/* .step-icon -> flex justify-center items-center w-20 h-20 rounded-full bg-[#155E38] mx-auto mb-5 */}
-            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#B91C1C] mx-auto mb-5">
+            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#155E38] mx-auto mb-5">
               {/* .icon-image -> w-12 h-12 object-contain */}
               <img src={IconSearch} alt="Cek Ketersediaan" className="w-12 h-12 object-contain"/> 
             </span>
@@ -101,7 +101,7 @@ const LandingPage = () => {
           </div>
           
           <div className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2 max-lg:mb-6">
-            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#B91C1C] mx-auto mb-5">
+            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#155E38] mx-auto mb-5">
               <img src={IconSelect} alt="Pilih Ruangan & waktu" className="w-12 h-12 object-contain"/> 
             </span>
             <h4 className="text-xl font-semibold mb-2">Pilih Ruangan & waktu</h4>
@@ -109,7 +109,7 @@ const LandingPage = () => {
           </div>
           
           <div className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2 max-lg:mb-6">
-            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#B91C1C] mx-auto mb-5">
+            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#155E38] mx-auto mb-5">
               <img src={IconForm} alt="Isi Detail & Kirim" className="w-12 h-12 object-contain"/> 
             </span>
             <h4 className="text-xl font-semibold mb-2">Isi Detail & Kirim</h4>
@@ -117,7 +117,7 @@ const LandingPage = () => {
           </div>
           
           <div className="bg-[#F8F8F8] text-gray-800 p-8 rounded-2xl flex-1 min-w-[200px] shadow-xl shadow-black/15 transition-transform duration-300 hover:-translate-y-2">
-            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#B91C1C] mx-auto mb-5">
+            <span className="flex justify-center items-center w-20 h-20 rounded-full bg-[#155E38] mx-auto mb-5">
               <img src={IconConfirm} alt="Tunggu Konfirmasi" className="w-12 h-12 object-contain"/> 
             </span>
             <h4 className="text-xl font-semibold mb-2">Tunggu Konfirmasi</h4>
@@ -129,7 +129,7 @@ const LandingPage = () => {
       {/* FOOTER SECTION (Tambahkan id="footer") */}
       <footer 
         // .footer-section -> bg-[#0F4A2C] text-white p-10 text-center
-        className="bg-[#7F1D1D] text-white p-10 text-center" 
+        className="bg-[#0F4A2C] text-white p-10 text-center" 
         id="footer"
       >
         <div className="flex flex-col items-center gap-4">
@@ -139,13 +139,13 @@ const LandingPage = () => {
             <p className="m-0 text-base opacity-90">Telp/WA: +62 812 3456 7890</p>
           </div>
           <div className="flex gap-4 text-2xl">
-            <a href="https://www.instagram.com/terassc" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#B91C1C]">
+            <a href="https://www.instagram.com/terassc" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#155E38]">
               <FaInstagram />
             </a>
-            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#B91C1C]">
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#155E38]">
               <FaWhatsapp />
             </a>
-            <a href="https://www.linkedin.com/company/terassc" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#B91C1C]">
+            <a href="https://www.linkedin.com/company/terassc" target="_blank" rel="noopener noreferrer" className="text-white transition-colors duration-300 hover:text-[#155E38]">
               <FaLinkedin />
             </a>
           </div>
