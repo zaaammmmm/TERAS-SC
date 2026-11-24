@@ -1,0 +1,300 @@
+diff --git a/backend/server.js b/backend/server.js
+--- a/backend/server.js
++++ b/backend/server.js
+@@ -4,6 +4,7 @@ import mongoose from "mongoose";
+ 
+ // Import models to register them
+ import "./models/Booking.js";
++import "./models/SsoHandoff.js";
+ import "./models/Room.js";
+ import "./models/User.js";
+ 
+diff --git a/backend/models/User.js b/backend/models/User.js
+--- a/backend/models/User.js
++++ b/backend/models/User.js
+@@ -4,15 +4,18 @@ import mongoose from 'mongoose';
+ 
+ const UserSchema = new mongoose.Schema({
+   email: { type: String, required: true, unique: true },
+-  password: { type: String, required: true },
++  // SSO-created users do not need a local password. Existing local users remain supported.
++  password: { type: String, required: false },
+   role: { type: String, enum: ['admin', 'user'], default: 'user' },
+   name: { type: String, required: true },
+-  apiToken: { type: String, unique: true, sparse: true }
++  apiToken: { type: String, unique: true, sparse: true },
++  ssoId: { type: String, unique: true, sparse: true }
+ });
+ 
+ // Hash password before saving
+ UserSchema.pre('save', async function(next) {
+   if (!this.isModified('password')) return next();
++  if (typeof this.password !== 'string' || !this.password) return next();
+   const salt = await bcrypt.genSalt(10);
+   this.password = await bcrypt.hash(this.password, salt);
+   next();
+@@ -15,6 +17,7 @@ UserSchema.pre('save', async function(next) {
+ 
+ // Method to compare password
+ UserSchema.methods.matchPassword = async function(enteredPassword) {
++  if (typeof enteredPassword !== 'string' || !this.password) return false;
+   return await bcrypt.compare(enteredPassword, this.password);
+ };
+ 
+diff --git a/backend/package.json b/backend/package.json
+--- a/backend/package.json
++++ b/backend/package.json
+@@ -13,6 +13,7 @@
+     "cors": "^2.8.5",
+     "dotenv": "^17.2.3",
+     "express": "^5.1.0",
+-    "mongoose": "^8.18.3"
++    "mongoose": "^8.18.3",
++    "jose": "^6.1.0"
+   }
+ }
+diff --git a/backend/routes/auth.js b/backend/routes/auth.js
+--- a/backend/routes/auth.js
++++ b/backend/routes/auth.js
+@@ -1,6 +1,8 @@
+ import crypto from 'crypto';
+ import express from 'express';
++import { createRemoteJWKSet, jwtVerify } from 'jose';
+ import { protect } from '../middleware/auth.js';
++import SsoHandoff from '../models/SsoHandoff.js';
+ import User from '../models/User.js';
+ 
+ const router = express.Router();
+@@ -12,7 +14,7 @@ router.post('/login', async (req, res) => {
+   console.log('Login route hit');
+ 
+   try {
+-    if (!identifier) {
++    if (!identifier || typeof password !== 'string' || !password) {
+       return res.status(400).json({ message: 'NIM atau email harus diisi' });
+     }
+ 
+@@ -77,6 +79,121 @@ router.post('/login', async (req, res) => {
+   }
+ });
+ 
++// @desc    Exchange a short-lived My-SUKA handoff token for a TERAS-SC API token
++// @route   POST /auth/sso
++// @access  Public (the signed, service-scoped handoff token is the credential)
++router.post('/sso', async (req, res) => {
++  const handoffToken = req.body?.token;
++  if (typeof handoffToken !== 'string' || !handoffToken) {
++    return res.status(400).json({ message: 'SSO token wajib diisi' });
++  }
++
++  const jwksUrl = process.env.MYSUKA_JWKS_URL;
++  const issuer = process.env.MYSUKA_ISSUER;
++  if (!jwksUrl || !issuer) {
++    console.error('SSO configuration missing: MYSUKA_JWKS_URL / MYSUKA_ISSUER');
++    return res.status(503).json({ message: 'SSO belum dikonfigurasi' });
++  }
++
++  try {
++    const parsedJwksUrl = new URL(jwksUrl);
++    if (parsedJwksUrl.protocol !== 'https:' && process.env.NODE_ENV === 'production') {
++      return res.status(503).json({ message: 'Konfigurasi JWKS harus menggunakan HTTPS' });
++    }
++    const jwks = createRemoteJWKSet(parsedJwksUrl);
++    const { payload } = await jwtVerify(handoffToken, jwks, {
++      algorithms: ['RS256'],
++      issuer,
++      audience: process.env.MYSUKA_AUDIENCE || 'mysuka-microapps-ecosystem',
++      clockTolerance: 5,
++    });
++
++    const identity = payload.user;
++    if (
++      payload.svc !== 'terassc' ||
++      typeof payload.sub !== 'string' ||
++      typeof payload.jti !== 'string' ||
++      !Number.isInteger(payload.exp) ||
++      !identity ||
++      typeof identity !== 'object' ||
++      Array.isArray(identity) ||
++      typeof identity.id !== 'string' ||
++      identity.id !== payload.sub ||
++      typeof identity.email !== 'string' ||
++      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identity.email) ||
++      typeof identity.name !== 'string' ||
++      typeof identity.primary_role !== 'string'
++    ) {
++      return res.status(401).json({ message: 'Token SSO tidak valid untuk TERAS-SC' });
++    }
++
++    // The unique jti index makes each handoff token single-use, including concurrent requests.
++    try {
++      await SsoHandoff.create({
++        jti: payload.jti,
++        expiresAt: new Date(payload.exp * 1000),
++      });
++    } catch (error) {
++      if (error.code === 11000) {
++        return res.status(401).json({ message: 'Token SSO sudah pernah digunakan' });
++      }
++      throw error;
++    }
++
++    const email = identity.email.trim().toLowerCase();
++    let user = await User.findOne({ ssoId: identity.id });
++    if (!user) {
++      const escapedEmail = email.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
++      user = await User.findOne({
++        email: { $regex: `^${escapedEmail}$`, $options: 'i' },
++      });
++
++      if (user && user.ssoId && user.ssoId !== identity.id) {
++        return res.status(409).json({ message: 'Email sudah terhubung ke identitas SSO lain' });
++      }
++      if (!user) {
++        user = new User({
++          email,
++          name: identity.name.trim() || email,
++          role: identity.primary_role === 'ADMIN' ? 'admin' : 'user',
++          ssoId: identity.id,
++        });
++      } else {
++        user.ssoId = identity.id;
++        if (!user.name) user.name = identity.name.trim() || email;
++        if (identity.primary_role === 'ADMIN') user.role = 'admin';
++      }
++    } else {
++      user.email = email;
++      user.name = identity.name.trim() || user.name;
++      if (identity.primary_role === 'ADMIN') user.role = 'admin';
++    }
++
++    const apiToken = crypto.randomBytes(32).toString('hex');
++    user.apiToken = apiToken;
++    await user.save();
++
++    return res.json({
++      _id: user._id,
++      name: user.name,
++      email: user.email,
++      role: user.role,
++      token: apiToken,
++    });
++  } catch (error) {
++    if (
++      error?.code === 'ERR_JWT_EXPIRED' ||
++      error?.code === 'ERR_JWS_INVALID' ||
++      error?.code === 'ERR_JWT_CLAIM_VALIDATION_FAILED' ||
++      error?.code === 'ERR_JWKS_NO_MATCHING_KEY'
++    ) {
++      return res.status(401).json({ message: 'Token SSO tidak valid atau sudah kedaluwarsa' });
++    }
++    console.error('SSO exchange failed:', error.message);
++    return res.status(401).json({ message: 'Verifikasi SSO gagal' });
++  }
++});
++
+ // @desc    Get user profile
+ // @route   GET /api/auth/profile
+ // @access  Private
+diff --git a/backend/models/SsoHandoff.js b/backend/models/SsoHandoff.js
+new file mode 100644
+--- /dev/null
++++ b/backend/models/SsoHandoff.js
+@@ -0,0 +1,9 @@
++import mongoose from 'mongoose';
++
++const SsoHandoffSchema = new mongoose.Schema({
++  jti: { type: String, required: true, unique: true },
++  expiresAt: { type: Date, required: true, expires: 0 },
++}, { timestamps: true });
++
++export default mongoose.models.SsoHandoff ||
++  mongoose.model('SsoHandoff', SsoHandoffSchema);
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -14,4 +14,5 @@ import LandingPage from './components/LandingPage';
+ import Login from './components/auth/Login';
++import SsoCallback from './components/auth/SsoCallback.jsx';
+ 
+ // Import Halaman Aplikasi
+ import BookingsAdmin from './components/admin/BookingsAdmin';
+@@ -36,6 +37,7 @@ function App() {
+           {/* ======================================================== */}
+           <Route path="/" element={<LandingPage />} />
+           <Route path="/login" element={<Login />} />
++          <Route path="/sso-callback" element={<SsoCallback />} />
+ 
+           {/* ======================================================== */}
+           {/* RUTE UMUM TERPROTEKSI (Untuk User atau Admin)            */}
+diff --git a/frontend/src/components/auth/SsoCallback.jsx b/frontend/src/components/auth/SsoCallback.jsx
+new file mode 100644
+--- /dev/null
++++ b/frontend/src/components/auth/SsoCallback.jsx
+@@ -0,0 +1,66 @@
++import { useEffect, useRef, useState } from 'react';
++import { useNavigate, useSearchParams } from 'react-router-dom';
++import { API_BASE_URL } from '../../config/api.js';
++import { useAuth } from '../../contexts/AuthContext.jsx';
++
++const SsoCallback = () => {
++  const [searchParams] = useSearchParams();
++  const navigate = useNavigate();
++  const { login } = useAuth();
++  const started = useRef(false);
++  const [message, setMessage] = useState('Memverifikasi sesi My-SUKA...');
++
++  useEffect(() => {
++    if (started.current) return;
++    started.current = true;
++
++    const token = searchParams.get('token');
++    // Remove the handoff token from the visible URL/history immediately.
++    window.history.replaceState({}, document.title, window.location.pathname);
++
++    if (!token) {
++      setMessage('Token SSO tidak ditemukan. Silakan masuk melalui My-SUKA.');
++      return;
++    }
++
++    const exchange = async () => {
++      try {
++        const response = await fetch(`${API_BASE_URL}/auth/sso`, {
++          method: 'POST',
++          headers: { 'Content-Type': 'application/json' },
++          body: JSON.stringify({ token }),
++        });
++        const data = await response.json().catch(() => ({}));
++        if (!response.ok) throw new Error(data.message || 'Autentikasi SSO gagal.');
++        if (!data.token || !data._id || !data.role) {
++          throw new Error('Respons autentikasi SSO tidak lengkap.');
++        }
++        login(data, data.token);
++        navigate(data.role === 'admin' ? '/admin/dashboard' : '/dashboard', { replace: true });
++      } catch (error) {
++        setMessage(error.message || 'Tidak dapat menghubungi server TERAS-SC.');
++      }
++    };
++
++    exchange();
++  }, [login, navigate, searchParams]);
++
++  return (
++    <main className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
++      <section className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-xl">
++        <h1 className="text-2xl font-bold text-[#155E38]">TERAS SC</h1>
++        <p className="mt-3 text-sm text-gray-600" role="status">{message}</p>
++        {message !== 'Memverifikasi sesi My-SUKA...' && (
++          <a
++            href="https://zamsiska.my.id"
++            className="mt-5 inline-flex rounded-lg bg-[#155E38] px-4 py-2 text-sm font-semibold text-white"
++          >
++            Kembali ke My-SUKA
++          </a>
++        )}
++      </section>
++    </main>
++  );
++};
++
++export default SsoCallback;

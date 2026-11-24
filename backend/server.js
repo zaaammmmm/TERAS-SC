@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 // Import models to register them
 import "./models/Booking.js";
+import "./models/SsoHandoff.js";
 import "./models/Room.js";
 import "./models/User.js";
 
